@@ -1,8 +1,10 @@
 import 'package:fashion_paints/screens/bipana_preview/bipana_preview.dart';
 import 'package:fashion_paints/screens/button_navigation_bars/home_screen_button_navigation_bar.dart';
+import 'package:fashion_paints/screens/comments_screen.dart';
 import 'package:fashion_paints/screens/home_screen.dart';
 import 'package:fashion_paints/screens/notification/dealer_notification_screen.dart';
 import 'package:fashion_paints/screens/notification/notification_screen.dart';
+import 'package:fashion_paints/screens/order_history/order_history_screen.dart';
 import 'package:fashion_paints/screens/price/price_list_screen.dart';
 import 'package:fashion_paints/screens/scheme/scheme_list_screen.dart';
 import 'package:fashion_paints/screens/search/search_screen.dart';
@@ -39,6 +41,8 @@ class MyApp extends StatelessWidget {
         "Scheme_List_screen":(ctx)=>const SchemeList(),
         "Notification_List_screen":(ctx)=>const NotificationScreen(),
         "Dealer_Notification_List_screen":(ctx)=>const DealerNotificationScreen(),
+        "Order_history_screen":(ctx)=>const OrderHistory(),
+        "Comments_screen":(ctx)=>const CommentsScreen(),
         },
     );
   }

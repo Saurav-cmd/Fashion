@@ -18,14 +18,14 @@ class _DealerNotificationScreenState extends State<DealerNotificationScreen> {
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle(
             statusBarColor:ChooseColor(0).appBarColor1, // For iOS (dark icons)
-            statusBarIconBrightness: Brightness.dark
+            statusBarIconBrightness: Brightness.light
         ),
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
               icon: const Icon(Icons.arrow_back_ios,size:15,color: Colors.white,),
               onPressed: () {
-                Navigator.of(context).pushNamed("Dealer_button_Navigation_Bar");
+                Navigator.of(context).pushReplacementNamed("Dealer_button_Navigation_Bar");
               },
             );
           },
@@ -44,7 +44,7 @@ class _DealerNotificationScreenState extends State<DealerNotificationScreen> {
                       color: Colors.white,
                     ),
                     onPressed: () {
-                      Navigator.of(context).pushNamed("Dealer_button_Navigation_Bar");
+                      Navigator.of(context).pushReplacementNamed("Dealer_button_Navigation_Bar");
                     }),
               ],
             ),

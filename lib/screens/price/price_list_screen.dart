@@ -19,7 +19,7 @@ class _PriceListState extends State<PriceList> {
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle(
             statusBarColor:ChooseColor(0).appBarColor1, // For iOS (dark icons)
-            statusBarIconBrightness: Brightness.dark
+            statusBarIconBrightness: Brightness.light
         ),
         leading: Builder(
           builder: (BuildContext context) {

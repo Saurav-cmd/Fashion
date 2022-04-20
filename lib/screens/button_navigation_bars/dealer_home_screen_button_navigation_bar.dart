@@ -3,6 +3,7 @@ import 'package:fashion_paints/screens/dealer_home_page.dart';
 import 'package:fashion_paints/screens/notice/notice_screen.dart';
 import 'package:fashion_paints/screens/notification/notification_screen.dart';
 import 'package:fashion_paints/screens/profile_screen/profile_screen.dart';
+import 'package:fashion_paints/screens/store/store_screen.dart';
 import 'package:flutter/material.dart';
 
 
@@ -20,7 +21,7 @@ class _DealerBottomNavigationState extends State<DealerBottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _selectedIndex==0?const DealerHomePage():_selectedIndex==1?const NoticeHomeScreen():_selectedIndex==4?const ProfileScreen():null,
+      body: _selectedIndex==0?const DealerHomePage():_selectedIndex==1?const NoticeHomeScreen():_selectedIndex==3?const StoreScreen():_selectedIndex==4?const ProfileScreen():null,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items:const<BottomNavigationBarItem>[
