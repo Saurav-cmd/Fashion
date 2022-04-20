@@ -30,7 +30,9 @@ class _SearchScreenState extends State<SearchScreen> {
         backgroundColor: ChooseColor(0).appBarColor1,
         title: const Text("Search"),
         actions: [
-          IconButton(onPressed:(){}, icon:const Icon(Icons.home))
+          IconButton(onPressed:(){
+            Navigator.of(context).pushNamed("Dealer_button_Navigation_Bar");
+          }, icon:const Icon(Icons.home))
         ],
       ),
       body: Padding(

@@ -25,6 +25,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor:ChooseColor(0).appBarColor2, // For iOS (dark icons)
+          statusBarIconBrightness: Brightness.dark
         ),
         backgroundColor: ChooseColor(0).appBarColor2,
         elevation: 0,
@@ -61,6 +62,7 @@ class _HomePageState extends State<HomePage> {
                   color: ChooseColor(0).buttonColor,
                 ),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding:EdgeInsets.only(left: size.width*0.030),
@@ -74,10 +76,7 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding:EdgeInsets.only(left:size.width*0.060),
-                      child: Image.asset("icons/smart 1.png"),
-                    )
+                    Image.asset("icons/smart 1.png")
                   ],
                 ),
               ),

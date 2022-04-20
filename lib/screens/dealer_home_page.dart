@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class DealerHomePage extends StatefulWidget {
   const DealerHomePage({Key? key}) : super(key: key);
@@ -20,12 +21,15 @@ class _DealerHomePageState extends State<DealerHomePage> {
     return  Scaffold(
       backgroundColor: ChooseColor(0).bodyBackgroundColor,
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor:ChooseColor(0).appBarColor2, // For iOS (dark icons)
+        ),
         backgroundColor: ChooseColor(0).appBarColor2,
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
           onPressed: (){
-
+            Navigator.of(context).pushNamed("Dealer_Notification_List_screen");
           },
           icon:const Icon(Icons.notifications),color: ChooseColor(0).appBarColor1,
         ),
@@ -132,21 +136,26 @@ class _DealerHomePageState extends State<DealerHomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    height:120,
-                    width:120,
-                    child: Card(
-                      elevation: 0,
-                      child: Padding(
-                        padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                                height: size.height*0.1,
-                                child: Image.asset("icons/price.png")),
-                            SizedBox(height: size.height*0.0),
-                            Center(child: Text("Price List",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
-                          ],
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.of(context).pushNamed("Price_List_screen");
+                    },
+                    child: SizedBox(
+                      height:120,
+                      width:120,
+                      child: Card(
+                        elevation: 0,
+                        child: Padding(
+                          padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                  height: size.height*0.1,
+                                  child: Image.asset("icons/price.png")),
+                              SizedBox(height: size.height*0.0),
+                              Center(child: Text("Price List",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -154,16 +163,21 @@ class _DealerHomePageState extends State<DealerHomePage> {
                   SizedBox(
                     height:120,
                     width:120,
-                    child: Card(
-                      elevation: 0,
-                      child: Padding(
-                        padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0.010),
-                        child: Column(
-                          children: [
-                            Image.asset("icons/undraw_house_searching_re_stk8 (1) 1.png"),
-                            SizedBox(height: size.height*0.020),
-                            Center(child: Text("Bipana preview",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
-                          ],
+                    child: GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).pushNamed("Bipana_Preview_screen");
+                      },
+                      child: Card(
+                        elevation: 0,
+                        child: Padding(
+                          padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0.010),
+                          child: Column(
+                            children: [
+                              Image.asset("icons/undraw_house_searching_re_stk8 (1) 1.png"),
+                              SizedBox(height: size.height*0.020),
+                              Center(child: Text("Bipana preview",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -172,16 +186,21 @@ class _DealerHomePageState extends State<DealerHomePage> {
                   SizedBox(
                     height:120,
                     width:120,
-                    child: Card(
-                      elevation: 0,
-                      child: Padding(
-                        padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0.010),
-                        child: Column(
-                          children: [
-                            Image.asset("icons/undraw_searching_re_3ra9 1.png"),
-                            SizedBox(height: size.height*0.020),
-                            Center(child: Text("Search",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
-                          ],
+                    child: GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).pushNamed("Search_Screen");
+                      },
+                      child: Card(
+                        elevation: 0,
+                        child: Padding(
+                          padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0.010),
+                          child: Column(
+                            children: [
+                              Image.asset("icons/undraw_searching_re_3ra9 1.png"),
+                              SizedBox(height: size.height*0.020),
+                              Center(child: Text("Search",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -269,19 +288,24 @@ class _DealerHomePageState extends State<DealerHomePage> {
                     ),
                   ),
 
-                  SizedBox(
-                    height:120,
-                    width:120,
-                    child: Card(
-                      elevation: 0,
-                      child: Padding(
-                        padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0.010),
-                        child: Column(
-                          children: [
-                            Image.asset("icons/scheme.png"),
-                            SizedBox(height: size.height*0.020),
-                            Center(child: Text("Scheme",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
-                          ],
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.of(context).pushNamed("Scheme_List_screen");
+                    },
+                    child: SizedBox(
+                      height:120,
+                      width:120,
+                      child: Card(
+                        elevation: 0,
+                        child: Padding(
+                          padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0.010),
+                          child: Column(
+                            children: [
+                              Image.asset("icons/scheme.png"),
+                              SizedBox(height: size.height*0.020),
+                              Center(child: Text("Scheme",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
+                            ],
+                          ),
                         ),
                       ),
                     ),

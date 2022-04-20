@@ -1,5 +1,10 @@
+import 'package:fashion_paints/screens/bipana_preview/bipana_preview.dart';
 import 'package:fashion_paints/screens/button_navigation_bars/home_screen_button_navigation_bar.dart';
 import 'package:fashion_paints/screens/home_screen.dart';
+import 'package:fashion_paints/screens/notification/dealer_notification_screen.dart';
+import 'package:fashion_paints/screens/notification/notification_screen.dart';
+import 'package:fashion_paints/screens/price/price_list_screen.dart';
+import 'package:fashion_paints/screens/scheme/scheme_list_screen.dart';
 import 'package:fashion_paints/screens/search/search_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +34,11 @@ class MyApp extends StatelessWidget {
         "Button_Navigation_Bar":(ctx)=>const BottomNavigation(),
         "Dealer_button_Navigation_Bar":(ctx)=>const DealerBottomNavigation(),
         "Search_Screen":(ctx)=>const SearchScreen(),
+        "Bipana_Preview_screen":(ctx)=>const BipanaPreviewScreen(),
+        "Price_List_screen":(ctx)=>const PriceList(),
+        "Scheme_List_screen":(ctx)=>const SchemeList(),
+        "Notification_List_screen":(ctx)=>const NotificationScreen(),
+        "Dealer_Notification_List_screen":(ctx)=>const DealerNotificationScreen(),
         },
     );
   }
