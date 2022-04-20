@@ -257,7 +257,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(height: size.height * 0.2)
+                                  SizedBox(height: size.height * 0.12)
                                 ],
                               ),
                             ),
@@ -384,6 +384,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                       ),
                                       SizedBox(height: size.height * 0.005),
                                       RatingBar.builder(
+                                        minRating: 1,
+                                        itemCount: 5,
                                         initialRating: 3,
                                         itemBuilder: (context, _) => const Icon(
                                           Icons.star,
@@ -405,6 +407,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                       SizedBox(height: size.height * 0.005),
                                       RatingBar.builder(
                                         initialRating: 4,
+                                        minRating: 1,
+                                        itemCount: 5,
                                         itemBuilder: (context, _) => const Icon(
                                           Icons.star,
                                           color: Colors.amber,
@@ -425,6 +429,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                       SizedBox(height: size.height * 0.005),
                                       RatingBar.builder(
                                         initialRating:1,
+                                        minRating: 1,
+                                        itemCount: 5,
                                         itemBuilder: (context, _) => const Icon(
                                           Icons.star,
                                           color: Colors.amber,
@@ -445,6 +451,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                       SizedBox(height: size.height * 0.005),
                                       RatingBar.builder(
                                         initialRating: 4,
+                                        minRating: 1,
+                                        itemCount: 5,
                                         itemBuilder: (context, _) => const Icon(
                                           Icons.star,
                                           color: Colors.amber,
@@ -508,7 +516,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(height: size.height * 0.2)
+                                      SizedBox(height: size.height * 0.030)
                                     ],
                                   ),
                                 ),
