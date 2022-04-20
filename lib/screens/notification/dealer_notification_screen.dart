@@ -12,6 +12,7 @@ class DealerNotificationScreen extends StatefulWidget {
 class _DealerNotificationScreenState extends State<DealerNotificationScreen> {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor:ChooseColor(0).bodyBackgroundColor,
       appBar: AppBar(
@@ -53,7 +54,7 @@ class _DealerNotificationScreenState extends State<DealerNotificationScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(left: 15.0,right: 15,top: 10),
+          padding:EdgeInsets.symmetric(horizontal: size.width*0.030,vertical: size.height*0.020),
           child: Column(
             children:  [
               const Text('Notification of all the events and notices are listed here.',style: TextStyle(fontSize: 13),),

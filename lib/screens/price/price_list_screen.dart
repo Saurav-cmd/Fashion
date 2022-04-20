@@ -13,6 +13,7 @@ class PriceList extends StatefulWidget {
 class _PriceListState extends State<PriceList> {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor:ChooseColor(0).bodyBackgroundColor,
       appBar: AppBar(
@@ -60,7 +61,7 @@ class _PriceListState extends State<PriceList> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(top: 10.0, left: 20, right: 20),
+          padding:EdgeInsets.symmetric(horizontal: size.width*0.030,vertical: size.height*0.020),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

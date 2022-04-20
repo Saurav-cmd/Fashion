@@ -12,11 +12,12 @@ class NoticeHomeScreen extends StatefulWidget {
 class _NoticeHomeScreenState extends State<NoticeHomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return SafeArea(child: Scaffold(
       backgroundColor:ChooseColor(0).bodyBackgroundColor,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(top: 20.0,left: 20,right: 20),
+          padding:EdgeInsets.symmetric(horizontal: size.width*0.030,vertical: size.height*0.020),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children:  [

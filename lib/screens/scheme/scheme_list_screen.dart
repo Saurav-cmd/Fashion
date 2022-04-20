@@ -1,5 +1,7 @@
+import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:fashion_paints/static_testing_list/scheme_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 class SchemeList extends StatefulWidget {
   const SchemeList({Key ?key}) : super(key: key);
 
@@ -11,8 +13,12 @@ class _SchemeListState extends State<SchemeList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffF6F6F9),
+      backgroundColor:ChooseColor(0).bodyBackgroundColor,
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor:ChooseColor(0).appBarColor1, // For iOS (dark icons)
+            statusBarIconBrightness: Brightness.dark
+        ),
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
@@ -21,7 +27,9 @@ class _SchemeListState extends State<SchemeList> {
                 size: 15,
                 color: Colors.white,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed("Dealer_button_Navigation_Bar");
+              },
             );
           },
         ),
@@ -41,7 +49,9 @@ class _SchemeListState extends State<SchemeList> {
                       Icons.home_filled,
                       color: Colors.white,
                     ),
-                    onPressed: () {}),
+                    onPressed: () {
+                      Navigator.of(context).pushNamed("Dealer_button_Navigation_Bar");
+                    }),
               ],
             ),
           ),

@@ -90,27 +90,21 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    height:120,
-                    width:120,
                     child: Card(
                       elevation: 0,
                       child: Padding(
-                        padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0),
+                        padding:EdgeInsets.symmetric(horizontal: size.width*0.010),
                         child: Column(
                           children: [
-                            SizedBox(
-                              height: size.height*0.1,
-                                child: Image.asset("icons/Vector1.png")),
-                            SizedBox(height: size.height*0.0),
-                            Center(child: Text("Find a painter",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
+                            Image.asset("icons/Vector1.png"),
+                            Center(child: Text("Find a painter",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),)),
+                            SizedBox(height: size.height*0.010),
                           ],
                         ),
                       ),
                     ),
                   ),
                   SizedBox(
-                    height:120,
-                    width:120,
                     child: Card(
                       elevation: 0,
                     child: Padding(
@@ -118,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         children: [
                           Image.asset("icons/undraw_house_searching_re_stk8 (1) 1.png"),
-                          SizedBox(height: size.height*0.020),
+                          SizedBox(height: size.height*0.030),
                           Center(child: Text("Bipana preview",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
                         ],
                       ),
@@ -127,12 +121,10 @@ class _HomePageState extends State<HomePage> {
                   ),
 
                   SizedBox(
-                    height:120,
-                    width:120,
                     child: Card(
                       elevation: 0,
                       child: Padding(
-                        padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0.010),
+                        padding:EdgeInsets.symmetric(horizontal: size.width*0.050,vertical: size.height*0.010),
                         child: Column(
                           children: [
                             Image.asset("icons/undraw_searching_re_3ra9 1.png"),

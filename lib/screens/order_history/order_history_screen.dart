@@ -14,6 +14,7 @@ class OrderHistory extends StatefulWidget {
 class _OrderHistoryState extends State<OrderHistory> {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor:ChooseColor(0).bodyBackgroundColor,
       appBar: AppBar(
@@ -56,7 +57,7 @@ class _OrderHistoryState extends State<OrderHistory> {
         child: Column(
           children: [
             ...cancelOrder.map((e) =>Padding(
-              padding: const EdgeInsets.only(left: 15.0,right: 15,top: 10),
+              padding:EdgeInsets.symmetric(horizontal: size.width*0.030,vertical: size.height*0.020),
               child: Container(
                 height: 160,
                 width: double.infinity,

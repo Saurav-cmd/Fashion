@@ -141,8 +141,6 @@ class _DealerHomePageState extends State<DealerHomePage> {
                       Navigator.of(context).pushNamed("Price_List_screen");
                     },
                     child: SizedBox(
-                      height:120,
-                      width:120,
                       child: Card(
                         elevation: 0,
                         child: Padding(
@@ -153,7 +151,8 @@ class _DealerHomePageState extends State<DealerHomePage> {
                                   height: size.height*0.1,
                                   child: Image.asset("icons/price.png")),
                               SizedBox(height: size.height*0.0),
-                              Center(child: Text("Price List",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
+                              Center(child: Text("Price List",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),)),
+                              SizedBox(height: size.height*0.010),
                             ],
                           ),
                         ),
@@ -161,8 +160,6 @@ class _DealerHomePageState extends State<DealerHomePage> {
                     ),
                   ),
                   SizedBox(
-                    height:120,
-                    width:120,
                     child: GestureDetector(
                       onTap: (){
                         Navigator.of(context).pushNamed("Bipana_Preview_screen");
@@ -184,8 +181,6 @@ class _DealerHomePageState extends State<DealerHomePage> {
                   ),
 
                   SizedBox(
-                    height:120,
-                    width:120,
                     child: GestureDetector(
                       onTap: (){
                         Navigator.of(context).pushNamed("Search_Screen");
@@ -193,7 +188,7 @@ class _DealerHomePageState extends State<DealerHomePage> {
                       child: Card(
                         elevation: 0,
                         child: Padding(
-                          padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0.010),
+                          padding:EdgeInsets.symmetric(horizontal: size.width*0.050,vertical: size.height*0.010),
                           child: Column(
                             children: [
                               Image.asset("icons/undraw_searching_re_3ra9 1.png"),
@@ -212,12 +207,10 @@ class _DealerHomePageState extends State<DealerHomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    height:120,
-                    width:120,
                     child: Card(
                       elevation: 0,
                       child: Padding(
-                        padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0.010),
+                        padding:EdgeInsets.symmetric(horizontal: size.width*0.045,vertical: size.height*0.010),
                         child: Column(
                           children: [
                             Image.asset("icons/generate.png"),
@@ -230,12 +223,10 @@ class _DealerHomePageState extends State<DealerHomePage> {
                   ),
 
                   SizedBox(
-                    height:120,
-                    width:120,
                     child: Card(
                       elevation: 0,
                       child: Padding(
-                        padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0.010),
+                        padding:EdgeInsets.symmetric(horizontal: size.width*0.020,vertical: size.height*0.010),
                         child: Column(
                           children: [
                             Image.asset("icons/saved.png"),
@@ -248,12 +239,10 @@ class _DealerHomePageState extends State<DealerHomePage> {
                   ),
 
                   SizedBox(
-                    height:120,
-                    width:120,
                     child: Card(
                       elevation: 0,
                       child: Padding(
-                        padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0.010),
+                        padding:EdgeInsets.symmetric(horizontal: size.width*0.030,vertical: size.height*0.010),
                         child: Column(
                           children: [
                             Image.asset("icons/BookMark.png"),
@@ -271,12 +260,10 @@ class _DealerHomePageState extends State<DealerHomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    height:120,
-                    width:120,
                     child: Card(
                       elevation: 0,
                       child: Padding(
-                        padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0.010),
+                        padding:EdgeInsets.symmetric(horizontal: size.width*0.045,vertical: size.height*0.010),
                         child: Column(
                           children: [
                             Image.asset("icons/statment.png"),
@@ -293,12 +280,10 @@ class _DealerHomePageState extends State<DealerHomePage> {
                       Navigator.of(context).pushNamed("Scheme_List_screen");
                     },
                     child: SizedBox(
-                      height:120,
-                      width:120,
                       child: Card(
                         elevation: 0,
                         child: Padding(
-                          padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0.010),
+                          padding:EdgeInsets.symmetric(horizontal: size.width*0.030,vertical: size.height*0.010),
                           child: Column(
                             children: [
                               Image.asset("icons/scheme.png"),
@@ -312,12 +297,10 @@ class _DealerHomePageState extends State<DealerHomePage> {
                   ),
 
                   SizedBox(
-                    height:120,
-                    width:120,
                     child: Card(
                       elevation: 0,
                       child: Padding(
-                        padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0.010),
+                        padding:EdgeInsets.symmetric(horizontal: size.width*0.037,vertical: size.height*0.010),
                         child: Column(
                           children: [
                             Image.asset("icons/comments.png"),
