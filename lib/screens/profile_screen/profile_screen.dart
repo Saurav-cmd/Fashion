@@ -169,15 +169,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
-                      onPressed: (){
-                        //OrderHistory
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>OrderHistory()));
-
-                      },
+                      onPressed: (){},
                       child: Container(
-                        decoration: const BoxDecoration(
-                            color: Color(0xffE72C9B),
-                            borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                        decoration:BoxDecoration(
+                            color: ChooseColor(0).buttonColor,
+                            borderRadius:const BorderRadius.all(Radius.circular(5.0))),
                         height: 45,
                         width: MediaQuery.of(context).size.width * 0.40,
                         child: const Center(
@@ -192,12 +188,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       )),
                   TextButton(
                       onPressed: (){
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NotificationScreen()));
                       },
                       child: Container(
-                        decoration: const BoxDecoration(
-                            color: Color(0xffE72C9B),
-                            borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                        decoration:BoxDecoration(
+                            color:ChooseColor(0).buttonColor,
+                            borderRadius:const BorderRadius.all(Radius.circular(5.0))),
                         height: 45,
                         width: MediaQuery.of(context).size.width * 0.40,
                         child: const Center(
@@ -217,9 +212,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               TextButton(
                   onPressed: () {
-                    //NoticeHomeScreen
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NoticeHomeScreen()));
-
+                    Navigator.of(context).pushNamed("Button_Navigation_Bar");
                   },
                   child: Container(
                     decoration: const BoxDecoration(
