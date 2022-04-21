@@ -107,18 +107,14 @@ class _BipanaPreviewScreenState extends State<BipanaPreviewScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   SizedBox(
-                    height:130,
-                    width:150,
                     child: Card(
                       elevation: 0,
                       child: Padding(
-                        padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0),
+                        padding:EdgeInsets.symmetric(horizontal: size.width*0.030,vertical: size.height*0.010),
                         child: Column(
                           children: [
-                            SizedBox(
-                                height: size.height*0.1,
-                                child: Image.asset("icons/camera.png")),
-                            SizedBox(height: size.height*0.0),
+                            Image.asset("icons/camera.png"),
+                            SizedBox(height: size.height*0.020),
                             Center(child: Text("Camera",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
                           ],
                         ),
@@ -126,19 +122,22 @@ class _BipanaPreviewScreenState extends State<BipanaPreviewScreen> {
                     ),
                   ),
                   SizedBox(width: size.width*0.070),
-                  SizedBox(
-                    height:130,
-                    width:150,
-                    child: Card(
-                      elevation: 0,
-                      child: Padding(
-                        padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0.010),
-                        child: Column(
-                          children: [
-                            Image.asset("icons/gallery.png"),
-                            SizedBox(height: size.height*0.020),
-                            Center(child: Text("Gallery",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
-                          ],
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.of(context).pushNamed("Gallery_screen");
+                    },
+                    child: SizedBox(
+                      child: Card(
+                        elevation: 0,
+                        child: Padding(
+                          padding:EdgeInsets.symmetric(horizontal: size.width*0.030,vertical: size.height*0.010),
+                          child: Column(
+                            children: [
+                              Image.asset("icons/gallery.png"),
+                              SizedBox(height: size.height*0.020),
+                              Center(child: Text("Gallery",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -149,10 +148,10 @@ class _BipanaPreviewScreenState extends State<BipanaPreviewScreen> {
               Text("Try with your previous images",style: TextStyle(fontSize: size.height*0.011+size.width*0.011,color: ChooseColor(0).appBarColor1),),
               SizedBox(height: size.height*0.020),
               Padding(
-                padding:EdgeInsets.only(left: size.width*0.035),
+                padding:EdgeInsets.only(left: size.width*0.075),
                 child: SizedBox(
-                  height:130,
-                  width:150,
+                  height:120,
+                  width:120,
                   child: Card(
                     elevation: 0,
                     child: Padding(

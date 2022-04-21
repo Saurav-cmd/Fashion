@@ -1,7 +1,4 @@
 import 'package:fashion_paints/colors/colors_file.dart';
-import 'package:fashion_paints/screens/notice/notice_screen.dart';
-import 'package:fashion_paints/screens/notification/notification_screen.dart';
-import 'package:fashion_paints/screens/order_history/order_history_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -16,15 +13,14 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         backgroundColor:ChooseColor(0).bodyBackgroundColor,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           elevation: 0,
-          systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarColor:ChooseColor(0).appBarColor2, // For iOS (dark icons)
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            statusBarColor: Colors.white,
               statusBarIconBrightness: Brightness.dark
           ),
           backgroundColor: ChooseColor(0).appBarColor2,
@@ -121,17 +117,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
+                        children: const [
+                          SizedBox(
                               width: 145,
-                              child: const Text(
+                              child: Text(
                                 'Rs -33455.00',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500),
                               )),
-                          const Text(
+                          Text(
                             'n/a',
                             style: TextStyle(
                                 color: Colors.white,

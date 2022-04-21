@@ -222,17 +222,22 @@ class _DealerHomePageState extends State<DealerHomePage> {
                     ),
                   ),
 
-                  SizedBox(
-                    child: Card(
-                      elevation: 0,
-                      child: Padding(
-                        padding:EdgeInsets.symmetric(horizontal: size.width*0.020,vertical: size.height*0.010),
-                        child: Column(
-                          children: [
-                            Image.asset("icons/saved.png"),
-                            SizedBox(height: size.height*0.020),
-                            Center(child: Text("Saved",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
-                          ],
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.of(context).pushNamed("Saved_screen");
+                    },
+                    child: SizedBox(
+                      child: Card(
+                        elevation: 0,
+                        child: Padding(
+                          padding:EdgeInsets.symmetric(horizontal: size.width*0.020,vertical: size.height*0.010),
+                          child: Column(
+                            children: [
+                              Image.asset("icons/saved.png"),
+                              SizedBox(height: size.height*0.020),
+                              Center(child: Text("Saved",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
+                            ],
+                          ),
                         ),
                       ),
                     ),

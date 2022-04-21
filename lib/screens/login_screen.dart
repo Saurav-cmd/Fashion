@@ -10,6 +10,7 @@ class LoginScreen extends StatefulWidget {
 }
 bool _isObscure = true;
 class _LoginScreenState extends State<LoginScreen> {
+  final GlobalKey<FormState> _form = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -59,6 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Text("Login",style: TextStyle(color: Colors.white,fontSize: size.height*0.014+size.width*0.014,fontWeight: FontWeight.w600),),
                             SizedBox(height: size.height*0.020),
                             Form(
+                              key: _form,
                                 child:Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
