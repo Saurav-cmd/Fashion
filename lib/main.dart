@@ -1,4 +1,5 @@
 import 'package:fashion_paints/screens/bipana_preview/bipana_preview.dart';
+import 'package:fashion_paints/screens/bipana_preview/camera_screen.dart';
 import 'package:fashion_paints/screens/bipana_preview/gallery_screen.dart';
 import 'package:fashion_paints/screens/button_navigation_bars/home_screen_button_navigation_bar.dart';
 import 'package:fashion_paints/screens/comments_screen.dart';
@@ -9,6 +10,7 @@ import 'package:fashion_paints/screens/order_history/order_history_screen.dart';
 import 'package:fashion_paints/screens/price/price_list_screen.dart';
 import 'package:fashion_paints/screens/saved/saved_screen.dart';
 import 'package:fashion_paints/screens/scheme/scheme_list_screen.dart';
+import 'package:fashion_paints/screens/search/color_name_screen.dart';
 import 'package:fashion_paints/screens/search/search_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -47,6 +49,8 @@ class MyApp extends StatelessWidget {
         "Comments_screen":(ctx)=>const CommentsScreen(),
         "Saved_screen":(ctx)=>const SavedScreen(),
         "Gallery_screen":(ctx)=>const GalleryScreen(),
+        "Camera_screen":(ctx)=>const CameraScreen(),
+        "Color_screen":(ctx)=>const ColorScreen(),
         },
     );
   }

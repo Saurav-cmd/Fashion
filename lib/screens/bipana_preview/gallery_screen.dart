@@ -22,7 +22,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
         elevation: 0,
         leading: IconButton(
           onPressed: (){
-            Navigator.of(context).pushReplacementNamed("Dealer_button_Navigation_Bar");
+            Navigator.of(context).pushReplacementNamed("Bipana_Preview_screen");
           },
           icon:const Icon(Icons.arrow_back_ios),color: Colors.white60,iconSize: 20,
         ),
@@ -214,6 +214,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                       FocusManager.instance.primaryFocus?.unfocus();
                     },
                     style: ElevatedButton.styleFrom(
+                      elevation: 0,
                       primary:ChooseColor(0).buttonColor,
                     ),
                   ),

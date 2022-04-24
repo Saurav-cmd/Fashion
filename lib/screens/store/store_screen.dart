@@ -11,6 +11,7 @@ class StoreScreen extends StatefulWidget {
 }
 
 class _StoreScreenState extends State<StoreScreen> {
+  final GlobalKey<FormState> _form = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -50,7 +51,8 @@ class _StoreScreenState extends State<StoreScreen> {
               child: Padding(
                 padding:EdgeInsets.symmetric(horizontal: size.width*0.040,vertical: size.height*0.015),
                 child: Form(
-                  child:   TextFormField(
+                  key: _form,
+                  child:TextFormField(
                     decoration:InputDecoration(
                       border: const OutlineInputBorder(
                         borderSide: BorderSide.none,

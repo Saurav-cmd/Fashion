@@ -17,7 +17,8 @@ class _SearchScreenState extends State<SearchScreen> {
       backgroundColor: ChooseColor(0).bodyBackgroundColor,
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor:ChooseColor(0).appBarColor1, // For iOS (dark icons)
+          statusBarColor:ChooseColor(0).appBarColor1,
+          statusBarIconBrightness: Brightness.light// For iOS (dark icons)
         ),
         elevation: 0,
         leading: IconButton(
@@ -43,12 +44,10 @@ class _SearchScreenState extends State<SearchScreen> {
               // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 SizedBox(
-                  height:130,
-                  width:150,
                   child: Card(
                     elevation: 0,
                     child: Padding(
-                      padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0),
+                      padding:EdgeInsets.symmetric(horizontal: size.width*0.017,vertical: size.height*0.010),
                       child: Column(
                         children: [
                           SizedBox(
@@ -63,12 +62,10 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
                 SizedBox(width: size.width*0.070),
                 SizedBox(
-                  height:130,
-                  width:150,
                   child: Card(
                     elevation: 0,
                     child: Padding(
-                      padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0.010),
+                      padding:EdgeInsets.symmetric(horizontal: size.width*0.070,vertical: size.height*0.010),
                       child: Column(
                         children: [
                           Image.asset("icons/gallery.png"),
@@ -82,19 +79,24 @@ class _SearchScreenState extends State<SearchScreen> {
               ],
             ),
             SizedBox(height: size.height*0.020),
-            SizedBox(
-              height:130,
-              width:150,
-              child: Card(
-                elevation: 0,
-                child: Padding(
-                  padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0.010),
-                  child: Column(
-                    children: [
-                      Image.asset("icons/colorMe.png"),
-                      SizedBox(height: size.height*0.020),
-                      Center(child: Text("Colour Name",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
-                    ],
+            GestureDetector(
+              onTap: (){
+                Navigator.of(context).pushNamed("Color_screen");
+              },
+              child: SizedBox(
+                height:130,
+                width:150,
+                child: Card(
+                  elevation: 0,
+                  child: Padding(
+                    padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0.010),
+                    child: Column(
+                      children: [
+                        Image.asset("icons/colorMe.png"),
+                        SizedBox(height: size.height*0.020),
+                        Center(child: Text("Colour Name",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
+                      ],
+                    ),
                   ),
                 ),
               ),

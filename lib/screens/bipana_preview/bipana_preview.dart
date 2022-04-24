@@ -106,17 +106,22 @@ class _BipanaPreviewScreenState extends State<BipanaPreviewScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  SizedBox(
-                    child: Card(
-                      elevation: 0,
-                      child: Padding(
-                        padding:EdgeInsets.symmetric(horizontal: size.width*0.030,vertical: size.height*0.010),
-                        child: Column(
-                          children: [
-                            Image.asset("icons/camera.png"),
-                            SizedBox(height: size.height*0.020),
-                            Center(child: Text("Camera",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
-                          ],
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.of(context).pushNamed("Camera_screen");
+                    },
+                    child: SizedBox(
+                      child: Card(
+                        elevation: 0,
+                        child: Padding(
+                          padding:EdgeInsets.symmetric(horizontal: size.width*0.030,vertical: size.height*0.010),
+                          child: Column(
+                            children: [
+                              Image.asset("icons/camera.png"),
+                              SizedBox(height: size.height*0.020),
+                              Center(child: Text("Camera",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -160,7 +165,7 @@ class _BipanaPreviewScreenState extends State<BipanaPreviewScreen> {
                         children: [
                           Image.asset("icons/saved1.png"),
                           SizedBox(height: size.height*0.020),
-                          Center(child: Text("Colour Name",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
+                          Center(child: Text("Saved",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
                         ],
                       ),
                     ),
