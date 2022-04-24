@@ -2,7 +2,11 @@ import 'package:fashion_paints/screens/bipana_preview/bipana_preview.dart';
 import 'package:fashion_paints/screens/bipana_preview/camera_screen.dart';
 import 'package:fashion_paints/screens/bipana_preview/gallery_screen.dart';
 import 'package:fashion_paints/screens/button_navigation_bars/home_screen_button_navigation_bar.dart';
+import 'package:fashion_paints/screens/color%20personality/color_personality_screen.dart';
 import 'package:fashion_paints/screens/comments_screen.dart';
+import 'package:fashion_paints/screens/find%20a%20painter/find_a_painter_screen.dart';
+import 'package:fashion_paints/screens/find%20a%20painter/find_a_painter_second_screen.dart';
+import 'package:fashion_paints/screens/generate/generate_screen.dart';
 import 'package:fashion_paints/screens/home_screen.dart';
 import 'package:fashion_paints/screens/notification/dealer_notification_screen.dart';
 import 'package:fashion_paints/screens/notification/notification_screen.dart';
@@ -51,6 +55,10 @@ class MyApp extends StatelessWidget {
         "Gallery_screen":(ctx)=>const GalleryScreen(),
         "Camera_screen":(ctx)=>const CameraScreen(),
         "Color_screen":(ctx)=>const ColorScreen(),
+        "Color_Personality_screen":(ctx)=>const ColorPersonalityScreen(),
+        "Find_Painter_screen":(ctx)=>const FindPainter(),
+        "Find_Painter_Second_screen":(ctx)=>const PainterStatus(),
+        "Generate_screen":(ctx)=>const GenerateFirstScreen(),
         },
     );
   }

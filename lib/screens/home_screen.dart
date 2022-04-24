@@ -89,17 +89,22 @@ class _HomePageState extends State<HomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    child: Card(
-                      elevation: 0,
-                      child: Padding(
-                        padding:EdgeInsets.symmetric(horizontal: size.width*0.010),
-                        child: Column(
-                          children: [
-                            Image.asset("icons/Vector1.png"),
-                            Center(child: Text("Find a painter",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),)),
-                            SizedBox(height: size.height*0.010),
-                          ],
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.of(context).pushNamed("Color_Personality_screen");
+                    },
+                    child: SizedBox(
+                      child: Card(
+                        elevation: 0,
+                        child: Padding(
+                          padding:EdgeInsets.symmetric(horizontal: size.width*0.010),
+                          child: Column(
+                            children: [
+                              Image.asset("icons/Vector1.png"),
+                              Center(child: Text("Color Personality",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),)),
+                              SizedBox(height: size.height*0.010),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -138,19 +143,24 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               SizedBox(height: size.height*0.015),
-              SizedBox(
-                height:120,
-                width:120,
-                child: Card(
-                  elevation: 0,
-                  child: Padding(
-                    padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0.010),
-                    child: Column(
-                      children: [
-                        Image.asset("icons/undraw_searching_re_3ra9 1.png"),
-                        SizedBox(height: size.height*0.020),
-                        Center(child: Text("Find a painter",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
-                      ],
+              GestureDetector(
+                onTap: (){
+                  Navigator.of(context).pushNamed("Find_Painter_screen");
+                },
+                child: SizedBox(
+                  height:120,
+                  width:116,
+                  child: Card(
+                    elevation: 0,
+                    child: Padding(
+                      padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0.010),
+                      child: Column(
+                        children: [
+                          Image.asset("icons/undraw_people_search_re_5rre 1.png"),
+                          SizedBox(height: size.height*0.020),
+                          Center(child: Text("Find a painter",style: TextStyle(color: ChooseColor(0).appBarColor1,fontSize: size.height*0.009+size.width*0.009),))
+                        ],
+                      ),
                     ),
                   ),
                 ),
