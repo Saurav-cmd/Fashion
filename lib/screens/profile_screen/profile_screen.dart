@@ -1,4 +1,5 @@
 import 'package:fashion_paints/colors/colors_file.dart';
+import 'package:fashion_paints/screens/profile_screen/app_info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -175,7 +176,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>const AppInfo()));
+                      },
                       child: Container(
                         decoration:BoxDecoration(
                             color: ChooseColor(0).buttonColor,
