@@ -2,6 +2,7 @@ import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:fashion_paints/screens/generate/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../fandeck_id/fandeck_name_id.dart';
 import 'generate_color_page.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -28,6 +29,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   TextEditingController colorController = TextEditingController();
 
   int clickedItemPosition = 0;
+
+  grabFanDeckId(){
+    FanDeckNameId().fanDeckNameToId(passedFanDeckName);
+  }
+
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -36,12 +44,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     passedFanDeckId = widget.fanDeckId;
     passedFanDeckName = widget.fanDeckName;
     passedEmulsionOrDistemper = widget.emulsionOrDistemper;
+    grabFanDeckId();
   }
+
   @override
   Widget build(BuildContext context) {
-
       final size = MediaQuery.of(context).size;
-
       return Scaffold(
         backgroundColor: ChooseColor(0).bodyBackgroundColor,
         appBar:AppBar(
@@ -84,6 +92,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        SizedBox(height: size.height*0.010),
+                        Text("Fandeck",style: TextStyle(fontSize: size.height*0.010+size.width*0.010),),
                         Row(
                           mainAxisAlignment:
                           MainAxisAlignment.spaceBetween,
@@ -91,7 +101,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             SizedBox(
                                 width: 210,
                                 child: Text(
-                                  '$passedProductName',
+                                  '$passedFanDeckName',
                                   style: TextStyle(
                                       color: Colors.black87,
                                       fontSize: size.height*0.012+size.width*0.012,
@@ -108,11 +118,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             )
                           ],
                         ),
+                        Text("Product",style: TextStyle(fontSize: size.height*0.010+size.width*0.010),),
+                        SizedBox(height: size.height*0.010),
                         Text(
-                          '$passedEmulsionOrDistemper',
+                          '$passedProductName',
                           style: TextStyle(
-                              color: Colors.grey.shade600,
-                              fontSize: 14),
+                              color: Colors.black,
+                              fontSize: size.height*0.011+size.width*0.011,fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(
                           height: 15,
@@ -122,7 +134,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ),
                 ),
                 SizedBox(height: size.height*0.020),
-                const Text("Colour Code/Name"),
+                Text("Colour Code/Name",style: TextStyle(fontSize: size.height*0.010+size.width*0.010,color: ChooseColor(0).appBarColor1,fontWeight: FontWeight.bold),),
                 SizedBox(height: size.height*0.010),
                 Form(
                   key: _form,
@@ -147,6 +159,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 ),
 
                 SizedBox(height: size.height*0.020),
+                Text("Can Size:",style: TextStyle(fontSize: size.height*0.010+size.width*0.010,color: ChooseColor(0).appBarColor1,fontWeight: FontWeight.bold),),
                 SizedBox(
                   height:100,
                   width: double.infinity,
@@ -161,7 +174,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     return GestureDetector(
                       onTap:() => setState(() => clickedItemPosition = i),
                       child: Card(
-                        color:clickedItemPosition==i?ChooseColor(0).appBarColor1:Colors.transparent
+                        color:clickedItemPosition==i?ChooseColor(0).appBarColor1:Colors.transparent,
+                        child:const Center(child: Text("1 Litre",style: TextStyle(color: Colors.white),)),
                       ),
                     );
                   }
