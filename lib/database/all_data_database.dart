@@ -96,10 +96,10 @@ class DatabaseHelper{
     return await db?.insert(table1, doubleFencee.toMap());
   }
 
-  Future<List> getDoubleFenceeData() async{
+  Future<List<DoubleDefenceee>> getDoubleFenceeData() async{
     Database? db = await instance.database;
     var data = await db?.query(table1);
-    List doubleFencedDataList = data!.isNotEmpty?data.map((c) => DoubleDefenceee.fromMap(c)).toList():[];
+    List<DoubleDefenceee>? doubleFencedDataList = data!.isNotEmpty?data.map((c) => DoubleDefenceee.fromMap(c)).toList():[];
     return doubleFencedDataList;
   }
 }

@@ -1,4 +1,6 @@
 import 'package:fashion_paints/colors/colors_file.dart';
+import 'package:fashion_paints/database/all_data_database.dart';
+import 'package:fashion_paints/models/database_models/doubled_fencee_database_%20model.dart';
 import 'package:fashion_paints/screens/generate/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,12 +10,10 @@ import 'generate_color_page.dart';
 class ProductDetailScreen extends StatefulWidget {
   ProductDetailScreen({Key,
     this.productName,
-    this.fanDeckId,
     this.fanDeckName,
     this.emulsionOrDistemper,
     key}) : super(key: key);
   String? productName;
-  String? fanDeckId;
   String? fanDeckName;
   String? emulsionOrDistemper;
   @override
@@ -22,7 +22,7 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   String? passedProductName;
-  String? passedFanDeckId;
+  double? fanDeckId;
   String? passedFanDeckName;
   String? passedEmulsionOrDistemper;
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
@@ -31,9 +31,42 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int clickedItemPosition = 0;
 
   grabFanDeckId(){
-    FanDeckNameId().fanDeckNameToId(passedFanDeckName);
+    //yo id maila fandeck_id directory vhitra fandeck_name_id.dart vhitra statically id haru save garaya ra rakhaya ko xu tai tanaya ho
+    fanDeckId = FanDeckNameId().fanDeckNameToId(passedFanDeckName);
   }
 
+  List<DoubleDefenceee> databaseDataList = [];
+  filterDatabaseData()async{
+    final databaseData =await DatabaseHelper.instance.getDoubleFenceeData();
+    for(int i=0;i<databaseData.length;i++){
+      if(databaseData[i].fanDeck == fanDeckId){
+        setState(() {
+          databaseDataList.add(databaseData[i]);
+        });
+      }
+    }
+    allColorCode();
+  }
+
+  List<String?> allColorCodeList = [];
+  allColorCode(){
+    for(int i=0;i<databaseDataList.length;i++){
+      if(databaseDataList[i].colorCode==databaseDataList[i].colorName){
+        allColorCodeList.add(databaseDataList[i].colorName);
+      }else{
+        allColorCodeList.add(databaseDataList[i].colorName!+"("+databaseDataList[i].colorCode!+")");
+      }
+    }
+  }
+
+  List<String?> searchedList = [];
+  searchTextFormFieldData(String? textData){
+    for(int i=0;i<allColorCodeList.length;i++){
+      if(allColorCodeList[i] == textData){
+        searchedList.add(allColorCodeList[i]);
+      }
+    }
+  }
 
 
   @override
@@ -41,10 +74,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     // TODO: implement initState
     super.initState();
     passedProductName = widget.productName;
-    passedFanDeckId = widget.fanDeckId;
     passedFanDeckName = widget.fanDeckName;
     passedEmulsionOrDistemper = widget.emulsionOrDistemper;
     grabFanDeckId();
+    filterDatabaseData();
   }
 
   @override
@@ -139,6 +172,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 Form(
                   key: _form,
                   child: TextFormField(
+                    onChanged: (text){
+                      searchTextFormFieldData(text);
+                    },
                     textAlign: TextAlign.start,
                     decoration:  InputDecoration(
                       contentPadding: EdgeInsets.symmetric(vertical: size.height*0.001,horizontal: size.width*0.030),
@@ -154,7 +190,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       hintText:'Colour Code/Name',
                       hintStyle:TextStyle(fontSize: size.height*0.012+size.width*0.012,color: Colors.black26),
                     ),
-                    controller: colorController,
+                    controller:colorController,
                   ),
                 ),
 
