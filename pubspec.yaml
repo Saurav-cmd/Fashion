@@ -37,6 +37,13 @@ dependencies:
   carousel_slider: ^4.0.0
   flutter_rating_bar: ^4.0.0
   nepali_date_picker: ^5.2.0
+  http: ^0.13.4
+  get: ^4.6.1
+  device_info_plus: ^3.2.3
+  firebase_messaging: ^11.2.14
+  firebase_core: ^1.15.0
+  sqflite: ^2.0.2+1
+  shared_preferences: ^2.0.13
 
 dev_dependencies:
   flutter_test:

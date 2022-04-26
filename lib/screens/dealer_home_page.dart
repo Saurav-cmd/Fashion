@@ -23,6 +23,7 @@ class _DealerHomePageState extends State<DealerHomePage> {
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor:ChooseColor(0).appBarColor2, // For iOS (dark icons)
+          statusBarIconBrightness: Brightness.dark
         ),
         backgroundColor: ChooseColor(0).appBarColor2,
         elevation: 0,

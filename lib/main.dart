@@ -16,12 +16,19 @@ import 'package:fashion_paints/screens/saved/saved_screen.dart';
 import 'package:fashion_paints/screens/scheme/scheme_list_screen.dart';
 import 'package:fashion_paints/screens/search/color_name_screen.dart';
 import 'package:fashion_paints/screens/search/search_screen.dart';
+import 'package:fashion_paints/screens/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/button_navigation_bars/dealer_home_screen_button_navigation_bar.dart';
 
 final GlobalKey<ScaffoldMessengerState> snackBarKey = GlobalKey<ScaffoldMessengerState>();
-void main() {
+Future<void> backgroundNotificationHandler(RemoteMessage message) async{}
+void main()async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(backgroundNotificationHandler);
   runApp(const MyApp());
 }
 
@@ -38,7 +45,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const BottomNavigation(),
+      home: const SplashScreen(),
       routes:{
         "Home_page_screen":(ctx)=>const HomePage(),
         "Button_Navigation_Bar":(ctx)=>const BottomNavigation(),

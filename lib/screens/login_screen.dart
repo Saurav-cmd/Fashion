@@ -1,6 +1,10 @@
+import 'dart:io';
 import 'package:fashion_paints/colors/colors_file.dart';
+import 'package:fashion_paints/controllers/auth_controller.dart';
+import 'package:fashion_paints/widgets/dilogue_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -10,7 +14,22 @@ class LoginScreen extends StatefulWidget {
 }
 bool _isObscure = true;
 class _LoginScreenState extends State<LoginScreen> {
+
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
+  AuthController aC = Get.put(AuthController());
+  String deviceId = AuthController().getId().toString();
+  String fcmId = AuthController().getFirebaseToken().toString();
+  TextEditingController dealerCodeController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    dealerCodeController;
+    passwordController;
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -82,6 +101,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                           hintText: 'Dealer Code',
                                           hintStyle:TextStyle(fontSize: size.height*0.012+size.width*0.012,color: Colors.black26),
                                       ),
+                                      validator: (value){
+                                        if(value!.isEmpty){
+                                          return "Dealer code is empty";
+                                        }
+                                      },
+                                      controller: dealerCodeController,
                                     ),
                                     SizedBox(height: size.height*0.020),
                                     Text("Password",style: TextStyle(color: Colors.white,fontSize: size.height*0.010+size.width*0.010,fontWeight: FontWeight.w400),),
@@ -119,6 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         hintText:'Password',
                                         hintStyle:TextStyle(fontSize: size.height*0.012+size.width*0.012,color: Colors.black26),
                                       ),
+                                      controller: passwordController,
                                     ),
                                   ],
                             )
@@ -128,9 +154,20 @@ class _LoginScreenState extends State<LoginScreen> {
                               constraints:BoxConstraints.tightFor(width: double.infinity,height:size.height*0.055),
                               child: ElevatedButton(
                                 child:Text('LOGIN',maxLines: 1,style: TextStyle(fontSize:size.height*0.014+size.width*0.014),),
-                                onPressed: (){
-                                  FocusManager.instance.primaryFocus?.unfocus();
-                                  Navigator.of(context).pushReplacementNamed("Dealer_button_Navigation_Bar");
+                                onPressed: ()async{
+                                  try{
+                                    final result = await InternetAddress.lookup("example.com");
+                                    if(result.isNotEmpty && result[0].rawAddress.isNotEmpty){
+                                      print("There is wifi connection");
+                                      if(_form.currentState?.validate()??true){
+                                        aC.loginApiData(dealerCodeController.text,passwordController.text,deviceId,fcmId,context);
+                                        FocusManager.instance.primaryFocus?.unfocus();
+                                      }
+                                    }
+                                  }on SocketException catch (_) {
+                                    AlertBox().noWifiConnection(context);
+                                    print('not connected');
+                                  }
                                 },
                                 style: ElevatedButton.styleFrom(
                                   primary:ChooseColor(0).buttonColor,

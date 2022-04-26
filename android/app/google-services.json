@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "208396241038",
+    "project_id": "fashion-48b9a",
+    "storage_bucket": "fashion-48b9a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208396241038:android:8990605e9710da0f5da1df",
+        "android_client_info": {
+          "package_name": "com.example.fashion_paints"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "208396241038-n75csq7btnk5ugudknrn2pu4broiu97r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9qms7dthGhHRdAmoQm2dlXuIMyjSc6O8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "208396241038-n75csq7btnk5ugudknrn2pu4broiu97r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

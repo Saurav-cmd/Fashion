@@ -1,4 +1,5 @@
 import 'package:fashion_paints/colors/colors_file.dart';
+import 'package:fashion_paints/screens/generate/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -64,6 +65,66 @@ class _GenerateFirstScreenState extends State<GenerateFirstScreen> {
             const Text('Select a Fendeck/ Shade Card of Fashion Paints'),
             Padding(
               padding: const EdgeInsets.only(bottom: 15, top: 8),
+              child: GestureDetector(
+                onTap: (){
+                  Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductScreen(fanDeckName: "RELIANCE ULTRA PROTEC SC",)));
+                },
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(10.0)),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 5.0, left: 20, right: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                          children: const [
+                            SizedBox(
+                                width: 210,
+                                child: Text(
+                                  'RELIANCE ULTRA PROTEC SC',
+                                  style: TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                )),
+
+                            Image(
+                              fit: BoxFit.fill,
+                              image: AssetImage(
+                                'icons/generate (1).png',
+                              ),
+                              height: 50,
+                              width: 50,
+                            )
+                          ],
+                        ),
+                        Text(
+                          'Fandeck',
+                          style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontSize: 14),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            GestureDetector(
+              onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductScreen(fanDeckName: "SPIRIT 1050",)));
+              },
               child: Container(
                 decoration: const BoxDecoration(
                   color: Colors.white,
@@ -83,7 +144,7 @@ class _GenerateFirstScreenState extends State<GenerateFirstScreen> {
                           SizedBox(
                               width: 210,
                               child: Text(
-                                'Ambiance Plus',
+                                'SPIRIT 1050',
                                 style: TextStyle(
                                     color: Colors.black87,
                                     fontSize: 16,
@@ -113,7 +174,64 @@ class _GenerateFirstScreenState extends State<GenerateFirstScreen> {
                   ),
                 ),
               ),
-            )
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            GestureDetector(
+              onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductScreen(fanDeckName: "SHADE CARD",)));
+              },
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius:
+                  BorderRadius.all(Radius.circular(10.0)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 5.0, left: 20, right: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween,
+                        children: const [
+                          SizedBox(
+                              width: 210,
+                              child: Text(
+                                'SHADE CARD',
+                                style: TextStyle(
+                                    color: Colors.black87,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                              )),
+
+                          Image(
+                            fit: BoxFit.fill,
+                            image: AssetImage(
+                              'icons/generate (1).png',
+                            ),
+                            height: 50,
+                            width: 50,
+                          )
+                        ],
+                      ),
+                      Text(
+                        'Fandeck',
+                        style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 14),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
 
           ],
         ),
