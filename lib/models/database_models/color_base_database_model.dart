@@ -1,24 +1,27 @@
-class BaseColor {
-  int id;
-  String base;
-  double unitPrice1;
-  double unitPrice2;
-  double unitPrice3;
-  double unitPrice4;
-  double kGLtrFlag;
+class DatabaseColorBase {
+  int?id;
+  int? bId;
+  String? base;
+  double? unitPrice1;
+  double? unitPrice2;
+  double? unitPrice3;
+  double? unitPrice4;
+  double? kGLtrFlag;
 
-  BaseColor({
-      required this.id,
-      required this.base,
-      required this.unitPrice1,
-      required this.unitPrice2,
-      required this.unitPrice3,
-      required this.unitPrice4,
-      required this.kGLtrFlag
+  DatabaseColorBase({
+      this.id,
+      this.bId,
+      this.base,
+      this.unitPrice1,
+      this.unitPrice2,
+      this.unitPrice3,
+      this.unitPrice4,
+      this.kGLtrFlag
   });
 
-  factory BaseColor.fromMap(Map<String,dynamic>json)=>BaseColor(
+  factory DatabaseColorBase.fromMap(Map<String,dynamic>json)=>DatabaseColorBase(
       id:json["id"] ,
+      bId: json["bId"],
       base:json["base"],
       unitPrice1:json["unitPrice1"],
       unitPrice2:json["unitPrice2"],
@@ -30,6 +33,7 @@ class BaseColor {
   Map<String,dynamic> toMap(){
     return{
       "id":id,
+      "bId":bId,
       "base":base,
       "unitPrice1":unitPrice1,
       "unitPrice2":unitPrice2,

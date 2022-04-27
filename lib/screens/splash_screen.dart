@@ -1,4 +1,6 @@
 import 'package:fashion_paints/controllers/auth_controller.dart';
+import 'package:fashion_paints/models/apis_model/color_base_model.dart';
+import 'package:fashion_paints/models/database_models/color_base_database_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -23,6 +25,9 @@ class _SplashScreenState extends State<SplashScreen> {
     print("saveBoolValue $value");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("boolValue", value);
+    setState(() {
+      addApiDataToDatabase();
+    });
   }
 
   addApiDataToDatabase()async{
@@ -38,6 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
     print("This is shared preference value $sharedPreferenceData");
     if(response.statusCode==200){
       Doubledfenceee dF = doubledfenceeeFromJson(response.body);
+      ColorBase cB = colorBaseFromJson(response.body);
       if(sharedPreferenceData==false) {
         print("balla add hudai xa");
         for (int i = 0; i < dF.doubledefenceee!.length; i++) {
@@ -65,13 +71,30 @@ class _SplashScreenState extends State<SplashScreen> {
                 bVolume: dF.doubledefenceee![i].bVolume,
                 fanDeck: double.parse(dF.doubledefenceee![i].fandeck.toString()),
               )
-          ).whenComplete(() async {
-            SharedPreferences pref = await SharedPreferences.getInstance();
+          );
+        }
+
+        for(int i=0;i<cB.colorBase!.length;i++){
+          DatabaseHelper.instance.addColorBaseData(DatabaseColorBase(
+            bId: cB.colorBase![i].id,
+            base: cB.colorBase![i].base,
+            unitPrice1: double.parse(cB.colorBase![i].unitPrice1.toString()),
+            unitPrice2: double.parse(cB.colorBase![i].unitPrice2.toString()),
+            unitPrice3: double.parse(cB.colorBase![i].unitPrice3.toString()),
+            unitPrice4: double.parse(cB.colorBase![i].unitPrice4.toString()),
+            kGLtrFlag: double.parse(cB.colorBase![i].kgLtrFlag.toString()),
+          )
+          ).whenComplete(()async{
+            SharedPreferences prefs = await SharedPreferences.getInstance();
             value = true;
-            pref.setBool("boolValue", value);
+            prefs.setBool("boolValue", value);
+            setState(() {
+              doLogin();
+            });
           });
         }
-      }else{
+      }
+      else{
         print("Already Added");
       }
     }
@@ -94,8 +117,6 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
     saveBoolValue();
-    addApiDataToDatabase();
-    doLogin();
   }
   @override
   Widget build(BuildContext context) {

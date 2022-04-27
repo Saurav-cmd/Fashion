@@ -4,6 +4,7 @@ import 'package:fashion_paints/models/database_models/doubled_fencee_database_%2
 import 'package:fashion_paints/screens/generate/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import '../../fandeck_id/fandeck_name_id.dart';
 import 'generate_color_page.dart';
 
@@ -28,6 +29,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   TextEditingController colorController = TextEditingController();
 
+
   int clickedItemPosition = 0;
 
   grabFanDeckId(){
@@ -36,6 +38,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   List<DoubleDefenceee> databaseDataList = [];
+  //fandeck id anusar database ko data filter gardai databaseDataList ma halaya ko ho
   filterDatabaseData()async{
     final databaseData =await DatabaseHelper.instance.getDoubleFenceeData();
     for(int i=0;i<databaseData.length;i++){
@@ -49,6 +52,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   List<String?> allColorCodeList = [];
+  //aaba databaseDataList ma sab data save xa but hami lai color name or code matra chaya ko ho tai vhaya ra filtre gardai allColorCodeList ma halaya ko
   allColorCode(){
     for(int i=0;i<databaseDataList.length;i++){
       if(databaseDataList[i].colorCode==databaseDataList[i].colorName){
@@ -56,18 +60,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       }else{
         allColorCodeList.add(databaseDataList[i].colorName!+"("+databaseDataList[i].colorCode!+")");
       }
-    }
-  }
-
-  List<String?> searchedList = [];
-  searchTextFormFieldData(String? textData){
-    print("This is text data $textData");
-    print("This is all color code list $allColorCodeList");
-    for(int i=0;i<allColorCodeList.length;i++){
-      if(allColorCodeList[i] == textData){
-        searchedList.addAll(allColorCodeList);
-      }
-      print("this is search list $searchedList");
     }
   }
 
@@ -82,6 +74,16 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     grabFanDeckId();
     filterDatabaseData();
   }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    colorController;
+  }
+
+  String? selectedContainer;
+  String? selectedCanSize;
 
   @override
   Widget build(BuildContext context) {
@@ -123,8 +125,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     BorderRadius.all(Radius.circular(10.0)),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 5.0, left: 20, right: 20),
+                    padding: const EdgeInsets.only(top: 5.0, left: 20, right: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -174,32 +175,209 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 SizedBox(height: size.height*0.010),
                 Form(
                   key: _form,
-                  child: TextFormField(
-                    onChanged: (text){
-                      searchTextFormFieldData(text);
+                  child:TypeAheadFormField(
+                    suggestionsCallback: (pattern)=>allColorCodeList.where((items) => items!.toLowerCase().contains(pattern.toLowerCase().toString())),
+                    itemBuilder: (_,String? item)=>ListTile(title: Text(item!),),
+                    onSuggestionSelected:(String? val){
+                     colorController.text = val!;
                     },
-                    textAlign: TextAlign.start,
-                    decoration:  InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(vertical: size.height*0.001,horizontal: size.width*0.030),
-                      border: const OutlineInputBorder(
-                          borderSide: BorderSide.none
-                      ),
-                      errorBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.red,width: 1),
-                          borderRadius: BorderRadius.circular(5)
-                      ),
-                      fillColor: Colors.white,
-                      filled: true,
-                      hintText:'Colour Code/Name',
-                      hintStyle:TextStyle(fontSize: size.height*0.012+size.width*0.012,color: Colors.black26),
+                    getImmediateSuggestions: true,
+                    hideOnEmpty: true,
+                    hideSuggestionsOnKeyboardHide: false,
+                    noItemsFoundBuilder: (context)=>const Padding(
+                        padding: EdgeInsets.all(8.0),
+                      child: Text("No Color Found"),
                     ),
-                    controller:colorController,
-                  ),
+                    textFieldConfiguration: TextFieldConfiguration(
+                      controller: colorController,
+                      textAlign: TextAlign.start,
+                      decoration: InputDecoration(
+                        fillColor: Colors.white,
+                        filled: true,
+                        hintText:'Colour Code/Name',
+                        hintStyle:TextStyle(fontSize: size.height*0.012+size.width*0.012,color: Colors.black26),
+
+                        contentPadding: EdgeInsets.symmetric(vertical: size.height*0.001,horizontal: size.width*0.030),
+                        border: const OutlineInputBorder(
+                            borderSide: BorderSide.none
+                        ),
+                        errorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.red,width: 1),
+                            borderRadius: BorderRadius.circular(5)
+                        ),
+                      ),
+                    ),
+                  )
                 ),
 
                 SizedBox(height: size.height*0.020),
                 Text("Can Size:",style: TextStyle(fontSize: size.height*0.010+size.width*0.010,color: ChooseColor(0).appBarColor1,fontWeight: FontWeight.bold),),
-                SizedBox(
+                SizedBox(height: size.height*0.010),
+                if(passedProductName=="doubleDefenceEE" || passedProductName=="newUltraProtecEE" || passedProductName=="protecEE" || passedProductName=="newShangrilaEE" || passedProductName=="elegaIE" || passedProductName=="newBarpimoIE" || passedProductName=="newShangrilaIE")
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          selectedContainer = "first";
+                          selectedCanSize="1 Ltr";
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color:selectedContainer=="first"?ChooseColor(0).appBarColor1:Colors.grey,
+                          borderRadius:const BorderRadius.all(Radius.circular(10))
+                        ),
+                        child:Padding(
+                          padding:EdgeInsets.symmetric(vertical: size.height*0.010,horizontal: size.width*0.030),
+                          child: const Text("1 Ltr.",style: TextStyle(color: Colors.white),),
+                        ),
+                      ),
+                    ),
+
+                    GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          selectedContainer="second";
+                          selectedCanSize = "4 Ltr";
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color:selectedContainer=="second"?ChooseColor(0).appBarColor1:Colors.grey,
+                            borderRadius:const BorderRadius.all(Radius.circular(10))
+                        ),
+                        child:Padding(
+                          padding:EdgeInsets.symmetric(vertical: size.height*0.010,horizontal: size.width*0.030),
+                          child: const Text("4 Ltr.",style: TextStyle(color: Colors.white),),
+                        ),
+                      ),
+                    ),
+
+                    GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          selectedContainer="third";
+                          selectedCanSize = "10 Ltr";
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color:selectedContainer=="third"?ChooseColor(0).appBarColor1:Colors.grey,
+                            borderRadius:const BorderRadius.all(Radius.circular(10))
+                        ),
+                        child:Padding(
+                          padding:EdgeInsets.symmetric(vertical: size.height*0.010,horizontal: size.width*0.030),
+                          child: const Text("10 Ltr.",style: TextStyle(color: Colors.white),),
+                        ),
+                      ),
+                    ),
+
+                    GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          selectedContainer = "fourth";
+                          selectedCanSize = "20 Ltr";
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color:selectedContainer=="fourth"?ChooseColor(0).appBarColor1:Colors.grey,
+                            borderRadius:const BorderRadius.all(Radius.circular(10))
+                        ),
+                        child:Padding(
+                          padding:EdgeInsets.symmetric(vertical: size.height*0.010,horizontal: size.width*0.030),
+                          child: const Text("20 Ltr.",style: TextStyle(color: Colors.white),),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+
+                if(passedProductName=="relianceDist" || passedProductName=="shangrilaDist")
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          selectedContainer="first";
+                          selectedCanSize = "1 Kg";
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color:selectedContainer=="first"?ChooseColor(0).appBarColor1:Colors.grey,
+                            borderRadius:const BorderRadius.all(Radius.circular(10))
+                        ),
+                        child:Padding(
+                          padding:EdgeInsets.symmetric(vertical: size.height*0.010,horizontal: size.width*0.030),
+                          child: const Text("1 Kg",style: TextStyle(color: Colors.white),),
+                        ),
+                      ),
+                    ),
+
+                    GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          selectedContainer="second";
+                          selectedCanSize = "5 Kg";
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color:selectedContainer=="second"?ChooseColor(0).appBarColor1:Colors.grey,
+                            borderRadius:const BorderRadius.all(Radius.circular(10))
+                        ),
+                        child:Padding(
+                          padding:EdgeInsets.symmetric(vertical: size.height*0.010,horizontal: size.width*0.030),
+                          child: const Text("5 Kg",style: TextStyle(color: Colors.white),),
+                        ),
+                      ),
+                    ),
+
+                    GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          selectedContainer="third";
+                          selectedCanSize = "10 Kg";
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color:selectedContainer=="third"?ChooseColor(0).appBarColor1:Colors.grey,
+                            borderRadius:const BorderRadius.all(Radius.circular(10))
+                        ),
+                        child:Padding(
+                          padding:EdgeInsets.symmetric(vertical: size.height*0.010,horizontal: size.width*0.030),
+                          child: const Text("10 Kg",style: TextStyle(color: Colors.white),),
+                        ),
+                      ),
+                    ),
+
+                    GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          selectedContainer="fourth";
+                          selectedCanSize = "20 Kg";
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color:selectedContainer=="fourth"?ChooseColor(0).appBarColor1:Colors.grey,
+                            borderRadius:const BorderRadius.all(Radius.circular(10))
+                        ),
+                        child:Padding(
+                          padding:EdgeInsets.symmetric(vertical: size.height*0.010,horizontal: size.width*0.030),
+                          child: const Text("20 Kg",style: TextStyle(color: Colors.white),),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+
+                /* SizedBox(
                   height:100,
                   width: double.infinity,
                   child: GridView.builder(
@@ -219,14 +397,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     );
                   }
                   ),
-                ),
+                ),*/
                 SizedBox(height: size.height*0.020),
                 ConstrainedBox(
                   constraints:BoxConstraints.tightFor(width: double.infinity,height:size.height*0.055),
                   child: ElevatedButton(
                     child:Text('Generate',maxLines: 1,style: TextStyle(fontSize:size.height*0.014+size.width*0.014),),
                     onPressed: ()async{
-                      Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>const GenerateColorScreen()));
+                      Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>GenerateColorScreen(fanDeckName:passedFanDeckName,productName: passedProductName,colorName: colorController.text,canSize: selectedCanSize)));
                     },
                     style: ElevatedButton.styleFrom(
                       primary:ChooseColor(0).buttonColor,

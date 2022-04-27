@@ -10,7 +10,6 @@ class FanDeckNameId{
     }else if(passedFanDeck=="RELIANCE ULTRA PROTEC SC"){
       id = 3;
     }
-    print("This is Id ${id}");
     return id;
   }
 }
