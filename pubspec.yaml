@@ -44,6 +44,7 @@ dependencies:
   firebase_core: ^1.15.0
   sqflite: ^2.0.2+1
   shared_preferences: ^2.0.13
+  flutter_typeahead: ^3.2.5
 
 dev_dependencies:
   flutter_test:

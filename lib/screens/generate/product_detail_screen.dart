@@ -61,10 +61,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   List<String?> searchedList = [];
   searchTextFormFieldData(String? textData){
+    print("This is text data $textData");
+    print("This is all color code list $allColorCodeList");
     for(int i=0;i<allColorCodeList.length;i++){
       if(allColorCodeList[i] == textData){
-        searchedList.add(allColorCodeList[i]);
+        searchedList.addAll(allColorCodeList);
       }
+      print("this is search list $searchedList");
     }
   }
 
