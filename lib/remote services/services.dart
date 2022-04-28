@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:fashion_paints/Apis/api_Routes.dart';
+import 'package:fashion_paints/Utils/contants.dart';
 import 'package:fashion_paints/database/all_data_database.dart';
 import 'package:fashion_paints/models/apis_model/login_model.dart';
 import 'package:fashion_paints/models/database_models/doubled_fencee_database_%20model.dart';
@@ -15,9 +17,10 @@ class Services{
     String? token;
     print("This is token ${token}");
     try {
-      final url = "http://reliancetint.bihanitech.com/api/login?user_code=$userCode&password=$password&device_id=$deviceId&fcm_id=$fcmId";
-      const url1 = "http://reliancetint.bihanitech.com/api/getdata";
-      final response = await http.post(Uri.parse(url));
+      String ?apiRoute = ApiRoute().getLoginUrl(userCode, password, deviceId, fcmId);
+   /*   final url = Constants.baseUrl+"?user_code=$userCode&password=$password&device_id=$deviceId&fcm_id=$fcmId";*/
+      final  url1 =  Constants.baseUrl+"getdata";
+      final response = await http.post(Uri.parse(apiRoute!));
       final responseData = jsonDecode(response.body);
       if (response.statusCode == 200) {
         SharedPreferences prefs = await SharedPreferences.getInstance();

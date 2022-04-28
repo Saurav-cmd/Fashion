@@ -1,3 +1,4 @@
+import 'package:fashion_paints/Utils/contants.dart';
 import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:fashion_paints/database/all_data_database.dart';
 import 'package:fashion_paints/models/database_models/doubled_fencee_database_%20model.dart';
@@ -5,7 +6,6 @@ import 'package:fashion_paints/screens/generate/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import '../../fandeck_id/fandeck_name_id.dart';
 import 'generate_color_page.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -34,7 +34,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   grabFanDeckId(){
     //yo id maila fandeck_id directory vhitra fandeck_name_id.dart vhitra statically id haru save garaya ra rakhaya ko xu tai tanaya ho
-    fanDeckId = FanDeckNameId().fanDeckNameToId(passedFanDeckName);
+    fanDeckId = Constants.fanDeckNameToId(passedFanDeckName);
   }
 
   List<DoubleDefenceee> databaseDataList = [];
@@ -207,6 +207,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         ),
                       ),
                     ),
+                    validator: (value){
+                      if(value!.isEmpty){
+                        return "Please Choose a color";
+                      }
+                    },
                   )
                 ),
 
@@ -404,7 +409,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   child: ElevatedButton(
                     child:Text('Generate',maxLines: 1,style: TextStyle(fontSize:size.height*0.014+size.width*0.014),),
                     onPressed: ()async{
-                      Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>GenerateColorScreen(fanDeckName:passedFanDeckName,productName: passedProductName,colorName: colorController.text,canSize: selectedCanSize)));
+                      if(_form.currentState?.validate()==true) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (ctx) => GenerateColorScreen(
+                                fanDeckName: passedFanDeckName,
+                                productName: passedProductName,
+                                colorName: colorController.text,
+                                canSize: selectedCanSize)));
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       primary:ChooseColor(0).buttonColor,

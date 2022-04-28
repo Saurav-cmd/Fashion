@@ -1,27 +1,30 @@
 class Colorants {
-  int id;
-  String colorantName;
-  String colorantCode;
-  double unitPrice;
-  double rValue;
-  double gValue;
-  double bValue;
-  DateTime createdAt;
-  DateTime updatedAt;
+  int? columnId;
+  int? id;
+  String? colorantName;
+  String? colorantCode;
+  double? unitPrice;
+  double? rValue;
+  double? gValue;
+  double? bValue;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
   Colorants({
-      required this.id,
-      required this.colorantName,
-      required this.colorantCode,
-      required this.unitPrice,
-      required this.rValue,
-      required this.gValue,
-      required this.bValue,
-      required this.createdAt,
-      required this.updatedAt
+      this.columnId,
+       this.id,
+       this.colorantName,
+       this.colorantCode,
+       this.unitPrice,
+       this.rValue,
+       this.gValue,
+       this.bValue,
+       this.createdAt,
+       this.updatedAt
   });
 
   factory Colorants.fromMap(Map<String,dynamic>json)=>Colorants(
+      columnId: json["columnId"],
       id:json["id"],
       colorantName:json["colorantName"],
       colorantCode:json["colorantCode"],
@@ -35,6 +38,7 @@ class Colorants {
 
   Map<String,dynamic> toMap(){
     return{
+      "columnId":columnId,
       "id":id,
       "colorantName":colorantName,
       "colorantCode":colorantCode,

@@ -1,12 +1,16 @@
+import 'dart:ffi';
+
 import 'package:fashion_paints/database/all_data_database.dart';
+import 'package:fashion_paints/models/database_models/colorant_database_model.dart';
 import 'package:fashion_paints/models/database_models/doubled_fencee_database_%20model.dart';
+import 'package:fashion_paints/models/database_models/shade_color_database_model.dart';
 import 'package:fashion_paints/screens/generate/product_detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import '../../Utils/contants.dart';
 import '../../colors/colors_file.dart';
-import '../../fandeck_id/fandeck_name_id.dart';
+
 
 class GenerateColorScreen extends StatefulWidget {
   GenerateColorScreen({Key,this.colorName,this.productName,this.canSize,this.base,this.colorants,this.fanDeckName,key}) : super(key: key);
@@ -29,6 +33,9 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
   String? passedColorants;
   String? passedFanDeckName;
   double? fanDeckId;
+   List<String?> cylinder = [];
+   List<String?> cylinderVolume = [];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -43,12 +50,19 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
     getBaseName();
   }
 
+  getDouble(String? value){
+    double d =double.parse(value!);
+    print(d);
+    return d ;
+  }
+
   grabFanDeckId(){
     //yo id maila fandeck_id directory vhitra fandeck_name_id.dart vhitra statically id haru save garaya ra rakhaya ko xu tai tanaya ho
-    fanDeckId = FanDeckNameId().fanDeckNameToId(passedFanDeckName);
+    fanDeckId = Constants.fanDeckNameToId(passedFanDeckName);
   }
 
   List<String?> baseName = [];
+  List<ShadeColorDatabase> colorValue = [];
   getBaseName()async{
     List<DoubleDefenceee?> doubleDefence= await DatabaseHelper.instance.queryDoubleDefence(passedProductName, fanDeckId, passedColorName);
     double? baseId = doubleDefence[0]!.base;
@@ -60,9 +74,84 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
           });
         }
     }
+
+
+    if(getDouble(doubleDefence[0]?.fT)>0.0){
+      cylinder.add("FT");
+      cylinderVolume.add(doubleDefence[0]!.fT);
+    }
+    if(getDouble(doubleDefence[0]?.kS)>0){
+      cylinder.add("KS");
+      cylinderVolume.add(doubleDefence[0]!.kS);
+    }
+    if(getDouble(doubleDefence[0]?.lS)>0){
+      cylinder.add("LS");
+      cylinderVolume.add(doubleDefence[0]!.lS);
+    }
+    if(getDouble(doubleDefence[0]?.lT)>0){
+      cylinder.add("LT");
+      cylinderVolume.add(doubleDefence[0]!.lT);
+    }
+    if(getDouble(doubleDefence[0]?.mM)>0){
+      cylinder.add("MM");
+      cylinderVolume.add(doubleDefence[0]!.mM);
+    } if(getDouble(doubleDefence[0]?.mS)>0){
+      cylinder.add("MS");
+      cylinderVolume.add(doubleDefence[0]!.mS);
+    } if(getDouble(doubleDefence[0]?.mT)>0){
+      cylinder.add("MT");
+      cylinderVolume.add(doubleDefence[0]!.mT);
+    }
+    if(getDouble(doubleDefence[0]?.pP)>0){
+      cylinder.add("PP");
+      cylinderVolume.add(doubleDefence[0]!.pP);
+    }
+    if(getDouble(doubleDefence[0]?.rS)>0){
+      cylinder.add("RS");
+      cylinderVolume.add(doubleDefence[0]!.rS);
+    }
+    if(getDouble(doubleDefence[0]?.rT)>0){
+      cylinder.add("RT");
+      cylinderVolume.add(doubleDefence[0]!.rT);
+    }
+    if(getDouble(doubleDefence[0]?.sT)>0){
+      cylinder.add("ST");
+      cylinderVolume.add(doubleDefence[0]!.sT);
+    }
+    if(getDouble(doubleDefence[0]?.tT)>0){
+      cylinder.add("TT");
+      cylinderVolume.add(doubleDefence[0]!.tT);
+    } if(getDouble(doubleDefence[0]?.uS)>0){
+      cylinder.add("US");
+      cylinderVolume.add(doubleDefence[0]!.uS);
+    } if(getDouble(doubleDefence[0]?.vT)>0){
+      cylinder.add("VT");
+      cylinderVolume.add(doubleDefence[0]!.vT);
+    } if(getDouble(doubleDefence[0]?.xT)>0){
+      cylinder.add("XT");
+      cylinderVolume.add(doubleDefence[0]!.xT);
+    }
+    if(getDouble(doubleDefence[0]?.zT)>0){
+      cylinder.add("ZT");
+      cylinderVolume.add(doubleDefence[0]!.zT);
+    }
     print("This is base Name :- $baseName");
+    print("This is base Name :- $cylinder");
+    print("This is red cylinder :- ${doubleDefence[0]?.fT}+${doubleDefence[0]?.kS}+${doubleDefence[0]?.lS}+${doubleDefence[0]?.lT}");
   }
 
+  getColorants()async{
+   List<Colorants?>? colorantData =await DatabaseHelper.instance.queryColorantsColor(passedColorName);
+   double? rValue = colorantData[0]!.rValue;
+   double? bValue = colorantData[0]!.bValue;
+   double? gValue = colorantData[0]!.gValue;
+   final doubleDefenceData = await DatabaseHelper.instance.getDoubleFenceeData();
+   for(int i=0;i<doubleDefenceData.length;i++){
+
+   }
+  }
+  String? selectedContainer;
+  String? selectedCanSize;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -187,7 +276,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
               ),
               SizedBox(height: size.height*0.010),
               Text(
-                '${baseName[0]}  $passedCanSize',
+                '${baseName}  $passedCanSize',
                 style: TextStyle(
                     color:Colors.black,
                     fontSize: size.height*0.012+size.width*0.012,
@@ -201,22 +290,209 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                     fontSize: size.height*0.010+size.width*0.010,
                     fontWeight: FontWeight.w500),
               ),
-
+              SizedBox(height: size.height*0.020),
               SizedBox(
-                height:100,
+                height:150,
                 width: double.infinity,
                 child: GridView.builder(
-                    itemCount: 5,
+                    itemCount: cylinder.length,
                     scrollDirection: Axis.horizontal,
                     shrinkWrap: true,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 1,
                       crossAxisSpacing: 10,
                     ), itemBuilder: (ctx,i){
-                  return const Card(
-                      color:Colors.grey
+                  return Column(
+                    children: [
+                      Container(
+                          height:100 ,
+                          width: 100,
+                          color:Colors.grey
+                      ),
+                      Text(cylinder[i]!),
+                      Text(cylinderVolume[i]!),
+                    ],
                   );
                 }
+                ),
+              ),
+
+              SizedBox(height: size.height*0.020),
+              Text("Can Size:",style: TextStyle(fontSize: size.height*0.010+size.width*0.010,color: ChooseColor(0).appBarColor1,fontWeight: FontWeight.bold),),
+              SizedBox(height: size.height*0.010),
+              if(passedProductName=="doubleDefenceEE" || passedProductName=="newUltraProtecEE" || passedProductName=="protecEE" || passedProductName=="newShangrilaEE" || passedProductName=="elegaIE" || passedProductName=="newBarpimoIE" || passedProductName=="newShangrilaIE")
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          selectedContainer = "first";
+                          selectedCanSize="1 Ltr";
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color:selectedContainer=="first"?ChooseColor(0).appBarColor1:Colors.grey,
+                            borderRadius:const BorderRadius.all(Radius.circular(10))
+                        ),
+                        child:Padding(
+                          padding:EdgeInsets.symmetric(vertical: size.height*0.010,horizontal: size.width*0.030),
+                          child: const Text("1 Ltr.",style: TextStyle(color: Colors.white),),
+                        ),
+                      ),
+                    ),
+
+                    GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          selectedContainer="second";
+                          selectedCanSize = "4 Ltr";
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color:selectedContainer=="second"?ChooseColor(0).appBarColor1:Colors.grey,
+                            borderRadius:const BorderRadius.all(Radius.circular(10))
+                        ),
+                        child:Padding(
+                          padding:EdgeInsets.symmetric(vertical: size.height*0.010,horizontal: size.width*0.030),
+                          child: const Text("4 Ltr.",style: TextStyle(color: Colors.white),),
+                        ),
+                      ),
+                    ),
+
+                    GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          selectedContainer="third";
+                          selectedCanSize = "10 Ltr";
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color:selectedContainer=="third"?ChooseColor(0).appBarColor1:Colors.grey,
+                            borderRadius:const BorderRadius.all(Radius.circular(10))
+                        ),
+                        child:Padding(
+                          padding:EdgeInsets.symmetric(vertical: size.height*0.010,horizontal: size.width*0.030),
+                          child: const Text("10 Ltr.",style: TextStyle(color: Colors.white),),
+                        ),
+                      ),
+                    ),
+
+                    GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          selectedContainer = "fourth";
+                          selectedCanSize = "20 Ltr";
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color:selectedContainer=="fourth"?ChooseColor(0).appBarColor1:Colors.grey,
+                            borderRadius:const BorderRadius.all(Radius.circular(10))
+                        ),
+                        child:Padding(
+                          padding:EdgeInsets.symmetric(vertical: size.height*0.010,horizontal: size.width*0.030),
+                          child: const Text("20 Ltr.",style: TextStyle(color: Colors.white),),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+
+              if(passedProductName=="relianceDist" || passedProductName=="shangrilaDist")
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          selectedContainer="first";
+                          selectedCanSize = "1 Kg";
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color:selectedContainer=="first"?ChooseColor(0).appBarColor1:Colors.grey,
+                            borderRadius:const BorderRadius.all(Radius.circular(10))
+                        ),
+                        child:Padding(
+                          padding:EdgeInsets.symmetric(vertical: size.height*0.010,horizontal: size.width*0.030),
+                          child: const Text("1 Kg",style: TextStyle(color: Colors.white),),
+                        ),
+                      ),
+                    ),
+
+                    GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          selectedContainer="second";
+                          selectedCanSize = "5 Kg";
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color:selectedContainer=="second"?ChooseColor(0).appBarColor1:Colors.grey,
+                            borderRadius:const BorderRadius.all(Radius.circular(10))
+                        ),
+                        child:Padding(
+                          padding:EdgeInsets.symmetric(vertical: size.height*0.010,horizontal: size.width*0.030),
+                          child: const Text("5 Kg",style: TextStyle(color: Colors.white),),
+                        ),
+                      ),
+                    ),
+
+                    GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          selectedContainer="third";
+                          selectedCanSize = "10 Kg";
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color:selectedContainer=="third"?ChooseColor(0).appBarColor1:Colors.grey,
+                            borderRadius:const BorderRadius.all(Radius.circular(10))
+                        ),
+                        child:Padding(
+                          padding:EdgeInsets.symmetric(vertical: size.height*0.010,horizontal: size.width*0.030),
+                          child: const Text("10 Kg",style: TextStyle(color: Colors.white),),
+                        ),
+                      ),
+                    ),
+
+                    GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          selectedContainer="fourth";
+                          selectedCanSize = "20 Kg";
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color:selectedContainer=="fourth"?ChooseColor(0).appBarColor1:Colors.grey,
+                            borderRadius:const BorderRadius.all(Radius.circular(10))
+                        ),
+                        child:Padding(
+                          padding:EdgeInsets.symmetric(vertical: size.height*0.010,horizontal: size.width*0.030),
+                          child: const Text("20 Kg",style: TextStyle(color: Colors.white),),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+
+              SizedBox(height: size.height*0.030),
+              ConstrainedBox(
+                constraints:BoxConstraints.tightFor(width: double.infinity,height:size.height*0.055),
+                child: ElevatedButton(
+                  child:Text('Price',maxLines: 1,style: TextStyle(fontSize:size.height*0.014+size.width*0.014),),
+                  onPressed: ()async{},
+                  style: ElevatedButton.styleFrom(
+                    primary:ChooseColor(0).buttonColor,
+                  ),
                 ),
               ),
             ],
