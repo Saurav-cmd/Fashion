@@ -233,6 +233,11 @@ class DatabaseHelper{
   }
 
 
+  Future<List<Colorants>> queryColorantsColor(String? colorantCodeOrName)async{
+    Database? db = await instance.database;
+    var data = await  db?.query(table3,where:'$colorantCode=?',whereArgs: [colorantCodeOrName]);
+    return data!.isNotEmpty?data.map((c) => Colorants.fromMap(c)).toList():[];
+  }
 
   Future<List<Colorants>> getColorColorantData() async{
     Database? db = await instance.database;
@@ -256,9 +261,9 @@ class DatabaseHelper{
     return shadeColorDataList;
   }
 
-  Future<List<Colorants>> queryColorantsColor(String? colorCodeOrName)async{
+  Future<List<ShadeColorDatabase>> queryShadeColor(String? colorName)async{
     Database? db = await instance.database;
-    var data = await  db?.query(table3,where:'$colorantName=?',whereArgs: [colorCodeOrName]);
-    return data!.isNotEmpty?data.map((c) => Colorants.fromMap(c)).toList():[];
+    var data =  await db?.query(table4,where:'$sColorName=?',whereArgs: [colorName]);
+    return data!.isNotEmpty?data.map((e) => ShadeColorDatabase.fromMap(e)).toList():[];
   }
 }

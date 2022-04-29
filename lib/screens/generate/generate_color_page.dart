@@ -6,6 +6,7 @@ import 'package:fashion_paints/models/database_models/doubled_fencee_database_%2
 import 'package:fashion_paints/models/database_models/shade_color_database_model.dart';
 import 'package:fashion_paints/screens/generate/product_detail_screen.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../Utils/contants.dart';
@@ -33,8 +34,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
   String? passedColorants;
   String? passedFanDeckName;
   double? fanDeckId;
-   List<String?> cylinder = [];
-   List<String?> cylinderVolume = [];
+
 
   @override
   void initState() {
@@ -63,6 +63,8 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
 
   List<String?> baseName = [];
   List<ShadeColorDatabase> colorValue = [];
+  List<String?> cylinder = [];
+  List<String?> cylinderVolume = [];
   getBaseName()async{
     List<DoubleDefenceee?> doubleDefence= await DatabaseHelper.instance.queryDoubleDefence(passedProductName, fanDeckId, passedColorName);
     double? baseId = doubleDefence[0]!.base;
@@ -135,23 +137,52 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
       cylinder.add("ZT");
       cylinderVolume.add(doubleDefence[0]!.zT);
     }
-    print("This is base Name :- $baseName");
-    print("This is base Name :- $cylinder");
-    print("This is red cylinder :- ${doubleDefence[0]?.fT}+${doubleDefence[0]?.kS}+${doubleDefence[0]?.lS}+${doubleDefence[0]?.lT}");
+    setState(() {
+      getColorants();
+    });
   }
 
+  List<int> rValue = [];
+  List<int> gValue = [];
+  List<int> bValue = [];
+  //yo colorants table lai query garaya ko bata data tanne function bana ko ho
   getColorants()async{
-   List<Colorants?>? colorantData =await DatabaseHelper.instance.queryColorantsColor(passedColorName);
-   double? rValue = colorantData[0]!.rValue;
-   double? bValue = colorantData[0]!.bValue;
-   double? gValue = colorantData[0]!.gValue;
-   final doubleDefenceData = await DatabaseHelper.instance.getDoubleFenceeData();
-   for(int i=0;i<doubleDefenceData.length;i++){
+    for(int i=0;i<cylinder.length;i++){
+      List<Colorants> colorantsData =await DatabaseHelper.instance.queryColorantsColor(cylinder[i]);
+      if(colorantsData.isNotEmpty) {
+        colorantsData.forEach((e) {
+          if (e.rValue != null && e.gValue != null && e.bValue != null) {
+            setState(() {
+              rValue.add(e.rValue!.toInt());
+              gValue.add(e.gValue!.toInt());
+              bValue.add(e.bValue!.toInt());
+            });
+          }
+        });
+      }
+      setState(() {
+        getSingleColorantValue();
+      });
+    }
+  }
 
-   }
+  //yo shade color lai query garaya ko bata data tanne function bana ko ho
+  int singleRValue = 0;
+  int singleGValue = 0;
+  int singleBValue = 0;
+  getSingleColorantValue()async{
+  List<ShadeColorDatabase>? shadeColorDataList = await DatabaseHelper.instance.queryShadeColor(passedColorName);
+    setState(() {
+      singleRValue = shadeColorDataList[0].rValue!.toInt();
+      singleGValue = shadeColorDataList[0].gValue!.toInt();
+      singleBValue = shadeColorDataList[0].bValue!.toInt();
+    });
   }
   String? selectedContainer;
   String? selectedCanSize;
+
+  double? height1 =100;
+  int? height2;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -191,10 +222,9 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                decoration: const BoxDecoration(
+                decoration:const BoxDecoration(
                   color: Colors.white,
-                  borderRadius:
-                  BorderRadius.only(topLeft: Radius.circular(5),bottomLeft: Radius.circular(5)),
+                  borderRadius:BorderRadius.only(topLeft: Radius.circular(5),bottomLeft: Radius.circular(5)),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(
@@ -233,11 +263,23 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                                 fontWeight: FontWeight.w600
                             ),
                           ),
-                          Container(
-                            height: 100,
-                            width:50,
-                            color: Colors.grey,
-                          )
+                          Stack(
+                            alignment: Alignment.bottomLeft,
+                            children: [
+                              Container(
+                                height:100 ,
+                                width: 70,
+                                color:Colors.grey.shade300,
+                              ),
+                              SizedBox(
+                                child: AnimatedContainer(
+                                  height:80,
+                                  width:70,
+                                  color:Color.fromRGBO(singleRValue, singleGValue, singleBValue, 1), duration: Duration(seconds: 1),
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                       SizedBox(height: size.height*0.015),
@@ -292,27 +334,39 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
               ),
               SizedBox(height: size.height*0.020),
               SizedBox(
-                height:150,
-                width: double.infinity,
+                height:200,
                 child: GridView.builder(
                     itemCount: cylinder.length,
                     scrollDirection: Axis.horizontal,
                     shrinkWrap: true,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 1,
-                      crossAxisSpacing: 10,
                     ), itemBuilder: (ctx,i){
                   return Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                          height:100 ,
-                          width: 100,
-                          color:Colors.grey
+                      Stack(
+                        alignment: Alignment.bottomLeft,
+                        children: [
+                          Container(
+                            height:100 ,
+                            width: 70,
+                            color:Colors.grey.shade300,
+                          ),
+                          SizedBox(
+                            child:Container(
+                              height:double.parse(cylinderVolume[i]!),
+                              width:70,
+                              color:Color.fromRGBO(rValue[i], gValue[i], bValue[i], 3),),
+                            ),
+                        ],
                       ),
                       Text(cylinder[i]!),
-                      Text(cylinderVolume[i]!),
+                      Text("${cylinderVolume[i]!} ML"),
+                      Text("This is i ${i}"),
                     ],
                   );
+
                 }
                 ),
               ),
