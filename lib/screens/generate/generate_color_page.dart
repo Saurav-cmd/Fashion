@@ -47,7 +47,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
     passedColorants = widget.colorants;
     passedFanDeckName = widget.fanDeckName;
     grabFanDeckId();
-    getBaseName();
+
   }
 
   getDouble(String? value){
@@ -59,6 +59,9 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
   grabFanDeckId(){
     //yo id maila fandeck_id directory vhitra fandeck_name_id.dart vhitra statically id haru save garaya ra rakhaya ko xu tai tanaya ho
     fanDeckId = Constants.fanDeckNameToId(passedFanDeckName);
+    setState(() {
+      getBaseName();
+    });
   }
 
   List<String?> baseName = [];
@@ -76,7 +79,6 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
           });
         }
     }
-
 
     if(getDouble(doubleDefence[0]?.fT)>0.0){
       cylinder.add("FT");
@@ -157,6 +159,8 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
               gValue.add(e.gValue!.toInt());
               bValue.add(e.bValue!.toInt());
             });
+          }else{
+            return;
           }
         });
       }
@@ -363,7 +367,6 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                       ),
                       Text(cylinder[i]!),
                       Text("${cylinderVolume[i]!} ML"),
-                      Text("This is i ${i}"),
                     ],
                   );
 
