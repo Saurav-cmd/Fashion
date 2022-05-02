@@ -1,6 +1,7 @@
 import 'package:fashion_paints/Utils/contants.dart';
 import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:fashion_paints/database/all_data_database.dart';
+import 'package:fashion_paints/main.dart';
 import 'package:fashion_paints/models/database_models/doubled_fencee_database_%20model.dart';
 import 'package:fashion_paints/screens/generate/product.dart';
 import 'package:flutter/material.dart';
@@ -83,7 +84,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   String? selectedContainer;
-  String? selectedCanSize;
+  double? selectedCanSize;
 
   @override
   Widget build(BuildContext context) {
@@ -226,7 +227,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       onTap: (){
                         setState(() {
                           selectedContainer = "first";
-                          selectedCanSize="1 Ltr";
+                          selectedCanSize=1;
                         });
                       },
                       child: Container(
@@ -245,7 +246,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       onTap: (){
                         setState(() {
                           selectedContainer="second";
-                          selectedCanSize = "4 Ltr";
+                          selectedCanSize = 4;
                         });
                       },
                       child: Container(
@@ -255,7 +256,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         ),
                         child:Padding(
                           padding:EdgeInsets.symmetric(vertical: size.height*0.010,horizontal: size.width*0.030),
-                          child: const Text("4 Ltr.",style: TextStyle(color: Colors.white),),
+                          child: const Text("4 Ltr",style: TextStyle(color: Colors.white),),
                         ),
                       ),
                     ),
@@ -264,7 +265,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       onTap: (){
                         setState(() {
                           selectedContainer="third";
-                          selectedCanSize = "10 Ltr";
+                          selectedCanSize = 10;
                         });
                       },
                       child: Container(
@@ -274,7 +275,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         ),
                         child:Padding(
                           padding:EdgeInsets.symmetric(vertical: size.height*0.010,horizontal: size.width*0.030),
-                          child: const Text("10 Ltr.",style: TextStyle(color: Colors.white),),
+                          child: const Text("10 Ltr",style: TextStyle(color: Colors.white),),
                         ),
                       ),
                     ),
@@ -283,7 +284,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       onTap: (){
                         setState(() {
                           selectedContainer = "fourth";
-                          selectedCanSize = "20 Ltr";
+                          selectedCanSize = 20;
                         });
                       },
                       child: Container(
@@ -308,7 +309,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       onTap: (){
                         setState(() {
                           selectedContainer="first";
-                          selectedCanSize = "1 Kg";
+                          selectedCanSize = 1;
                         });
                       },
                       child: Container(
@@ -327,7 +328,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       onTap: (){
                         setState(() {
                           selectedContainer="second";
-                          selectedCanSize = "5 Kg";
+                          selectedCanSize = 5;
                         });
                       },
                       child: Container(
@@ -346,7 +347,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       onTap: (){
                         setState(() {
                           selectedContainer="third";
-                          selectedCanSize = "10 Kg";
+                          selectedCanSize = 10;
                         });
                       },
                       child: Container(
@@ -365,7 +366,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       onTap: (){
                         setState(() {
                           selectedContainer="fourth";
-                          selectedCanSize = "20 Kg";
+                          selectedCanSize = 20;
                         });
                       },
                       child: Container(
@@ -410,12 +411,32 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     child:Text('Generate',maxLines: 1,style: TextStyle(fontSize:size.height*0.014+size.width*0.014),),
                     onPressed: ()async{
                       if(_form.currentState?.validate()==true) {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (ctx) => GenerateColorScreen(
-                                fanDeckName: passedFanDeckName,
-                                productName: passedProductName,
-                                colorName: colorController.text,
-                                canSize: selectedCanSize)));
+                        if(selectedCanSize==null){
+                          final SnackBar snackBar = SnackBar(
+                            content:const Padding(
+                              padding: EdgeInsets.only(right:10),
+                              child: Text(
+                                'Please select a can size',
+                                maxLines: 2,
+                                style: TextStyle(fontSize:14),),
+                            ),
+                            duration: const Duration(seconds: 1),
+                            backgroundColor: Colors.grey.shade700,
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)
+                            ),
+                          );
+                          snackBarKey.currentState?.showSnackBar(snackBar);
+                        }else{
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (ctx) => GenerateColorScreen(
+                                  fanDeckName: passedFanDeckName,
+                                  productName: passedProductName,
+                                  colorName: colorController.text,
+                                  canSize: selectedCanSize
+                              )));
+                        }
                       }
                     },
                     style: ElevatedButton.styleFrom(

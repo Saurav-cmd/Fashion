@@ -1,24 +1,22 @@
-import 'dart:ffi';
-
 import 'package:fashion_paints/database/all_data_database.dart';
 import 'package:fashion_paints/models/database_models/colorant_database_model.dart';
 import 'package:fashion_paints/models/database_models/doubled_fencee_database_%20model.dart';
 import 'package:fashion_paints/models/database_models/shade_color_database_model.dart';
 import 'package:fashion_paints/screens/generate/product_detail_screen.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
+import 'package:fashion_paints/widgets/dilogue_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../Utils/contants.dart';
 import '../../colors/colors_file.dart';
 
 
+// ignore: must_be_immutable
 class GenerateColorScreen extends StatefulWidget {
   GenerateColorScreen({Key,this.colorName,this.productName,this.canSize,this.base,this.colorants,this.fanDeckName,key}) : super(key: key);
 
   String? colorName;
   String? productName;
-  String? canSize;
+  double? canSize;
   double? base;
   String? colorants;
   String? fanDeckName;
@@ -29,7 +27,7 @@ class GenerateColorScreen extends StatefulWidget {
 class _GenerateColorScreenState extends State<GenerateColorScreen> {
   String? passedColorName;
   String? passedProductName;
-  String? passedCanSize;
+  double? passedCanSize;
   double? passedBase;
   String? passedColorants;
   String? passedFanDeckName;
@@ -52,7 +50,6 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
 
   getDouble(String? value){
     double d =double.parse(value!);
-    print(d);
     return d ;
   }
 
@@ -82,7 +79,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
 
     if(getDouble(doubleDefence[0]?.fT)>0.0){
       cylinder.add("FT");
-      cylinderVolume.add(doubleDefence[0]!.fT);
+        cylinderVolume.add(doubleDefence[0]!.fT);
     }
     if(getDouble(doubleDefence[0]?.kS)>0){
       cylinder.add("KS");
@@ -116,7 +113,9 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
     }
     if(getDouble(doubleDefence[0]?.rT)>0){
       cylinder.add("RT");
-      cylinderVolume.add(doubleDefence[0]!.rT);
+      if(selectedCanSize.toString().isEmpty && selectedCanSize==0.0) {
+        cylinderVolume.add(doubleDefence[0]!.rT);
+      }
     }
     if(getDouble(doubleDefence[0]?.sT)>0){
       cylinder.add("ST");
@@ -147,28 +146,31 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
   List<int> rValue = [];
   List<int> gValue = [];
   List<int> bValue = [];
+  List<double> unitPrice = [];
   //yo colorants table lai query garaya ko bata data tanne function bana ko ho
   getColorants()async{
     for(int i=0;i<cylinder.length;i++){
       List<Colorants> colorantsData =await DatabaseHelper.instance.queryColorantsColor(cylinder[i]);
       if(colorantsData.isNotEmpty) {
-        colorantsData.forEach((e) {
-          if (e.rValue != null && e.gValue != null && e.bValue != null) {
+        for (var e in colorantsData) {
+          if (e.rValue != null && e.gValue != null && e.bValue != null && e.unitPrice!=null) {
             setState(() {
               rValue.add(e.rValue!.toInt());
               gValue.add(e.gValue!.toInt());
               bValue.add(e.bValue!.toInt());
+              unitPrice.add(e.unitPrice!/100);
             });
           }else{
             return;
           }
-        });
+        }
       }
       setState(() {
         getSingleColorantValue();
       });
     }
   }
+
 
   //yo shade color lai query garaya ko bata data tanne function bana ko ho
   int singleRValue = 0;
@@ -182,8 +184,8 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
       singleBValue = shadeColorDataList[0].bValue!.toInt();
     });
   }
-  String? selectedContainer;
-  String? selectedCanSize;
+  String selectedContainer="";
+  double selectedCanSize=0;
 
   double? height1 =100;
   int? height2;
@@ -279,7 +281,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                                 child: AnimatedContainer(
                                   height:80,
                                   width:70,
-                                  color:Color.fromRGBO(singleRValue, singleGValue, singleBValue, 1), duration: Duration(seconds: 1),
+                                  color:Color.fromRGBO(singleRValue, singleGValue, singleBValue, 1), duration:const Duration(seconds: 1),
                                 ),
                               ),
                             ],
@@ -322,7 +324,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
               ),
               SizedBox(height: size.height*0.010),
               Text(
-                '${baseName}  $passedCanSize',
+                '$baseName  $passedCanSize Ltr',
                 style: TextStyle(
                     color:Colors.black,
                     fontSize: size.height*0.012+size.width*0.012,
@@ -353,20 +355,45 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                         alignment: Alignment.bottomLeft,
                         children: [
                           Container(
-                            height:100 ,
+                            height: 100,
                             width: 70,
                             color:Colors.grey.shade300,
                           ),
-                          SizedBox(
-                            child:Container(
-                              height:double.parse(cylinderVolume[i]!),
-                              width:70,
-                              color:Color.fromRGBO(rValue[i], gValue[i], bValue[i], 3),),
+                          if(selectedCanSize.toString().isEmpty || selectedCanSize==0.0)
+                            SizedBox(
+                              child: Container(
+                                height: double.parse(cylinderVolume[i]!) *
+                                    passedCanSize! > 107
+                                    ? 100
+                                    : double.parse(cylinderVolume[i]!) *
+                                    passedCanSize!,
+                                width: 70,
+                                color: Color.fromRGBO(
+                                    rValue[i], gValue[i], bValue[i], 3),),
+                            ),
+                          if(selectedCanSize.toString().isNotEmpty || selectedCanSize!=0.0)
+                            SizedBox(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: double.parse(cylinderVolume[i]!) *
+                                        selectedCanSize > 107
+                                        ? 100
+                                        : double.parse(cylinderVolume[i]!) *
+                                        selectedCanSize,
+                                    width: 70,
+                                    color: Color.fromRGBO(rValue[i], gValue[i], bValue[i], 3),),
+                                ],
+                              ),
                             ),
                         ],
                       ),
                       Text(cylinder[i]!),
-                      Text("${cylinderVolume[i]!} ML"),
+                      if(selectedCanSize.toString().isEmpty || selectedCanSize==0.0)
+                        Text("${double.parse(cylinderVolume[i]!)*passedCanSize!} ML"),
+
+                      if(selectedCanSize.toString().isNotEmpty && selectedCanSize!=0.0)
+                        Text("${double.parse(cylinderVolume[i]!)*selectedCanSize} ML"),
                     ],
                   );
 
@@ -385,7 +412,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                       onTap: (){
                         setState(() {
                           selectedContainer = "first";
-                          selectedCanSize="1 Ltr";
+                          selectedCanSize=1.0;
                         });
                       },
                       child: Container(
@@ -404,7 +431,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                       onTap: (){
                         setState(() {
                           selectedContainer="second";
-                          selectedCanSize = "4 Ltr";
+                          selectedCanSize = 4.0;
                         });
                       },
                       child: Container(
@@ -423,7 +450,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                       onTap: (){
                         setState(() {
                           selectedContainer="third";
-                          selectedCanSize = "10 Ltr";
+                          selectedCanSize = 10.0;
                         });
                       },
                       child: Container(
@@ -442,7 +469,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                       onTap: (){
                         setState(() {
                           selectedContainer = "fourth";
-                          selectedCanSize = "20 Ltr";
+                          selectedCanSize = 20.0;
                         });
                       },
                       child: Container(
@@ -467,7 +494,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                       onTap: (){
                         setState(() {
                           selectedContainer="first";
-                          selectedCanSize = "1 Kg";
+                          selectedCanSize = 1;
                         });
                       },
                       child: Container(
@@ -486,7 +513,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                       onTap: (){
                         setState(() {
                           selectedContainer="second";
-                          selectedCanSize = "5 Kg";
+                          selectedCanSize = 5;
                         });
                       },
                       child: Container(
@@ -505,7 +532,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                       onTap: (){
                         setState(() {
                           selectedContainer="third";
-                          selectedCanSize = "10 Kg";
+                          selectedCanSize = 10;
                         });
                       },
                       child: Container(
@@ -524,7 +551,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                       onTap: (){
                         setState(() {
                           selectedContainer="fourth";
-                          selectedCanSize = "20 Kg";
+                          selectedCanSize = 20;
                         });
                       },
                       child: Container(
@@ -546,7 +573,19 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                 constraints:BoxConstraints.tightFor(width: double.infinity,height:size.height*0.055),
                 child: ElevatedButton(
                   child:Text('Price',maxLines: 1,style: TextStyle(fontSize:size.height*0.014+size.width*0.014),),
-                  onPressed: ()async{},
+                  onPressed: ()async{
+                    AlertBox().priceDialogueBox(
+                        baseName[0],
+                        selectedCanSize.toString().isEmpty ||selectedCanSize==0.0?passedCanSize:selectedCanSize,
+                        rValue,
+                        gValue,
+                        bValue,
+                        cylinder,
+                        cylinderVolume,
+                        unitPrice,
+                        context
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     primary:ChooseColor(0).buttonColor,
                   ),

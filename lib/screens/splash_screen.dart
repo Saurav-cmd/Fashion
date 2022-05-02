@@ -153,6 +153,25 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Container(
         color: Colors.white,
-        child: Center(child:value==false?const Text("Downloading Colors"):Image.asset("icons/logo 2.png")));
+        child: value==null || value==false?Card(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset("icons/logo 2.png"),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children:[
+                Center(child: CircularProgressIndicator(
+                  color: ChooseColor(0).appBarColor1,
+                )),
+                const SizedBox(width: 10),
+                const Center(child: Text("Downloading Data Please Wait..."))
+              ],
+            ),
+
+          ],
+        )
+    ):Image.asset("icons/logo 2.png"));
   }
 }

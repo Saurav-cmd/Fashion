@@ -185,12 +185,10 @@ class AlertBox{
                             onTap: () async{
                               try{
                                 final result = await InternetAddress.lookup("example.com");
-                                if(result.isNotEmpty && result[0].rawAddress.isNotEmpty && result!=null){
-                                  print("There is wifi connection");
+                                if(result.isNotEmpty && result[0].rawAddress.isNotEmpty){
                                   Navigator.pop(context);
                                 }
                               }on SocketException catch (_) {
-                                print('not connected');
                                 final SnackBar snackBar = SnackBar(
                                   content:const Padding(
                                     padding: EdgeInsets.only(right:10),
@@ -240,90 +238,214 @@ class AlertBox{
     // Navigator.of(context).pop();
   }
 
-/*  noWifiConnection(BuildContext context){
-    Widget AbortButton =
-    TextButton(
-        onPressed: () async {
-          SystemNavigator.pop();
-        },
-        child: Container(
-          height: 40,
-          width: MediaQuery.of(context).size.width*0.31,
-          color:ChooseColor(0).appBarColor1,
-          child: Center(
-            child: Text(
-              'Abort'.toUpperCase(),
-              style: const TextStyle(color: Colors.white,fontWeight: FontWeight.w500,),
+  Widget setupColorantsContainer(List<int>rValue,List<int>gValue,List<int>bValue, List<String?> cylinder,List<String?> cylinderVolume,List<double> price,BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return SizedBox(
+      height: 150.0, // Change as per your requirement
+      width: 300.0, // Change as per your requirement
+      child: Column(
+        children: [
+          Flexible(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: cylinder.length,
+              itemBuilder: (BuildContext context, int i) {
+                return Padding(
+                  padding:EdgeInsets.symmetric(vertical: size.height*0.010),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        height: size.height*0.030,
+                        width: size.width*0.1,
+                        decoration:BoxDecoration(
+                          color:Color.fromRGBO(rValue[i], gValue[i], bValue[i], 3),
+                          borderRadius:const BorderRadius.all(Radius.circular(5)),
+                        ),
+                      ),
+                      Text(
+                        "${cylinder[i]}",
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: size.height*0.012+size.width*0.012,
+                            fontWeight: FontWeight.w300),
+                      ),
+                      Text(
+                        "${cylinderVolume[i]} ml",
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: size.height*0.012+size.width*0.012,
+                            fontWeight: FontWeight.w300),
+                      ),
+                      Text(
+                        "${price[i] * double.parse(cylinderVolume[i]!).abs()}",
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: size.height*0.012+size.width*0.012,
+                            fontWeight: FontWeight.w300),
+                      ),
+
+                    ],
+                  ),
+                );
+              },
             ),
           ),
-        ));
-
-    Widget RetryButton = TextButton(
-        onPressed: ()async{
-          try{
-            final result = await InternetAddress.lookup("example.com");
-            if(result.isNotEmpty && result[0].rawAddress.isNotEmpty){
-              print("There is wifi connection");
-              Navigator.pop(context);
-            }
-          }on SocketException catch (_) {
-            print('not connected');
-
-          }
-        },
-        child: Container(
-          height: 40,
-          width: MediaQuery.of(context).size.width*0.31,
-          color: ChooseColor(0).appBarColor1,
-          child: Center(
-            child: Text(
-              'Retry'.toUpperCase(),
-              style: const TextStyle(color: Colors.white,fontWeight: FontWeight.w500),
+          Divider(
+            thickness: size.width*0.005,
+          ),
+          IntrinsicHeight(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Total",
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: size.height*0.015+size.width*0.015,
+                      fontWeight: FontWeight.w400),
+                ),
+                VerticalDivider(
+                  color: Colors.black45,
+                  thickness: size.width*0.005,
+                ),
+                Text(
+                  "50 Rs",
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: size.height*0.012+size.width*0.012,
+                      fontWeight: FontWeight.w500),
+                ),
+              ],
             ),
           ),
-        ));
+        ],
+      ),
+    );
+  }
 
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      contentPadding: EdgeInsets.zero,
-      title: WillPopScope(
-        onWillPop: () async => false,
-        child: Column(
-          children: const [
-            Text("No Internet Connection",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w500,fontSize: 16),),
-            SizedBox(
-              height: 10,
+  priceDialogueBox(String? baseName,double? canSize,List<int>rValue,List<int>gValue,List<int>bValue, List<String?> cylinder,List<String?> cylinderVolume,List<double> price,BuildContext context) async {
+    final size = MediaQuery.of(context).size;
+    await showDialog(
+      context:context,
+      barrierDismissible: true,
+      builder: (context) {
+        return  WillPopScope(
+          onWillPop: ()async=>false,
+          child: AlertDialog(
+            title: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Price",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: size.height*0.015+size.width*0.015,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        IconButton(onPressed: (){
+                          Navigator.pop(context);
+                        }, icon:const Icon(Icons.clear))
+
+                      ],
+                    ),
+                    Text(
+                      "Base",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: size.height*0.014+size.width*0.014,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    Divider(
+                      thickness: size.width*0.005,
+                    ),
+                    IntrinsicHeight(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "$baseName",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: size.height*0.012+size.width*0.012,
+                                fontWeight: FontWeight.w300),
+                          ),
+                          VerticalDivider(
+                            color: Colors.black45,
+                            thickness: size.width*0.005,
+                          ),
+                          Text(
+                            "$canSize ",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: size.height*0.012+size.width*0.012,
+                                fontWeight: FontWeight.w300),
+                          ),
+                          VerticalDivider(
+                            color: Colors.black45,
+                            thickness: size.width*0.005,
+                          ),
+                          Text(
+                            "Rs 0",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: size.height*0.012+size.width*0.012,
+                                fontWeight: FontWeight.w300),
+                          ),
+                          VerticalDivider(
+                            color: Colors.black45,
+                            thickness: size.width*0.005,
+                          ),
+                          Text(
+                            "Rs 0",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: size.height*0.012+size.width*0.012,
+                                fontWeight: FontWeight.w300),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Divider(
+                      thickness: size.width*0.005,
+                    ),
+
+                    SizedBox(height: size.height*0.005),
+                    Text(
+                      "Colorants",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: size.height*0.015+size.width*0.015,
+                          fontWeight: FontWeight.w500),
+                    ),
+
+
+                  ],
+                ),
+              ),
             ),
-            Image(image:AssetImage('assets/images/network.png',),height: 60,width: 60,),
-          ],
-        ),
-      ),
-      content: const Padding(
-        padding:  EdgeInsets.only(left: 40.0,right: 30,top: 10),
-        child: Text(
-          "Please recheck your internet connection and try again.",style: TextStyle(color: Colors.black54,fontSize: 16),),
-      ),
-      //Text("Are you sure to Place your Order ?"),
-      actions: [
-        AbortButton,
-        RetryButton,
-      ],
-    );
-    showDialog(
-
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
+            content: setupColorantsContainer(rValue,gValue,bValue,cylinder,cylinderVolume,price,context),
+          ),
+        );
       },
     );
-    showDialog(
-      barrierDismissible:false,
-
-      context: context,
-      builder: (BuildContext
-      context) {
-        return alert;
-      },
-    );
-  }*/
+    // Navigator.of(context).pop();
+  }
 }
