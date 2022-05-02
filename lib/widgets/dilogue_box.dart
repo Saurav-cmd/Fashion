@@ -238,7 +238,7 @@ class AlertBox{
     // Navigator.of(context).pop();
   }
 
-  Widget setupColorantsContainer(List<int>rValue,List<int>gValue,List<int>bValue, List<String?> cylinder,List<String?> cylinderVolume,List<double> price,BuildContext context) {
+  Widget setupColorantsContainer(List<int>rValue,List<int>gValue,List<int>bValue, List<String?> cylinder,List<double?> cylinderVolume,List<double> price,BuildContext context) {
     final size = MediaQuery.of(context).size;
     return SizedBox(
       height: 150.0, // Change as per your requirement
@@ -248,7 +248,7 @@ class AlertBox{
           Flexible(
             child: ListView.builder(
               shrinkWrap: true,
-              itemCount: cylinder.length,
+              itemCount: cylinderVolume.length,
               itemBuilder: (BuildContext context, int i) {
                 return Padding(
                   padding:EdgeInsets.symmetric(vertical: size.height*0.010),
@@ -280,7 +280,7 @@ class AlertBox{
                             fontWeight: FontWeight.w300),
                       ),
                       Text(
-                        "${price[i] * double.parse(cylinderVolume[i]!).abs()}",
+                        "${price[i] * cylinderVolume[i]!.truncateToDouble()}",
                         textAlign: TextAlign.start,
                         style: TextStyle(
                             color: Colors.black,
@@ -329,7 +329,7 @@ class AlertBox{
     );
   }
 
-  priceDialogueBox(String? baseName,double? canSize,List<int>rValue,List<int>gValue,List<int>bValue, List<String?> cylinder,List<String?> cylinderVolume,List<double> price,BuildContext context) async {
+  priceDialogueBox(String? baseName,double? canSize,List<int>rValue,List<int>gValue,List<int>bValue, List<String?> cylinder,List<double?> cylinderVolume,List<double> price,BuildContext context) async {
     final size = MediaQuery.of(context).size;
     await showDialog(
       context:context,

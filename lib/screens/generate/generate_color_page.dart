@@ -63,83 +63,226 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
 
   List<String?> baseName = [];
   List<ShadeColorDatabase> colorValue = [];
-  List<String?> cylinder = [];
-  List<String?> cylinderVolume = [];
-  getBaseName()async{
-    List<DoubleDefenceee?> doubleDefence= await DatabaseHelper.instance.queryDoubleDefence(passedProductName, fanDeckId, passedColorName);
+  getBaseName()async {
+    List<DoubleDefenceee?> doubleDefence = await DatabaseHelper.instance
+        .queryDoubleDefence(passedProductName, fanDeckId, passedColorName);
     double? baseId = doubleDefence[0]!.base;
     final baseColorData = await DatabaseHelper.instance.getColorBaseData();
-      for(int j=0;j<baseColorData.length;j++){
-        if( baseId == baseColorData[j].bId){
-          setState(() {
-            baseName.add(baseColorData[j].base);
-          });
-        }
-    }
-
-    if(getDouble(doubleDefence[0]?.fT)>0.0){
-      cylinder.add("FT");
-        cylinderVolume.add(doubleDefence[0]!.fT);
-    }
-    if(getDouble(doubleDefence[0]?.kS)>0){
-      cylinder.add("KS");
-      cylinderVolume.add(doubleDefence[0]!.kS);
-    }
-    if(getDouble(doubleDefence[0]?.lS)>0){
-      cylinder.add("LS");
-      cylinderVolume.add(doubleDefence[0]!.lS);
-    }
-    if(getDouble(doubleDefence[0]?.lT)>0){
-      cylinder.add("LT");
-      cylinderVolume.add(doubleDefence[0]!.lT);
-    }
-    if(getDouble(doubleDefence[0]?.mM)>0){
-      cylinder.add("MM");
-      cylinderVolume.add(doubleDefence[0]!.mM);
-    } if(getDouble(doubleDefence[0]?.mS)>0){
-      cylinder.add("MS");
-      cylinderVolume.add(doubleDefence[0]!.mS);
-    } if(getDouble(doubleDefence[0]?.mT)>0){
-      cylinder.add("MT");
-      cylinderVolume.add(doubleDefence[0]!.mT);
-    }
-    if(getDouble(doubleDefence[0]?.pP)>0){
-      cylinder.add("PP");
-      cylinderVolume.add(doubleDefence[0]!.pP);
-    }
-    if(getDouble(doubleDefence[0]?.rS)>0){
-      cylinder.add("RS");
-      cylinderVolume.add(doubleDefence[0]!.rS);
-    }
-    if(getDouble(doubleDefence[0]?.rT)>0){
-      cylinder.add("RT");
-      if(selectedCanSize.toString().isEmpty && selectedCanSize==0.0) {
-        cylinderVolume.add(doubleDefence[0]!.rT);
+    for (int j = 0; j < baseColorData.length; j++) {
+      if (baseId == baseColorData[j].bId) {
+        setState(() {
+          baseName.add(baseColorData[j].base);
+          getCylinderVolume();
+        });
       }
     }
-    if(getDouble(doubleDefence[0]?.sT)>0){
+  }
+
+  List<String?> cylinderVolume = [];
+  List<String?> cylinder = [];
+  List<double> calculatedCylinderVolume = [];
+  getCylinderVolume() async{
+    List<DoubleDefenceee?> doubleDefence = await DatabaseHelper.instance.queryDoubleDefence(passedProductName, fanDeckId, passedColorName);
+    setState(() {
+      calculatedCylinderVolume.clear();
+    });
+    if (getDouble(doubleDefence[0]?.fT) > 0.0) {
+      cylinder.add("FT");
+      if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.fT!)*passedCanSize!);
+        });
+      }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0){
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.fT!)*selectedCanSize);
+        });
+      }
+    }
+    if (getDouble(doubleDefence[0]?.kS) > 0) {
+      cylinder.add("KS");
+      if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0) {
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.kS!)*passedCanSize!);
+        });
+      }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0){
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.kS!)*selectedCanSize);
+        });
+      }
+    }
+    if (getDouble(doubleDefence[0]?.lS) > 0) {
+      cylinder.add("LS");
+      if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.lS!)*passedCanSize!);
+        });
+      }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0){
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.lS!)*selectedCanSize);
+        });
+      }
+    }
+    if (getDouble(doubleDefence[0]?.lT) > 0) {
+      cylinder.add("LT");
+      if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.lT!)*passedCanSize!);
+        });
+      }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0){
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.lT!)*selectedCanSize);
+        });
+      }
+    }
+    if (getDouble(doubleDefence[0]?.mM) > 0) {
+      cylinder.add("MM");
+      if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.mM!)*passedCanSize!);
+        });
+      }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0){
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.mM!)*selectedCanSize);
+        });
+      }
+    }
+    if (getDouble(doubleDefence[0]?.mS) > 0) {
+      cylinder.add("MS");
+      cylinderVolume.add(doubleDefence[0]!.mS);
+      if (selectedCanSize.toString().isEmpty || selectedCanSize == 0.0) {
+        setState(() {
+          calculatedCylinderVolume.clear();
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.mS!) * passedCanSize!);
+        });
+      } else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0) {
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.mS!) * selectedCanSize);
+        });
+      }
+    }
+    if (getDouble(doubleDefence[0]?.mT) > 0) {
+      cylinder.add("MT");
+      if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.mT!)*passedCanSize!);
+        });
+      }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0){
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.mT!)*selectedCanSize);
+        });
+      }
+    }
+    if (getDouble(doubleDefence[0]?.pP) > 0) {
+      cylinder.add("PP");
+      if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.pP!)*passedCanSize!);
+        });
+      }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0){
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.pP!)*selectedCanSize);
+        });
+      }
+    }
+    if (getDouble(doubleDefence[0]?.rS) > 0) {
+      cylinder.add("RS");
+      if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.rS!)*passedCanSize!);
+        });
+      }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0){
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.rS!)*selectedCanSize);
+        });
+      }
+    }
+    if (getDouble(doubleDefence[0]?.rT) > 0) {
+      cylinder.add("RT");
+      if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.rT!)*passedCanSize!);
+        });
+      }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0) {
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.rT!)*selectedCanSize);
+        });
+      }
+    }
+    if (getDouble(doubleDefence[0]?.sT) > 0) {
       cylinder.add("ST");
-      cylinderVolume.add(doubleDefence[0]!.sT);
+      if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.sT!)*passedCanSize!);
+        });
+      }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0) {
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.sT!)*selectedCanSize);
+        });
+      }
     }
-    if(getDouble(doubleDefence[0]?.tT)>0){
+    if (getDouble(doubleDefence[0]?.tT) > 0) {
       cylinder.add("TT");
-      cylinderVolume.add(doubleDefence[0]!.tT);
-    } if(getDouble(doubleDefence[0]?.uS)>0){
-      cylinder.add("US");
-      cylinderVolume.add(doubleDefence[0]!.uS);
-    } if(getDouble(doubleDefence[0]?.vT)>0){
-      cylinder.add("VT");
-      cylinderVolume.add(doubleDefence[0]!.vT);
-    } if(getDouble(doubleDefence[0]?.xT)>0){
-      cylinder.add("XT");
-      cylinderVolume.add(doubleDefence[0]!.xT);
+      if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.tT!)*passedCanSize!);
+        });
+      }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0) {
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.tT!)*selectedCanSize);
+        });
+      }
     }
-    if(getDouble(doubleDefence[0]?.zT)>0){
+    if (getDouble(doubleDefence[0]?.uS) > 0) {
+      cylinder.add("US");
+      if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.uS!)*passedCanSize!);
+        });
+      }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0) {
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.uS!)*selectedCanSize);
+        });
+      }
+    }
+    if (getDouble(doubleDefence[0]?.vT) > 0) {
+      cylinder.add("VT");
+      if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.vT!).round()*passedCanSize!);
+        });
+      }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0) {
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.vT!)*selectedCanSize);
+        });
+      }
+    }
+    if (getDouble(doubleDefence[0]?.xT) > 0) {
+      cylinder.add("XT");
+      if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.xT!)*passedCanSize!);
+        });
+      }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0) {
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.xT!)*selectedCanSize);
+        });
+      }
+    }
+    if (getDouble(doubleDefence[0]?.zT) > 0) {
       cylinder.add("ZT");
-      cylinderVolume.add(doubleDefence[0]!.zT);
+      if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.zT!)*passedCanSize!);
+        });
+      }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0) {
+        setState(() {
+          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.zT!)*selectedCanSize);
+        });
+      }
     }
     setState(() {
       getColorants();
+      print("This is calculated volume at last ${calculatedCylinderVolume}");
     });
   }
 
@@ -342,7 +485,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
               SizedBox(
                 height:200,
                 child: GridView.builder(
-                    itemCount: cylinder.length,
+                    itemCount: calculatedCylinderVolume.length,
                     scrollDirection: Axis.horizontal,
                     shrinkWrap: true,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -359,24 +502,22 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                             width: 70,
                             color:Colors.grey.shade300,
                           ),
-                          if(selectedCanSize.toString().isEmpty || selectedCanSize==0.0)
+                          // if(selectedCanSize.toString().isEmpty || selectedCanSize==0.0)
                             SizedBox(
                               child: Container(
-                                height: double.parse(cylinderVolume[i]!) *
-                                    passedCanSize! > 107
+                                height:calculatedCylinderVolume[i]  > 107
                                     ? 100
-                                    : double.parse(cylinderVolume[i]!) *
-                                    passedCanSize!,
+                                    :calculatedCylinderVolume[i],
                                 width: 70,
                                 color: Color.fromRGBO(
                                     rValue[i], gValue[i], bValue[i], 3),),
                             ),
-                          if(selectedCanSize.toString().isNotEmpty || selectedCanSize!=0.0)
+                  /*        if(selectedCanSize.toString().isNotEmpty || selectedCanSize!=0.0)
                             SizedBox(
                               child: Column(
                                 children: [
                                   Container(
-                                    height: double.parse(cylinderVolume[i]!) *
+                                    height: calculatedCylinderVolume[i] *
                                         selectedCanSize > 107
                                         ? 100
                                         : double.parse(cylinderVolume[i]!) *
@@ -385,15 +526,11 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                                     color: Color.fromRGBO(rValue[i], gValue[i], bValue[i], 3),),
                                 ],
                               ),
-                            ),
+                            ),*/
                         ],
                       ),
                       Text(cylinder[i]!),
-                      if(selectedCanSize.toString().isEmpty || selectedCanSize==0.0)
-                        Text("${double.parse(cylinderVolume[i]!)*passedCanSize!} ML"),
-
-                      if(selectedCanSize.toString().isNotEmpty && selectedCanSize!=0.0)
-                        Text("${double.parse(cylinderVolume[i]!)*selectedCanSize} ML"),
+                        Text("${calculatedCylinderVolume[i]} ML"),
                     ],
                   );
 
@@ -413,6 +550,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                         setState(() {
                           selectedContainer = "first";
                           selectedCanSize=1.0;
+                          getCylinderVolume();
                         });
                       },
                       child: Container(
@@ -432,6 +570,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                         setState(() {
                           selectedContainer="second";
                           selectedCanSize = 4.0;
+                          getCylinderVolume();
                         });
                       },
                       child: Container(
@@ -451,6 +590,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                         setState(() {
                           selectedContainer="third";
                           selectedCanSize = 10.0;
+                          getCylinderVolume();
                         });
                       },
                       child: Container(
@@ -470,6 +610,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                         setState(() {
                           selectedContainer = "fourth";
                           selectedCanSize = 20.0;
+                          getCylinderVolume();
                         });
                       },
                       child: Container(
@@ -495,6 +636,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                         setState(() {
                           selectedContainer="first";
                           selectedCanSize = 1;
+                          getCylinderVolume();
                         });
                       },
                       child: Container(
@@ -514,6 +656,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                         setState(() {
                           selectedContainer="second";
                           selectedCanSize = 5;
+                          getCylinderVolume();
                         });
                       },
                       child: Container(
@@ -533,6 +676,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                         setState(() {
                           selectedContainer="third";
                           selectedCanSize = 10;
+                          getCylinderVolume();
                         });
                       },
                       child: Container(
@@ -552,6 +696,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                         setState(() {
                           selectedContainer="fourth";
                           selectedCanSize = 20;
+                          getCylinderVolume();
                         });
                       },
                       child: Container(
@@ -581,7 +726,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                         gValue,
                         bValue,
                         cylinder,
-                        cylinderVolume,
+                        calculatedCylinderVolume,
                         unitPrice,
                         context
                     );
