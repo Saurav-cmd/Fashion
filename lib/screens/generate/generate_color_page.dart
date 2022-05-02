@@ -78,7 +78,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
     }
   }
 
-  List<String?> cylinderVolume = [];
+
   List<String?> cylinder = [];
   List<double> calculatedCylinderVolume = [];
   getCylinderVolume() async{
@@ -148,7 +148,6 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
     }
     if (getDouble(doubleDefence[0]?.mS) > 0) {
       cylinder.add("MS");
-      cylinderVolume.add(doubleDefence[0]!.mS);
       if (selectedCanSize.toString().isEmpty || selectedCanSize == 0.0) {
         setState(() {
           calculatedCylinderVolume.clear();
@@ -282,7 +281,6 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
     }
     setState(() {
       getColorants();
-      print("This is calculated volume at last ${calculatedCylinderVolume}");
     });
   }
 
@@ -505,32 +503,21 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                           // if(selectedCanSize.toString().isEmpty || selectedCanSize==0.0)
                             SizedBox(
                               child: Container(
-                                height:calculatedCylinderVolume[i]  > 107
-                                    ? 100
-                                    :calculatedCylinderVolume[i],
+                                height:calculatedCylinderVolume[i].truncateToDouble()  > 500
+                                    ? 90:calculatedCylinderVolume[i].truncateToDouble()  > 400?80:calculatedCylinderVolume[i].truncateToDouble()  > 300?70:
+                                      calculatedCylinderVolume[i].truncateToDouble()  > 200?60:calculatedCylinderVolume[i].truncateToDouble()  > 107?50
+                                      :calculatedCylinderVolume[i],
                                 width: 70,
                                 color: Color.fromRGBO(
                                     rValue[i], gValue[i], bValue[i], 3),),
                             ),
-                  /*        if(selectedCanSize.toString().isNotEmpty || selectedCanSize!=0.0)
-                            SizedBox(
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: calculatedCylinderVolume[i] *
-                                        selectedCanSize > 107
-                                        ? 100
-                                        : double.parse(cylinderVolume[i]!) *
-                                        selectedCanSize,
-                                    width: 70,
-                                    color: Color.fromRGBO(rValue[i], gValue[i], bValue[i], 3),),
-                                ],
-                              ),
-                            ),*/
                         ],
                       ),
                       Text(cylinder[i]!),
-                        Text("${calculatedCylinderVolume[i]} ML"),
+                      if(passedProductName=="relianceDist" || passedProductName=="shangrilaDist")
+                        Text("${calculatedCylinderVolume[i]} Kg"),
+                      if(passedProductName=="doubleDefenceEE" || passedProductName=="newUltraProtecEE" || passedProductName=="protecEE" || passedProductName=="newShangrilaEE" || passedProductName=="elegaIE" || passedProductName=="newBarpimoIE" || passedProductName=="newShangrilaIE")
+                      Text("${calculatedCylinderVolume[i]} ML"),
                     ],
                   );
 

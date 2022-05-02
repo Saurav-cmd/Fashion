@@ -3,7 +3,7 @@ import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../main.dart';
-
+import 'package:intl/intl.dart';
 
 class AlertBox{
   loginAlertBox1(BuildContext context) {
@@ -240,6 +240,7 @@ class AlertBox{
 
   Widget setupColorantsContainer(List<int>rValue,List<int>gValue,List<int>bValue, List<String?> cylinder,List<double?> cylinderVolume,List<double> price,BuildContext context) {
     final size = MediaQuery.of(context).size;
+    var f = NumberFormat("###.0#", "en_US");
     return SizedBox(
       height: 150.0, // Change as per your requirement
       width: 300.0, // Change as per your requirement
@@ -272,7 +273,7 @@ class AlertBox{
                             fontWeight: FontWeight.w300),
                       ),
                       Text(
-                        "${cylinderVolume[i]} ml",
+                        "${cylinderVolume[i]!.toStringAsFixed(2)} ml",
                         textAlign: TextAlign.start,
                         style: TextStyle(
                             color: Colors.black,
