@@ -1,6 +1,6 @@
 class CustomerSavedColor{
   int?id;
-  String? cDForeignKey;
+  int? cDForeignKey;
   String? colorName;
   String? colorCode;
   String? productName;

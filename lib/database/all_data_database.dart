@@ -259,7 +259,7 @@ class DatabaseHelper{
     await db.execute('''
       CREATE TABLE $table7(
         $savedColorColumnId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-        $savedColorForeignKey STRING NOT NULL,
+        $savedColorForeignKey INTEGER NOT NULL,
         $savedColorName TEXT,
         $savedColorCode TEXT,
         $savedProductName TEXT,
@@ -395,6 +395,12 @@ class DatabaseHelper{
     var data = await db?.query(table7);
     List<CustomerSavedColor> savedDataList = data!.isNotEmpty?data.map((e) => CustomerSavedColor.fromMap(e)).toList():[];
     return savedDataList;
+  }
+
+  Future<List<CustomerSavedColor>> queryCustomerSavedColor(id)async{
+    Database? db = await instance.database;
+    var data =  await db?.query(table7,where:'$savedColorForeignKey=?',whereArgs: [id]);
+    return data!.isNotEmpty?data.map((e) => CustomerSavedColor.fromMap(e)).toList():[];
   }
 
   //Saved ko data add,get garne ya bata end ho hai.........................................................................................

@@ -557,7 +557,7 @@ class AlertBox{
                                      for(var e in data) {
                                        DatabaseHelper.instance.addSavedCustomerColorData(
                                            CustomerSavedColor(
-                                               cDForeignKey:e.id.toString(),
+                                               cDForeignKey:e.id,
                                                colorName: colorName,
                                                productName: productName,
                                                canSize: canSize,

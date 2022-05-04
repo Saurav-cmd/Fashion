@@ -60,6 +60,31 @@ class _SavedScreenState extends State<SavedScreen> {
         _runFilter(searchController.value.text);
       });
     });
+    querySavedCustomerColor();
+  }
+
+  List<String?> productNameList = [];
+  List<String?> colorNameList = [];
+  List<double?> canSizeList = [];
+  List<double?> rColorList = [];
+  List<double?> gColorList = [];
+  List<double?> bColorList = [];
+  querySavedCustomerColor()async{
+    for(var i in savedDataList) {
+      final data = await DatabaseHelper.instance.queryCustomerSavedColor(i.id);
+      for(var e in data){
+        setState(() {
+          productNameList.add(e.productName);
+          colorNameList.add(e.colorName);
+          canSizeList.add(e.canSize);
+          rColorList.add(e.rColor);
+          gColorList.add(e.gColor);
+          bColorList.add(e.bColor);
+
+          print("This is rColor list ${rColorList}");
+        });
+      }
+    }
   }
 
   List<SavedCustomerDetail> searchCustomer = [];
@@ -150,7 +175,7 @@ class _SavedScreenState extends State<SavedScreen> {
                       if(passedColorName!=null || passedProductName != null){
                         DatabaseHelper.instance.addSavedCustomerColorData(
                             CustomerSavedColor(
-                                cDForeignKey:searchCustomer[i].id.toString(),
+                                cDForeignKey:searchCustomer[i].id,
                                 colorName: passedColorName,
                                 productName:passedProductName,
                                 canSize:passedCanSize,
@@ -223,22 +248,30 @@ class _SavedScreenState extends State<SavedScreen> {
 
                           ),
 
-                  /*        Padding(
+                          Padding(
                             padding:EdgeInsets.only(right: size.width*0.020),
-                            child: Container(
-                              height: size.height*0.050,
-                              width: size.width*0.10,
-                              decoration: BoxDecoration(
-                                  color: Color.fromRGBO(searchCustomer[i].rColor!.toInt(),searchCustomer[i].gColor!.toInt(),searchCustomer[i].bColor!.toInt(),1),
-                                  boxShadow:const [
-                                    BoxShadow(
-                                      color: Colors.black,
-                                      blurRadius: 1.0,
-                                    )
-                                  ]
+                            child: GridView.builder(
+                              itemCount: rColorList.length,
+                              gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
                               ),
+                              itemBuilder: (ctx,i){
+                                return  Container(
+                                  height: size.height*0.050,
+                                  width: size.width*0.10,
+                                  decoration: BoxDecoration(
+                                      color: Color.fromRGBO(rColorList[i]!.toInt(),gColorList[i]!.toInt(),bColorList[i]!.toInt(),1),
+                                      boxShadow:const [
+                                        BoxShadow(
+                                          color: Colors.black,
+                                          blurRadius: 1.0,
+                                        )
+                                      ]
+                                  ),
+                                );
+                              },
                             ),
-                          ),*/
+                          ),
                         ],
                       ),
                     ),
@@ -260,7 +293,7 @@ class _SavedScreenState extends State<SavedScreen> {
                           if(passedColorName!=null || passedProductName != null){
                             DatabaseHelper.instance.addSavedCustomerColorData(
                                 CustomerSavedColor(
-                                    cDForeignKey:savedDataList[0].id.toString(),
+                                    cDForeignKey:savedDataList[0].id,
                                     colorName: passedColorName,
                                     productName:passedProductName,
                                     canSize:passedCanSize,
@@ -330,22 +363,39 @@ class _SavedScreenState extends State<SavedScreen> {
                                   ],
                                 ),
 
-                        /*        Padding(
+                                Padding(
                                   padding:EdgeInsets.only(right: size.width*0.020),
-                                  child: Container(
-                                    height: size.height*0.050,
-                                    width: size.width*0.10,
-                                    decoration: BoxDecoration(
-                                        color: Color.fromRGBO(savedDataList[i].rColor!.toInt(),savedDataList[i].gColor!.toInt(),savedDataList[i].bColor!.toInt(),1),
-                                        boxShadow:const [
-                                          BoxShadow(
-                                            color: Colors.black,
-                                            blurRadius: 1.0,
-                                          )
-                                        ]
+                                  child: Expanded(
+                                    child: SizedBox(
+                                      height: 50,
+                                      width: 80,
+                                      child: GridView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: rColorList.length,
+                                        gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          crossAxisSpacing: 5,
+                                          mainAxisSpacing: 5
+                                        ),
+                                        itemBuilder: (ctx,i){
+                                          return  Container(
+                                            height: size.height*0.050,
+                                            width: size.width*0.10,
+                                            decoration: BoxDecoration(
+                                                color: Color.fromRGBO(rColorList[i]!.toInt(),gColorList[i]!.toInt(),bColorList[i]!.toInt(),1),
+                                                boxShadow:const [
+                                                  BoxShadow(
+                                                    color: Colors.black,
+                                                    blurRadius: 1.0,
+                                                  )
+                                                ]
+                                            ),
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
-                                ),*/
+                                ),
                               ],
                             ),
                           ),
