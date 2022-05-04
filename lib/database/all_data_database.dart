@@ -4,7 +4,8 @@ import 'package:path/path.dart';
 import '../models/database_models/book_marked_model.dart';
 import '../models/database_models/colorant_database_model.dart';
 import '../models/database_models/doubled_fencee_database_ model.dart';
-import '../models/database_models/saved_model.dart';
+import '../models/database_models/saved_customer_detail_color.dart';
+import '../models/database_models/saved_customer_detail_model.dart';
 import '../models/database_models/shade_color_database_model.dart';
 
 class DatabaseHelper{
@@ -14,7 +15,8 @@ class DatabaseHelper{
   static const table3 = "ColorColorant";
   static const table4 = "ShadeColor";
   static const table5 = "BookMarked";
-  static const table6 = "Saved";
+  static const table6 = "SavedCustomerDetail";
+  static const table7 ="SavedCustomerDetailColor";
 
   //this is for Double Fenceee table.........................................................
   static const id = 'id';
@@ -100,11 +102,16 @@ class DatabaseHelper{
   static const canColorB = "canColorB";
   //This is for BookMarked table ends here......................................................
 
-  //This is for Saved table starts here.........................................................
+  //This is for Saved customer detail table starts here.........................................................
   static const savedColumnId = "id";
   static const savedCustomerName = "customerName";
   static const savedCustomerAddress = "address";
   static const savedCustomerContact = "contact";
+  //This is for Saved table ends here...............................................................................
+
+  //This is for saved customer detail color table starts here.................................................................
+  static const savedColorColumnId = "id";
+  static const savedColorForeignKey = "cDForeignKey";
   static const savedColorName = "colorName";
   static const savedColorCode = "colorCode";
   static const savedProductName = "productName";
@@ -113,7 +120,7 @@ class DatabaseHelper{
   static const savedRColor = "rColor";
   static const savedGColor = "gColor";
   static const savedBColor = "bColor";
-  //This is for Saved table ends here.........................................................
+  //This is for saved customer detail color table ends here.................................................................
 
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
@@ -245,7 +252,14 @@ class DatabaseHelper{
         $savedColumnId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
         $savedCustomerName TEXT,
         $savedCustomerAddress TEXT,
-        $savedCustomerContact TEXT,
+        $savedCustomerContact TEXT
+      )
+    ''').then((value) => null);
+
+    await db.execute('''
+      CREATE TABLE $table7(
+        $savedColorColumnId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+        $savedColorForeignKey STRING NOT NULL,
         $savedColorName TEXT,
         $savedColorCode TEXT,
         $savedProductName TEXT,
@@ -253,7 +267,8 @@ class DatabaseHelper{
         $savedFandeckId REAL,
         $savedRColor REAL,
         $savedGColor REAL,
-        $savedBColor REAL
+        $savedBColor REAL,
+        FOREIGN KEY ($savedColorForeignKey) REFERENCES $table6 ($savedColumnId)
       )
     ''').then((value) => null);
   }
@@ -358,17 +373,30 @@ class DatabaseHelper{
   //Book Marked ko data add,get garne ya bata end ho.........................................................................................
 
   //Saved ko data add,get garne ya bata start ho hai.........................................................................................
-  Future<int?> addSavedData(Saved saved)async{
+  Future<int?> addSavedData(SavedCustomerDetail saved)async{
     Database? db = await instance.database;
     return await db?.insert(table6, saved.toMap());
   }
 
-  Future<List<Saved>> getSavedData()async{
+  Future<List<SavedCustomerDetail>> getSavedData()async{
     Database? db = await instance.database;
     var data = await db?.query(table6);
-    List<Saved> savedDataList = data!.isNotEmpty?data.map((e) => Saved.fromMap(e)).toList():[];
+    List<SavedCustomerDetail> savedDataList = data!.isNotEmpty?data.map((e) => SavedCustomerDetail.fromMap(e)).toList():[];
     return savedDataList;
   }
+
+  Future<int?> addSavedCustomerColorData(CustomerSavedColor saved)async{
+    Database? db = await instance.database;
+    return await db?.insert(table7, saved.toMap());
+  }
+
+  Future<List<CustomerSavedColor>> getSavedCustomerColorData()async{
+    Database? db = await instance.database;
+    var data = await db?.query(table7);
+    List<CustomerSavedColor> savedDataList = data!.isNotEmpty?data.map((e) => CustomerSavedColor.fromMap(e)).toList():[];
+    return savedDataList;
+  }
+
   //Saved ko data add,get garne ya bata end ho hai.........................................................................................
 
 }

@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../main.dart';
-import '../../models/database_models/saved_model.dart';
+import '../../models/database_models/saved_customer_detail_color.dart';
+import '../../models/database_models/saved_customer_detail_model.dart';
 
 class SavedScreen extends StatefulWidget {
   SavedScreen({Key,this.colorName,this.productName,this.canSize,this.rColor,this.gColor,this.bColor,this.fandeckId,key}) : super(key: key);
@@ -46,7 +47,7 @@ class _SavedScreenState extends State<SavedScreen> {
     print("This is color Name $passedColorName");
   }
 
-  List<Saved>savedDataList = [];
+  List<SavedCustomerDetail>savedDataList = [];
   getSavedData()async{
     final data = await DatabaseHelper.instance.getSavedData();
     for(var e in data){
@@ -61,10 +62,10 @@ class _SavedScreenState extends State<SavedScreen> {
     });
   }
 
-  List<Saved> searchCustomer = [];
+  List<SavedCustomerDetail> searchCustomer = [];
   void _runFilter(String enterKeyword){
     //  List<Map<String, dynamic>> results = [];
-    List<Saved> results = [];
+    List<SavedCustomerDetail> results = [];
 
     if (enterKeyword.isEmpty){
       results = savedDataList;
@@ -147,17 +148,16 @@ class _SavedScreenState extends State<SavedScreen> {
                   return GestureDetector(
                     onTap: (){
                       if(passedColorName!=null || passedProductName != null){
-                        DatabaseHelper.instance.addSavedData(
-                          Saved(
-                            customerName: searchCustomer[i].customerName,
-                            address: searchCustomer[i].address,
-                            colorName:passedColorName??searchCustomer[i].colorName,
-                            productName: passedProductName??searchCustomer[i].productName,
-                            canSize: passedCanSize??searchCustomer[i].canSize,
-                            fandeckId: passedFandeckId??searchCustomer[i].fandeckId,
-                            rColor: passedGColor,
-                            gColor: passedGColor,
-                            bColor: passedBColor
+                        DatabaseHelper.instance.addSavedCustomerColorData(
+                            CustomerSavedColor(
+                                cDForeignKey:searchCustomer[i].id.toString(),
+                                colorName: passedColorName,
+                                productName:passedProductName,
+                                canSize:passedCanSize,
+                                fandeckId:passedFandeckId,
+                                rColor:passedRColor,
+                                gColor:passedGColor,
+                                bColor:passedBColor
                           )
                         ).whenComplete((){
                           final SnackBar snackBar = SnackBar(
@@ -223,7 +223,7 @@ class _SavedScreenState extends State<SavedScreen> {
 
                           ),
 
-                          Padding(
+                  /*        Padding(
                             padding:EdgeInsets.only(right: size.width*0.020),
                             child: Container(
                               height: size.height*0.050,
@@ -238,7 +238,7 @@ class _SavedScreenState extends State<SavedScreen> {
                                   ]
                               ),
                             ),
-                          ),
+                          ),*/
                         ],
                       ),
                     ),
@@ -256,20 +256,18 @@ class _SavedScreenState extends State<SavedScreen> {
                     itemCount: savedDataList.length,
                     itemBuilder:(ctx,i){
                       return GestureDetector(
-                        onTap: (){
+                        onTap: ()async{
                           if(passedColorName!=null || passedProductName != null){
-                            DatabaseHelper.instance.addSavedData(
-                                Saved(
-                                    id: savedDataList[i].id,
-                                    customerName: savedDataList[i].customerName,
-                                    address: savedDataList[i].address,
-                                    colorName:passedColorName??savedDataList[i].colorName,
-                                    productName: passedProductName??savedDataList[i].productName,
-                                    canSize: passedCanSize??savedDataList[i].canSize,
-                                    fandeckId: passedFandeckId??savedDataList[i].fandeckId,
-                                    rColor: passedGColor,
-                                    gColor: passedGColor,
-                                    bColor: passedBColor
+                            DatabaseHelper.instance.addSavedCustomerColorData(
+                                CustomerSavedColor(
+                                    cDForeignKey:savedDataList[0].id.toString(),
+                                    colorName: passedColorName,
+                                    productName:passedProductName,
+                                    canSize:passedCanSize,
+                                    fandeckId:passedFandeckId,
+                                    rColor:passedRColor,
+                                    gColor:passedGColor,
+                                    bColor:passedBColor
                                 )
                             ).whenComplete((){
                               final SnackBar snackBar = SnackBar(
@@ -332,7 +330,7 @@ class _SavedScreenState extends State<SavedScreen> {
                                   ],
                                 ),
 
-                                Padding(
+                        /*        Padding(
                                   padding:EdgeInsets.only(right: size.width*0.020),
                                   child: Container(
                                     height: size.height*0.050,
@@ -347,7 +345,7 @@ class _SavedScreenState extends State<SavedScreen> {
                                         ]
                                     ),
                                   ),
-                                ),
+                                ),*/
                               ],
                             ),
                           ),

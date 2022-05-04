@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:fashion_paints/database/all_data_database.dart';
-import 'package:fashion_paints/models/database_models/saved_model.dart';
+import 'package:fashion_paints/models/database_models/saved_customer_detail_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../main.dart';
 import 'package:intl/intl.dart';
+
+import '../models/database_models/saved_customer_detail_color.dart';
 
 class AlertBox{
   loginAlertBox1(BuildContext context) {
@@ -544,19 +546,29 @@ class AlertBox{
                                 onPressed: ()async{
                                   // if(_form.currentState?.validate()??true){
                                    DatabaseHelper.instance.addSavedData(
-                                     Saved(
-                                        customerName: nameController.text,
-                                        address: addressController.text,
-                                        contact: contactController.text,
-                                        colorName: colorName,
-                                        productName: productName,
-                                        canSize: canSize,
-                                        fandeckId: fandeckId,
-                                        rColor: rValue,
-                                        gColor: gValue,
-                                        bColor: bValue
+                                       SavedCustomerDetail(
+                                         customerName: nameController.text,
+                                         address: addressController.text,
+                                         contact: contactController.text,
+
                                      )
-                                   );
+                                   ).whenComplete(()async{
+                                     final data =await DatabaseHelper.instance.getSavedData();
+                                     for(var e in data) {
+                                       DatabaseHelper.instance.addSavedCustomerColorData(
+                                           CustomerSavedColor(
+                                               cDForeignKey:e.id.toString(),
+                                               colorName: colorName,
+                                               productName: productName,
+                                               canSize: canSize,
+                                               fandeckId: fandeckId,
+                                               rColor: rValue,
+                                               gColor: gValue,
+                                               bColor: bValue
+                                           )
+                                       );
+                                     }
+                                   });
                                  // Navigator.pop(context);
                                   Navigator.of(context).pushReplacementNamed("Saved_screen");
                                 },
