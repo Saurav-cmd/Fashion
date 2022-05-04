@@ -27,6 +27,8 @@ class _SavedScreenState extends State<SavedScreen> {
   double?passedGColor;
   double?passedBColor;
   double?passedFandeckId;
+  TextEditingController searchController = TextEditingController();
+  final GlobalKey<FormState> _form = GlobalKey<FormState>();
   @override
   void initState() {
     // TODO: implement initState
@@ -39,6 +41,10 @@ class _SavedScreenState extends State<SavedScreen> {
     passedBColor = widget.bColor;
     passedFandeckId = widget.fandeckId;
     getSavedData();
+
+    searchController.addListener(() {
+      _runFilter(searchController.value.text);
+    });
   }
 
   List<Saved>savedDataList = [];
@@ -50,6 +56,27 @@ class _SavedScreenState extends State<SavedScreen> {
       });
     }
   }
+
+  List<Saved> searchCustomer = [];
+  void _runFilter(String enterKeyword){
+    //  List<Map<String, dynamic>> results = [];
+    List<Saved> results = [];
+
+    if (enterKeyword.isEmpty){
+      results = savedDataList;
+
+    }
+    else{
+      results = savedDataList.where(
+            (e) => (e.customerName!.toLowerCase().contains(enterKeyword.toLowerCase(),)),
+      ).toList();
+    }setState(() {
+      searchCustomer = results;
+    });
+
+  }
+
+
   
   @override
   Widget build(BuildContext context) {
@@ -82,7 +109,8 @@ class _SavedScreenState extends State<SavedScreen> {
             child: Padding(
               padding:EdgeInsets.symmetric(horizontal: size.width*0.040,vertical: size.height*0.015),
               child: Form(
-                child:   TextFormField(
+                key: _form,
+                child:TextFormField(
                   decoration:InputDecoration(
                     border: const OutlineInputBorder(
                       borderSide: BorderSide.none,
@@ -99,6 +127,7 @@ class _SavedScreenState extends State<SavedScreen> {
                     prefixIcon:const Icon(Icons.search),
                     hintStyle:TextStyle(fontSize: size.height*0.012+size.width*0.012,color: Colors.black26),
                   ),
+                  controller: searchController,
                 ),
               ),
             ),
@@ -109,7 +138,7 @@ class _SavedScreenState extends State<SavedScreen> {
               child: ListView.builder(
                 physics:const AlwaysScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: savedDataList.length,
+                itemCount: searchCustomer.length,
                 itemBuilder:(ctx,i){
                   return GestureDetector(
                     onTap: (){
@@ -120,11 +149,11 @@ class _SavedScreenState extends State<SavedScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("${savedDataList[i].customerName}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: size.height*0.012+size.width*0.012),),
+                            Text("${searchCustomer[i].customerName}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: size.height*0.012+size.width*0.012),),
                             SizedBox(height: size.height*0.008),
-                            Text("${savedDataList[i].address}"),
+                            Text("${searchCustomer[i].address}"),
                             SizedBox(height: size.height*0.008),
-                            Text("${savedDataList[i].contact}"),
+                            Text("${searchCustomer[i].contact}"),
                             SizedBox(height: size.height*0.008),
                             Divider(
                               color: Colors.black87,
@@ -140,7 +169,7 @@ class _SavedScreenState extends State<SavedScreen> {
                             height: size.height*0.050,
                             width: size.width*0.10,
                             decoration: BoxDecoration(
-                                color: Color.fromRGBO(savedDataList[i].rColor!.toInt(),savedDataList[i].gColor!.toInt(),savedDataList[i].bColor!.toInt(),1),
+                                color: Color.fromRGBO(searchCustomer[i].rColor!.toInt(),searchCustomer[i].gColor!.toInt(),searchCustomer[i].bColor!.toInt(),1),
                                 boxShadow:const [
                                   BoxShadow(
                                     color: Colors.black,
