@@ -1,4 +1,6 @@
 import 'package:fashion_paints/database/all_data_database.dart';
+import 'package:fashion_paints/main.dart';
+import 'package:fashion_paints/models/database_models/book_marked_model.dart';
 import 'package:fashion_paints/models/database_models/colorant_database_model.dart';
 import 'package:fashion_paints/models/database_models/doubled_fencee_database_%20model.dart';
 import 'package:fashion_paints/models/database_models/shade_color_database_model.dart';
@@ -8,12 +10,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../Utils/contants.dart';
 import '../../colors/colors_file.dart';
+import '../book_marked/book_marked_screen.dart';
 
 
 // ignore: must_be_immutable
 class GenerateColorScreen extends StatefulWidget {
-  GenerateColorScreen({Key,this.colorName,this.productName,this.canSize,this.base,this.colorants,this.fanDeckName,key}) : super(key: key);
-
+  GenerateColorScreen({Key,this.columnId,this.colorName,this.productName,this.canSize,this.base,this.colorants,this.fanDeckName,key}) : super(key: key);
+  int?columnId;
   String? colorName;
   String? productName;
   double? canSize;
@@ -25,6 +28,7 @@ class GenerateColorScreen extends StatefulWidget {
 }
 
 class _GenerateColorScreenState extends State<GenerateColorScreen> {
+  int?passedColumnId;
   String? passedColorName;
   String? passedProductName;
   double? passedCanSize;
@@ -38,6 +42,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    passedColumnId = widget.columnId;
     passedColorName = widget.colorName;
     passedProductName = widget.productName;
     passedCanSize = widget.canSize;
@@ -45,7 +50,8 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
     passedColorants = widget.colorants;
     passedFanDeckName = widget.fanDeckName;
     grabFanDeckId();
-
+    DatabaseHelper;
+    print("THis is columnId $passedColumnId");
   }
 
   getDouble(String? value){
@@ -279,9 +285,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
         });
       }
     }
-    setState(() {
       getColorants();
-    });
   }
 
   List<int> rValue = [];
@@ -330,6 +334,8 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
 
   double? height1 =100;
   int? height2;
+  Color iconColor = Colors.white;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -343,7 +349,14 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
         elevation: 0,
         leading: IconButton(
           onPressed: (){
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(fanDeckName: passedFanDeckName,productName: passedProductName,)));
+            if(passedColumnId==null) {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (ctx) =>
+                      ProductDetailScreen(fanDeckName: passedFanDeckName,
+                        productName: passedProductName,)));
+            }else{
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder:(ctx)=>const BookMarkedScreen()));
+            }
           },
           icon:const Icon(Icons.arrow_back_ios),color: Colors.white60,iconSize: 20,
         ),
@@ -351,11 +364,104 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
         title: const Text("Formula"),
         actions: [
           IconButton(onPressed:(){
+
           }, icon:const Icon(Icons.bookmark)),
 
-          IconButton(onPressed:(){
-
-          }, icon:const Icon(Icons.star_border)),
+          IconButton(
+              onPressed:()async{
+                if(passedColumnId==null) {
+                  DatabaseHelper.instance.addBookMarkedData(
+                      BookMarked(
+                        fandeckId: fanDeckId?.toInt(),
+                        colorName: passedColorName,
+                        productName: passedProductName,
+                        fandeckName: passedFanDeckName,
+                        canSize: selectedCanSize == 0.0
+                            ? passedCanSize
+                            : selectedCanSize,
+                        canColorR: double.parse(singleRValue.toString()),
+                        canColorG: double.parse(singleGValue.toString()),
+                        canColorB: double.parse(singleBValue.toString()),
+                      )).whenComplete(() {
+                    final SnackBar snackBar = SnackBar(
+                      content: Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                                height: size.height * 0.045,
+                                width: size.width * 0.2,
+                                child: Image.asset(
+                                  "icons/logo 2.png", fit: BoxFit.fill,)),
+                            SizedBox(width: size.width * 0.050),
+                            Text(
+                              'Color BookMarked',
+                              maxLines: 2,
+                              style: TextStyle(fontSize: size.height * 0.012 +
+                                  size.width * 0.012),),
+                          ],
+                        ),
+                      ),
+                      duration: const Duration(seconds: 1),
+                      backgroundColor: Colors.grey.shade700,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)
+                      ),
+                    );
+                    snackBarKey.currentState?.showSnackBar(snackBar);
+                  });
+                }else if(passedColumnId!=null){
+                  DatabaseHelper.instance.updateBookMarkedData(
+                    BookMarked(
+                      id: passedColumnId,
+                      fandeckId: fanDeckId?.toInt(),
+                      colorName: passedColorName,
+                      productName: passedProductName,
+                      fandeckName: passedFanDeckName,
+                      canSize: selectedCanSize == 0.0
+                          ? passedCanSize
+                          : selectedCanSize,
+                      canColorR: double.parse(singleRValue.toString()),
+                      canColorG: double.parse(singleGValue.toString()),
+                      canColorB: double.parse(singleBValue.toString()),
+                    ),passedColumnId
+                  ).whenComplete((){
+                    final SnackBar snackBar = SnackBar(
+                      content: Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                                height: size.height * 0.045,
+                                width: size.width * 0.2,
+                                child: Image.asset(
+                                  "icons/logo 2.png", fit: BoxFit.fill,)),
+                            SizedBox(width: size.width * 0.050),
+                            Text(
+                              'BookMarked Updated',
+                              maxLines: 2,
+                              style: TextStyle(fontSize: size.height * 0.012 +
+                                  size.width * 0.012),),
+                          ],
+                        ),
+                      ),
+                      duration: const Duration(seconds: 1),
+                      backgroundColor: Colors.grey.shade700,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)
+                      ),
+                    );
+                    snackBarKey.currentState?.showSnackBar(snackBar);
+                  });
+                }
+                    setState(() {
+                      iconColor = Colors.red;
+                    });
+                    }, icon:Icon(Icons.star_border,color:passedColumnId==null?iconColor:iconColor=Colors.red,)),
 
           IconButton(onPressed:(){
             Navigator.of(context).pushNamed("Dealer_button_Navigation_Bar");
@@ -483,7 +589,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
               SizedBox(
                 height:200,
                 child: GridView.builder(
-                    itemCount: calculatedCylinderVolume.length,
+                    itemCount:calculatedCylinderVolume.length,
                     scrollDirection: Axis.horizontal,
                     shrinkWrap: true,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

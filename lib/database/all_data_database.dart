@@ -1,6 +1,7 @@
 import 'package:fashion_paints/models/database_models/color_base_database_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import '../models/database_models/book_marked_model.dart';
 import '../models/database_models/colorant_database_model.dart';
 import '../models/database_models/doubled_fencee_database_ model.dart';
 import '../models/database_models/shade_color_database_model.dart';
@@ -11,6 +12,8 @@ class DatabaseHelper{
   static const table2 = "ColorBase";
   static const table3 = "ColorColorant";
   static const table4 = "ShadeColor";
+  static const table5 = "BookMarked";
+
   //this is for Double Fenceee table.........................................................
   static const id = 'id';
   static const colorName = 'colorName';
@@ -82,6 +85,18 @@ class DatabaseHelper{
   static const sBValue = "bValue";
   //This is for Shade Color table ends here....................................................
 
+  //This is for BookMarked table starts here...................................................
+  static const bookMarkedColmId = "id";
+  static const bookMarkedFandeckId = "fandeckId";
+  static const bookMarkedColorName = "colorName";
+  static const bookMarkedColorCode = "colorCode";
+  static const bookMarkedProductName = "productName";
+  static const bookMarkedFandeckName = "fandeckName";
+  static const bookMarkedCanSize = "canSize";
+  static const canColorR = "canColorR";
+  static const canColorG = "canColorG";
+  static const canColorB = "canColorB";
+  //This is for BookMarked table ends here......................................................
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
   static Database? _database;
@@ -107,7 +122,7 @@ class DatabaseHelper{
 
   Future<void> cleanDatabase()async{
     final db = await instance.database;
-    if(table1.isNotEmpty && table1!=null){
+    if(table1.isNotEmpty){
       db?.delete(table1);
     }
   }
@@ -191,8 +206,24 @@ class DatabaseHelper{
     $sBValue REAL
   )
   ''').then((value) => null);
+
+    await db.execute('''
+       CREATE TABLE $table5(
+        $bookMarkedColmId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+        $bookMarkedFandeckId INTEGER,
+        $bookMarkedColorName TEXT,
+        $bookMarkedColorCode TEXT,
+        $bookMarkedProductName TEXT,
+        $bookMarkedFandeckName TEXT,
+        $bookMarkedCanSize REAL,
+        $canColorR REAL,
+        $canColorG REAL,
+        $canColorB REAL
+       )
+    ''').then((value) => null);
   }
 
+  //double defence ko data add,query,all data get ya bata start ho hai................................................................
   Future<int?> addDoubleFenceeData(DoubleDefenceee doubleFencee) async{
     Database? db = await instance.database;
     return await db?.insert(table1, doubleFencee.toMap());
@@ -212,13 +243,14 @@ class DatabaseHelper{
     var data = await  db?.query(table1,where:'$fanDeck=? and $colorName=?',whereArgs: [fanDeckId,colorCodeOrName]);
     return data!.isNotEmpty?data.map((c) => DoubleDefenceee.fromMap(c)).toList():[];
   }
+  //double defence ko data add,query,all data get ya bata end ho hai................................................................
 
+
+  //color Base ko data add,all data get ya bata start ho hai........................................................................
   Future<int?> addColorBaseData(DatabaseColorBase colorBase) async{
     Database? db = await instance.database;
     return await db?.insert(table2, colorBase.toMap());
   }
-
-
 
   Future<List<DatabaseColorBase>> getColorBaseData() async{
     Database? db = await instance.database;
@@ -226,7 +258,10 @@ class DatabaseHelper{
     List<DatabaseColorBase>? colorBaseDataList = data!.isNotEmpty?data.map((e) => DatabaseColorBase.fromMap(e)).toList():[];
     return colorBaseDataList;
   }
+  //color Base ko data add,all data get ya bata end ho hai........................................................................
 
+
+  //color colorant ko data add,query,all data get ya bata start ho hai........................................................................
   Future<int?> addColorColorantData(Colorants colorColorants) async{
     Database? db = await instance.database;
     return await db?.insert(table3, colorColorants.toMap());
@@ -245,14 +280,14 @@ class DatabaseHelper{
     List<Colorants>? colorColorantsDataList = data!.isNotEmpty?data.map((e) => Colorants.fromMap(e)).toList():[];
     return colorColorantsDataList;
   }
+  //color colorant ko data add,query,all data get ya bata end ho hai........................................................................
 
 
+  //shade color ko data add,query,all data get ya bata start ho hai........................................................................
   Future<int?> addShadeColorData(ShadeColorDatabase shadeColor) async{
     Database? db = await instance.database;
     return await db?.insert(table4, shadeColor.toMap());
   }
-
-
 
   Future<List<ShadeColorDatabase>> getShadeColorData() async{
     Database? db = await instance.database;
@@ -266,4 +301,24 @@ class DatabaseHelper{
     var data =  await db?.query(table4,where:'$sColorName=?',whereArgs: [colorName]);
     return data!.isNotEmpty?data.map((e) => ShadeColorDatabase.fromMap(e)).toList():[];
   }
+//shade color ko data add,query,all data get ya bata end ho hai........................................................................
+
+  //Book Marked ko data add,get garne ya bata start ho..................................................................................
+  Future<int?> addBookMarkedData(BookMarked bookMarked)async{
+      Database? db = await instance.database;
+      return await db?.insert(table5, bookMarked.toMap());
+  }
+
+  Future<List<BookMarked>> getBookMarkedData()async{
+    Database? db = await instance.database;
+    var data =await db?.query(table5);
+    List<BookMarked>? bookMarkedDataList = data!.isNotEmpty?data.map((e) => BookMarked.fromMap(e)).toList():[];
+    return bookMarkedDataList;
+  }
+
+  Future<int?> updateBookMarkedData(BookMarked bookMarked,id)async{
+    Database? db =await instance.database;
+    return await db?.update(table5,bookMarked.toMap(),where: "$bookMarkedColmId=?",whereArgs: [id]);
+  }
+//Book Marked ko data add,get garne ya bata end ho..................................................................................
 }

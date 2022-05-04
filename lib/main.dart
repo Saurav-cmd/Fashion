@@ -1,6 +1,7 @@
 import 'package:fashion_paints/screens/bipana_preview/bipana_preview.dart';
 import 'package:fashion_paints/screens/bipana_preview/camera_screen.dart';
 import 'package:fashion_paints/screens/bipana_preview/gallery_screen.dart';
+import 'package:fashion_paints/screens/book_marked/book_marked_screen.dart';
 import 'package:fashion_paints/screens/button_navigation_bars/home_screen_button_navigation_bar.dart';
 import 'package:fashion_paints/screens/color%20personality/color_personality_screen.dart';
 import 'package:fashion_paints/screens/comments_screen.dart';
@@ -66,6 +67,7 @@ class MyApp extends StatelessWidget {
         "Find_Painter_screen":(ctx)=>const FindPainter(),
         "Find_Painter_Second_screen":(ctx)=>const PainterStatus(),
         "Generate_screen":(ctx)=>const GenerateFirstScreen(),
+        "Book_Marked_screen":(ctx)=>const BookMarkedScreen(),
         },
     );
   }
