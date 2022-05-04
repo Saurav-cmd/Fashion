@@ -1,9 +1,11 @@
 import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:fashion_paints/database/all_data_database.dart';
+import 'package:fashion_paints/screens/saved/saved_detail.dart';
 import 'package:fashion_paints/widgets/dilogue_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../main.dart';
 import '../../models/database_models/saved_model.dart';
 
 class SavedScreen extends StatefulWidget {
@@ -41,10 +43,7 @@ class _SavedScreenState extends State<SavedScreen> {
     passedBColor = widget.bColor;
     passedFandeckId = widget.fandeckId;
     getSavedData();
-
-    searchController.addListener(() {
-      _runFilter(searchController.value.text);
-    });
+    print("This is color Name $passedColorName");
   }
 
   List<Saved>savedDataList = [];
@@ -55,6 +54,11 @@ class _SavedScreenState extends State<SavedScreen> {
         savedDataList.add(e);
       });
     }
+    setState(() {
+      searchController.addListener(() {
+        _runFilter(searchController.value.text);
+      });
+    });
   }
 
   List<Saved> searchCustomer = [];
@@ -64,7 +68,6 @@ class _SavedScreenState extends State<SavedScreen> {
 
     if (enterKeyword.isEmpty){
       results = savedDataList;
-
     }
     else{
       results = savedDataList.where(
@@ -132,6 +135,7 @@ class _SavedScreenState extends State<SavedScreen> {
               ),
             ),
           ),
+          if(searchController.text.isNotEmpty)
           Expanded(
             child: Padding(
               padding:EdgeInsets.symmetric(horizontal: size.width*0.040,vertical: size.height*0.020),
@@ -142,57 +146,226 @@ class _SavedScreenState extends State<SavedScreen> {
                 itemBuilder:(ctx,i){
                   return GestureDetector(
                     onTap: (){
+                      if(passedColorName!=null || passedProductName != null){
+                        DatabaseHelper.instance.addSavedData(
+                          Saved(
+                            customerName: searchCustomer[i].customerName,
+                            address: searchCustomer[i].address,
+                            colorName:passedColorName??searchCustomer[i].colorName,
+                            productName: passedProductName??searchCustomer[i].productName,
+                            canSize: passedCanSize??searchCustomer[i].canSize,
+                            fandeckId: passedFandeckId??searchCustomer[i].fandeckId,
+                            rColor: passedGColor,
+                            gColor: passedGColor,
+                            bColor: passedBColor
+                          )
+                        ).whenComplete((){
+                          final SnackBar snackBar = SnackBar(
+                            content: Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                      height: size.height * 0.045,
+                                      width: size.width * 0.2,
+                                      child: Image.asset(
+                                        "icons/logo 2.png", fit: BoxFit.fill,)),
+                                  SizedBox(width: size.width * 0.050),
+                                  Text(
+                                    'Color Saved',
+                                    maxLines: 2,
+                                    style: TextStyle(fontSize: size.height * 0.012 +
+                                        size.width * 0.012),),
+                                ],
+                              ),
+                            ),
+                            duration: const Duration(seconds: 1),
+                            backgroundColor: Colors.grey.shade700,
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)
+                            ),
+                          );
+                          snackBarKey.currentState?.showSnackBar(snackBar);
+                        });
+                      }else if(passedColorName==null || passedProductName==null){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=> SavedDetailPage(
+                          customerName: searchCustomer[i].customerName,
+                          customerAddress: searchCustomer[i].address,
+                          contact: searchCustomer[i].contact,
+                        )));
+                      }
                     },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("${searchCustomer[i].customerName}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: size.height*0.012+size.width*0.012),),
-                            SizedBox(height: size.height*0.008),
-                            Text("${searchCustomer[i].address}"),
-                            SizedBox(height: size.height*0.008),
-                            Text("${searchCustomer[i].contact}"),
-                            SizedBox(height: size.height*0.008),
-                            Divider(
-                              color: Colors.black87,
-                              thickness: size.width*0.005,
-                            )
-                          ],
-
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(width:1.0, color: Colors.lightBlue.shade900),
                         ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("${searchCustomer[i].customerName}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: size.height*0.012+size.width*0.012),),
+                              SizedBox(height: size.height*0.008),
+                              Text("${searchCustomer[i].address}"),
+                              SizedBox(height: size.height*0.008),
+                              Text("${searchCustomer[i].contact}"),
+                              SizedBox(height: size.height*0.008),
+                              Divider(
+                                color: Colors.black87,
+                                thickness: size.width*0.005,
+                              )
+                            ],
 
-                        Padding(
-                          padding:EdgeInsets.only(right: size.width*0.020),
-                          child: Container(
-                            height: size.height*0.050,
-                            width: size.width*0.10,
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(searchCustomer[i].rColor!.toInt(),searchCustomer[i].gColor!.toInt(),searchCustomer[i].bColor!.toInt(),1),
-                                boxShadow:const [
-                                  BoxShadow(
-                                    color: Colors.black,
-                                    blurRadius: 1.0,
-                                  )
-                                ]
+                          ),
+
+                          Padding(
+                            padding:EdgeInsets.only(right: size.width*0.020),
+                            child: Container(
+                              height: size.height*0.050,
+                              width: size.width*0.10,
+                              decoration: BoxDecoration(
+                                  color: Color.fromRGBO(searchCustomer[i].rColor!.toInt(),searchCustomer[i].gColor!.toInt(),searchCustomer[i].bColor!.toInt(),1),
+                                  boxShadow:const [
+                                    BoxShadow(
+                                      color: Colors.black,
+                                      blurRadius: 1.0,
+                                    )
+                                  ]
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   );
                 }),
-            ),)
+            ),
+          ),
+          if(searchController.text.isEmpty)
+            Expanded(
+              child: Padding(
+                padding:EdgeInsets.symmetric(horizontal: size.width*0.040,vertical: size.height*0.020),
+                child: ListView.builder(
+                    physics:const AlwaysScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: savedDataList.length,
+                    itemBuilder:(ctx,i){
+                      return GestureDetector(
+                        onTap: (){
+                          if(passedColorName!=null || passedProductName != null){
+                            DatabaseHelper.instance.addSavedData(
+                                Saved(
+                                    id: savedDataList[i].id,
+                                    customerName: savedDataList[i].customerName,
+                                    address: savedDataList[i].address,
+                                    colorName:passedColorName??savedDataList[i].colorName,
+                                    productName: passedProductName??savedDataList[i].productName,
+                                    canSize: passedCanSize??savedDataList[i].canSize,
+                                    fandeckId: passedFandeckId??savedDataList[i].fandeckId,
+                                    rColor: passedGColor,
+                                    gColor: passedGColor,
+                                    bColor: passedBColor
+                                )
+                            ).whenComplete((){
+                              final SnackBar snackBar = SnackBar(
+                                content: Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                          height: size.height * 0.045,
+                                          width: size.width * 0.2,
+                                          child: Image.asset(
+                                            "icons/logo 2.png", fit: BoxFit.fill,)),
+                                      SizedBox(width: size.width * 0.050),
+                                      Text(
+                                        'Color Saved',
+                                        maxLines: 2,
+                                        style: TextStyle(fontSize: size.height * 0.012 +
+                                            size.width * 0.012),),
+                                    ],
+                                  ),
+                                ),
+                                duration: const Duration(seconds: 1),
+                                backgroundColor: Colors.grey.shade700,
+                                behavior: SnackBarBehavior.floating,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)
+                                ),
+                              );
+                              snackBarKey.currentState?.showSnackBar(snackBar);
+                            });
+                          }else if(passedColorName==null || passedProductName==null){
+                            Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=> SavedDetailPage(
+                              customerName: savedDataList[i].customerName,
+                              customerAddress: savedDataList[i].address,
+                              contact: savedDataList[i].contact,
+                            )));
+                          }
+                        },
+                        child: Container(
+                          decoration:const BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(width:1.0, color: Colors.black),
+                            ),
+                          ),
+                          child: Padding(
+                            padding:EdgeInsets.symmetric(vertical: size.height*0.010),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("${savedDataList[i].customerName}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: size.height*0.012+size.width*0.012),),
+                                    SizedBox(height: size.height*0.008),
+                                    Text("${savedDataList[i].address}"),
+                                    SizedBox(height: size.height*0.008),
+                                    Text("${savedDataList[i].contact}"),
+                                    SizedBox(height: size.height*0.008),
+                                  ],
+                                ),
+
+                                Padding(
+                                  padding:EdgeInsets.only(right: size.width*0.020),
+                                  child: Container(
+                                    height: size.height*0.050,
+                                    width: size.width*0.10,
+                                    decoration: BoxDecoration(
+                                        color: Color.fromRGBO(savedDataList[i].rColor!.toInt(),savedDataList[i].gColor!.toInt(),savedDataList[i].bColor!.toInt(),1),
+                                        boxShadow:const [
+                                          BoxShadow(
+                                            color: Colors.black,
+                                            blurRadius: 1.0,
+                                          )
+                                        ]
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+              ),
+            )
         ],
       ),
-      floatingActionButton:FloatingActionButton(
+
+      floatingActionButton:passedColorName!=null ||passedProductName!=null?FloatingActionButton(
         onPressed: () {
           AlertBox().addCustomerDialogueBox(passedColorName,passedProductName,passedCanSize,passedRColor,passedGColor,passedBColor,passedFandeckId,context);
         },
         backgroundColor:ChooseColor(0).buttonColor,
         child: const Icon(Icons.add),
-      ),
+      ):Container(),
     );
   }
 }

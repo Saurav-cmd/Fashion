@@ -80,44 +80,50 @@ class _BookMarkedScreenState extends State<BookMarkedScreen> {
                           fanDeckName: bookMarkedDataList[i].fandeckName,
                         )));
                       },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Container(
+                        decoration:const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(width:1.0, color: Colors.black),
+                          ),
+                        ),
+                        child: Padding(
+                          padding:EdgeInsets.symmetric(vertical: size.height*0.010),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("${bookMarkedDataList[i].colorName}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: size.height*0.012+size.width*0.012),),
-                              SizedBox(height: size.height*0.008),
-                              Text("${bookMarkedDataList[i].productName}"),
-                              SizedBox(height: size.height*0.008),
-                              Text("${bookMarkedDataList[i].fandeckName}"),
-                              SizedBox(height: size.height*0.008),
-                              Text("${bookMarkedDataList[i].canSize}"),
-                              Divider(
-                                color: Colors.black87,
-                                thickness: size.width*0.005,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("${bookMarkedDataList[i].colorName}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: size.height*0.012+size.width*0.012),),
+                                  SizedBox(height: size.height*0.008),
+                                  Text("${bookMarkedDataList[i].productName}"),
+                                  SizedBox(height: size.height*0.008),
+                                  Text("${bookMarkedDataList[i].fandeckName}"),
+                                  SizedBox(height: size.height*0.008),
+                                  Text("${bookMarkedDataList[i].canSize}"),
+                                ],
+                              ),
+
+                              Padding(
+                                padding:EdgeInsets.only(right: size.width*0.020),
+                                child: Container(
+                                  height: size.height*0.070,
+                                  width: size.width*0.15,
+                                  decoration: BoxDecoration(
+                                      color: Color.fromRGBO(bookMarkedDataList[i].canColorR!.toInt(),bookMarkedDataList[i].canColorG!.toInt(), bookMarkedDataList[i].canColorB!.toInt(),1),
+                                      boxShadow:const [
+                                        BoxShadow(
+                                          color: Colors.black,
+                                          blurRadius: 1.0,
+                                        )
+                                      ]
+                                  ),
+                                ),
                               )
+
                             ],
                           ),
-
-                          Padding(
-                            padding:EdgeInsets.only(right: size.width*0.020),
-                            child: Container(
-                              height: size.height*0.070,
-                              width: size.width*0.15,
-                              decoration: BoxDecoration(
-                                  color: Color.fromRGBO(bookMarkedDataList[i].canColorR!.toInt(),bookMarkedDataList[i].canColorG!.toInt(), bookMarkedDataList[i].canColorB!.toInt(),1),
-                                  boxShadow:const [
-                                    BoxShadow(
-                                      color: Colors.black,
-                                      blurRadius: 1.0,
-                                    )
-                                  ]
-                              ),
-                            ),
-                          )
-
-                        ],
+                        ),
                       ),
                     );
                   }),
