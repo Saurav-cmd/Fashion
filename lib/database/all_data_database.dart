@@ -4,6 +4,7 @@ import 'package:path/path.dart';
 import '../models/database_models/book_marked_model.dart';
 import '../models/database_models/colorant_database_model.dart';
 import '../models/database_models/doubled_fencee_database_ model.dart';
+import '../models/database_models/saved_model.dart';
 import '../models/database_models/shade_color_database_model.dart';
 
 class DatabaseHelper{
@@ -13,6 +14,7 @@ class DatabaseHelper{
   static const table3 = "ColorColorant";
   static const table4 = "ShadeColor";
   static const table5 = "BookMarked";
+  static const table6 = "Saved";
 
   //this is for Double Fenceee table.........................................................
   static const id = 'id';
@@ -97,6 +99,22 @@ class DatabaseHelper{
   static const canColorG = "canColorG";
   static const canColorB = "canColorB";
   //This is for BookMarked table ends here......................................................
+
+  //This is for Saved table starts here.........................................................
+  static const savedColumnId = "id";
+  static const savedCustomerName = "customerName";
+  static const savedCustomerAddress = "address";
+  static const savedCustomerContact = "contact";
+  static const savedColorName = "colorName";
+  static const savedColorCode = "colorCode";
+  static const savedProductName = "productName";
+  static const savedCanSize = "canSize";
+  static const savedFandeckId = "fandeckId";
+  static const savedRColor = "rColor";
+  static const savedGColor = "gColor";
+  static const savedBColor = "bColor";
+  //This is for Saved table ends here.........................................................
+
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
   static Database? _database;
@@ -221,6 +239,23 @@ class DatabaseHelper{
         $canColorB REAL
        )
     ''').then((value) => null);
+
+    await db.execute('''
+      CREATE TABLE $table6(
+        $savedColumnId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+        $savedCustomerName TEXT,
+        $savedCustomerAddress TEXT,
+        $savedCustomerContact TEXT,
+        $savedColorName TEXT,
+        $savedColorCode TEXT,
+        $savedProductName TEXT,
+        $savedCanSize REAL,
+        $savedFandeckId REAL,
+        $savedRColor REAL,
+        $savedGColor REAL,
+        $savedBColor REAL
+      )
+    ''').then((value) => null);
   }
 
   //double defence ko data add,query,all data get ya bata start ho hai................................................................
@@ -301,7 +336,7 @@ class DatabaseHelper{
     var data =  await db?.query(table4,where:'$sColorName=?',whereArgs: [colorName]);
     return data!.isNotEmpty?data.map((e) => ShadeColorDatabase.fromMap(e)).toList():[];
   }
-//shade color ko data add,query,all data get ya bata end ho hai........................................................................
+  //shade color ko data add,query,all data get ya bata end ho hai........................................................................
 
   //Book Marked ko data add,get garne ya bata start ho..................................................................................
   Future<int?> addBookMarkedData(BookMarked bookMarked)async{
@@ -320,5 +355,20 @@ class DatabaseHelper{
     Database? db =await instance.database;
     return await db?.update(table5,bookMarked.toMap(),where: "$bookMarkedColmId=?",whereArgs: [id]);
   }
-//Book Marked ko data add,get garne ya bata end ho..................................................................................
+  //Book Marked ko data add,get garne ya bata end ho.........................................................................................
+
+  //Saved ko data add,get garne ya bata start ho hai.........................................................................................
+  Future<int?> addSavedData(Saved saved)async{
+    Database? db = await instance.database;
+    return await db?.insert(table6, saved.toMap());
+  }
+
+  Future<List<Saved>> getSavedData()async{
+    Database? db = await instance.database;
+    var data = await db?.query(table6);
+    List<Saved> savedDataList = data!.isNotEmpty?data.map((e) => Saved.fromMap(e)).toList():[];
+    return savedDataList;
+  }
+  //Saved ko data add,get garne ya bata end ho hai.........................................................................................
+
 }

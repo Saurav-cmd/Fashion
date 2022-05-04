@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
         "Dealer_Notification_List_screen":(ctx)=>const DealerNotificationScreen(),
         "Order_history_screen":(ctx)=>const OrderHistory(),
         "Comments_screen":(ctx)=>const CommentsScreen(),
-        "Saved_screen":(ctx)=>const SavedScreen(),
+        "Saved_screen":(ctx)=>SavedScreen(),
         "Gallery_screen":(ctx)=>const GalleryScreen(),
         "Camera_screen":(ctx)=>const CameraScreen(),
         "Color_screen":(ctx)=>const ColorScreen(),

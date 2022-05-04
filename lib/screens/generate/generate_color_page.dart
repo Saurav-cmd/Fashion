@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import '../../Utils/contants.dart';
 import '../../colors/colors_file.dart';
 import '../book_marked/book_marked_screen.dart';
+import '../saved/saved_screen.dart';
 
 
 // ignore: must_be_immutable
@@ -364,7 +365,16 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
         title: const Text("Formula"),
         actions: [
           IconButton(onPressed:(){
-
+            //yo chai khas ma save ho icon chai bookmark ko milaya ra halaya ko ho
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder:(ctx)=>SavedScreen(
+              colorName: passedColorName,
+              productName: passedProductName,
+              canSize: selectedCanSize==0.0?passedCanSize:selectedCanSize,
+              rColor: double.parse(singleRValue.toString()),
+              gColor: double.parse(singleGValue.toString()),
+              bColor: double.parse(singleBValue.toString()),
+              fandeckId: fanDeckId,
+            )));
           }, icon:const Icon(Icons.bookmark)),
 
           IconButton(

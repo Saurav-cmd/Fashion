@@ -1,15 +1,56 @@
 import 'package:fashion_paints/colors/colors_file.dart';
+import 'package:fashion_paints/database/all_data_database.dart';
+import 'package:fashion_paints/widgets/dilogue_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class SavedScreen extends StatefulWidget {
-  const SavedScreen({Key? key}) : super(key: key);
+import '../../models/database_models/saved_model.dart';
 
+class SavedScreen extends StatefulWidget {
+  SavedScreen({Key,this.colorName,this.productName,this.canSize,this.rColor,this.gColor,this.bColor,this.fandeckId,key}) : super(key: key);
+  String?colorName;
+  String?productName;
+  double?canSize;
+  double?rColor;
+  double?gColor;
+  double?bColor;
+  double?fandeckId;
   @override
   State<SavedScreen> createState() => _SavedScreenState();
 }
 
 class _SavedScreenState extends State<SavedScreen> {
+  String?passedColorName;
+  String?passedProductName;
+  double?passedCanSize;
+  double?passedRColor;
+  double?passedGColor;
+  double?passedBColor;
+  double?passedFandeckId;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    passedColorName = widget.colorName;
+    passedProductName = widget.productName;
+    passedCanSize = widget.canSize;
+    passedRColor = widget.rColor;
+    passedGColor = widget.gColor;
+    passedBColor = widget.bColor;
+    passedFandeckId = widget.fandeckId;
+    getSavedData();
+  }
+
+  List<Saved>savedDataList = [];
+  getSavedData()async{
+    final data = await DatabaseHelper.instance.getSavedData();
+    for(var e in data){
+      setState(() {
+        savedDataList.add(e);
+      });
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -62,7 +103,66 @@ class _SavedScreenState extends State<SavedScreen> {
               ),
             ),
           ),
+          Expanded(
+            child: Padding(
+              padding:EdgeInsets.symmetric(horizontal: size.width*0.040,vertical: size.height*0.020),
+              child: ListView.builder(
+                physics:const AlwaysScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: savedDataList.length,
+                itemBuilder:(ctx,i){
+                  return GestureDetector(
+                    onTap: (){
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("${savedDataList[i].customerName}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: size.height*0.012+size.width*0.012),),
+                            SizedBox(height: size.height*0.008),
+                            Text("${savedDataList[i].address}"),
+                            SizedBox(height: size.height*0.008),
+                            Text("${savedDataList[i].contact}"),
+                            SizedBox(height: size.height*0.008),
+                            Divider(
+                              color: Colors.black87,
+                              thickness: size.width*0.005,
+                            )
+                          ],
+
+                        ),
+
+                        Padding(
+                          padding:EdgeInsets.only(right: size.width*0.020),
+                          child: Container(
+                            height: size.height*0.050,
+                            width: size.width*0.10,
+                            decoration: BoxDecoration(
+                                color: Color.fromRGBO(savedDataList[i].rColor!.toInt(),savedDataList[i].gColor!.toInt(),savedDataList[i].bColor!.toInt(),1),
+                                boxShadow:const [
+                                  BoxShadow(
+                                    color: Colors.black,
+                                    blurRadius: 1.0,
+                                  )
+                                ]
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+            ),)
         ],
+      ),
+      floatingActionButton:FloatingActionButton(
+        onPressed: () {
+          AlertBox().addCustomerDialogueBox(passedColorName,passedProductName,passedCanSize,passedRColor,passedGColor,passedBColor,passedFandeckId,context);
+        },
+        backgroundColor:ChooseColor(0).buttonColor,
+        child: const Icon(Icons.add),
       ),
     );
   }

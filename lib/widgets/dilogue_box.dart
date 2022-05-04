@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:fashion_paints/colors/colors_file.dart';
+import 'package:fashion_paints/database/all_data_database.dart';
+import 'package:fashion_paints/models/database_models/saved_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../main.dart';
@@ -448,5 +450,130 @@ class AlertBox{
       },
     );
     // Navigator.of(context).pop();
+  }
+
+  addCustomerDialogueBox(String?colorName,String?productName,double?canSize,double?rValue,double?gValue,double?bValue,double?fandeckId,BuildContext context)async{
+    final size = MediaQuery.of(context).size;
+    final GlobalKey<FormState> _form = GlobalKey<FormState>();
+    TextEditingController nameController = TextEditingController();
+    TextEditingController addressController = TextEditingController();
+    TextEditingController contactController = TextEditingController();
+    showDialog(
+      barrierDismissible: true,
+        context: context, builder:(ctx){
+          return WillPopScope(
+            onWillPop:()async=>false,
+            child:AlertDialog(
+              title:Center(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Add Customer",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: size.height*0.015+size.width*0.015,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        IconButton(onPressed: (){
+                          Navigator.pop(context);
+                        }, icon:const Icon(Icons.clear))
+                      ],
+                    ),
+                    Form(
+                      key: _form,
+                        child:Column(
+                          children: [
+                            TextFormField(
+                              decoration:const InputDecoration(
+                                hintText: "Customer Name",
+                              ),
+                              validator: (value){
+                                if(value!.isEmpty){
+                                  return "Name is required";
+                                }else{
+                                  return "";
+                                }
+                              },
+                              controller: nameController,
+                            ),
+                            TextFormField(
+                              decoration:const InputDecoration(
+                                hintText: "Customer Address",
+                              ),
+                              validator: (value){
+                                if(value!.isEmpty){
+                                  return "Address is required";
+                                }else {
+                                  return "";
+                                }
+                              },
+                              controller: addressController,
+                            ),
+                            TextFormField(
+                              decoration:const InputDecoration(
+                                hintText: "Contact",
+                              ),
+                              validator: (value){
+                                if(value!.isEmpty){
+                                  return "Contact is required";
+                                }else if(value.length>10){
+                                  return "Enter valid number";
+                                }else if(!value.startsWith("9")){
+                                  return "Enter valid number";
+                                }
+                                else{
+                                  return "";
+                                }
+                              },
+                              controller: contactController,
+                              keyboardType: TextInputType.phone,
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(10),
+                              ],
+                            ),
+
+                            SizedBox(height: size.height*0.035),
+                            ConstrainedBox(
+                              constraints:BoxConstraints.tightFor(width:size.width*0.2,height:size.height*0.055),
+                              child: ElevatedButton(
+                                child:Text('Save',maxLines: 1,style: TextStyle(fontSize:size.height*0.014+size.width*0.014),),
+                                onPressed: ()async{
+                                  // if(_form.currentState?.validate()??true){
+                                   DatabaseHelper.instance.addSavedData(
+                                     Saved(
+                                        customerName: nameController.text,
+                                        address: addressController.text,
+                                        contact: contactController.text,
+                                        colorName: colorName,
+                                        productName: productName,
+                                        canSize: canSize,
+                                        fandeckId: fandeckId,
+                                        rColor: rValue,
+                                        gColor: gValue,
+                                        bColor: bValue
+                                     )
+                                   );
+                                 // Navigator.pop(context);
+                                  Navigator.of(context).pushReplacementNamed("Saved_screen");
+                                },
+
+                                style: ElevatedButton.styleFrom(
+                                  primary:ChooseColor(0).buttonColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                    )
+                  ],
+                ),
+              )
+            ),
+          );
+    });
   }
 }
