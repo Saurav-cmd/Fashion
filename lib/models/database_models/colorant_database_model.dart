@@ -7,8 +7,7 @@ class Colorants {
   double? rValue;
   double? gValue;
   double? bValue;
-  DateTime? createdAt;
-  DateTime? updatedAt;
+
 
   Colorants({
       this.columnId,
@@ -19,8 +18,7 @@ class Colorants {
        this.rValue,
        this.gValue,
        this.bValue,
-       this.createdAt,
-       this.updatedAt
+
   });
 
   factory Colorants.fromMap(Map<String,dynamic>json)=>Colorants(
@@ -32,8 +30,7 @@ class Colorants {
       rValue:json["rValue"],
       gValue:json["gValue"],
       bValue:json["bValue"],
-      createdAt:json["createdAt"],
-      updatedAt:json["updatedAt"]
+
   );
 
   Map<String,dynamic> toMap(){
@@ -46,8 +43,6 @@ class Colorants {
       "rValue":rValue,
       "gValue":gValue,
       "bValue":bValue,
-      "createdAt":createdAt,
-      "updatedAt":updatedAt
     };
   }
 

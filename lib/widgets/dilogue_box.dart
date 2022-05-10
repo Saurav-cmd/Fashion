@@ -1,9 +1,13 @@
 import 'dart:io';
+import 'package:connectivity/connectivity.dart';
 import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:fashion_paints/database/all_data_database.dart';
 import 'package:fashion_paints/models/database_models/saved_customer_detail_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import '../controllers/notice_controller.dart';
 import '../main.dart';
 import 'package:intl/intl.dart';
 
@@ -550,24 +554,24 @@ class AlertBox{
                                          customerName: nameController.text,
                                          address: addressController.text,
                                          contact: contactController.text,
-
+                                         colorName:colorName
                                      )
                                    ).whenComplete(()async{
                                      final data =await DatabaseHelper.instance.getSavedData();
-                                     for(var e in data) {
-                                       DatabaseHelper.instance.addSavedCustomerColorData(
-                                           CustomerSavedColor(
-                                               cDForeignKey:e.id,
-                                               colorName: colorName,
-                                               productName: productName,
-                                               canSize: canSize,
-                                               fandeckId: fandeckId,
-                                               rColor: rValue,
-                                               gColor: gValue,
-                                               bColor: bValue
-                                           )
-                                       );
-                                     }
+                                     // for(var e in data) {
+                                           DatabaseHelper.instance.addSavedCustomerColorData(
+                                               CustomerSavedColor(
+                                                   cDForeignKey:data.last.id,
+                                                   colorName: colorName,
+                                                   productName: productName,
+                                                   canSize: canSize,
+                                                   fandeckId: fandeckId,
+                                                   rColor: rValue,
+                                                   gColor: gValue,
+                                                   bColor: bValue
+                                               )
+                                           );
+                                     // }
                                    });
                                  // Navigator.pop(context);
                                   Navigator.of(context).pushReplacementNamed("Saved_screen");
@@ -588,4 +592,84 @@ class AlertBox{
           );
     });
   }
+
+  forAddToCart(BuildContext context) {
+    Widget RetryButton = TextButton(
+        onPressed: () {
+          Connectivity().checkConnectivity().then((newinternetconnection) {
+            if (newinternetconnection != ConnectivityResult.none) {
+              Navigator.pop(context);
+              Navigator.pop(context);
+              final NoticeController _noticeController = Get.put(NoticeController());
+              _noticeController.getAllNotices(context);
+            }
+          });
+        },
+        child: Center(
+          child: Container(
+            height: 40,
+            width: MediaQuery.of(context).size.width * 0.31,
+            color: ChooseColor(0).buttonColor,
+            child: Center(
+              child: Text(
+                'Retry'.toUpperCase(),
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.w500),
+              ),
+            ),
+          ),
+        ));
+    AlertDialog alert = AlertDialog(
+      contentPadding: EdgeInsets.zero,
+      title: WillPopScope(
+        onWillPop: () async => false,
+        child: Column(
+          children: const [
+            Text(
+              "No Internet Connection",
+              style: TextStyle(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Image(
+              image: AssetImage(
+                "icons/network.png",
+              ),
+              height: 60,
+              width: 60,
+            ),
+          ],
+        ),
+      ),
+      content: const Padding(
+        padding: EdgeInsets.only(left: 40.0, right: 30, top: 10),
+        child: Text(
+          "Please recheck your internet connection and try again.",
+          style: const TextStyle(color: Colors.black54, fontSize: 16),
+        ),
+      ),
+      //Text("Are you sure to Place your Order ?"),
+      actions: [
+        RetryButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
 }

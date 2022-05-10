@@ -46,11 +46,11 @@ class ColorBaseElement {
   factory ColorBaseElement.fromJson(Map<String, dynamic> json) => ColorBaseElement(
     id: json["id"],
     base: json["base"],
-    unitPrice1: json["unitPrice1"],
-    unitPrice2: json["unitPrice2"],
-    unitPrice3: json["unitPrice3"],
-    unitPrice4: json["unitPrice4"],
-    kgLtrFlag: json["kgLtrFlag"],
+    unitPrice1: json["unitPrice1"] ?? 0,
+    unitPrice2: json["unitPrice2"] ?? 0,
+    unitPrice3: json["unitPrice3"] ?? 0,
+    unitPrice4: json["unitPrice4"] ?? 0,
+    kgLtrFlag: json["kgLtrFlag"] ?? 0,
   );
 
   Map<String, dynamic> toJson() => {

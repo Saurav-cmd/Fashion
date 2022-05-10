@@ -18,10 +18,11 @@ import 'package:fashion_paints/screens/scheme/scheme_list_screen.dart';
 import 'package:fashion_paints/screens/search/color_name_screen.dart';
 import 'package:fashion_paints/screens/search/search_screen.dart';
 import 'package:fashion_paints/screens/splash_screen.dart';
+import 'package:fashion_paints/screens/store/get_cart_data_screen.dart';
+import 'package:fashion_paints/screens/store/store_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-
 import 'screens/button_navigation_bars/dealer_home_screen_button_navigation_bar.dart';
 
 final GlobalKey<ScaffoldMessengerState> snackBarKey = GlobalKey<ScaffoldMessengerState>();
@@ -68,6 +69,8 @@ class MyApp extends StatelessWidget {
         "Find_Painter_Second_screen":(ctx)=>const PainterStatus(),
         "Generate_screen":(ctx)=>const GenerateFirstScreen(),
         "Book_Marked_screen":(ctx)=>const BookMarkedScreen(),
+        "Cart_screen":(ctx)=>const CartItem(),
+        "store_screen":(ctx)=>const StoreScreen(),
         },
     );
   }

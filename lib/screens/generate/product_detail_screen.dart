@@ -2,11 +2,11 @@ import 'package:fashion_paints/Utils/contants.dart';
 import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:fashion_paints/database/all_data_database.dart';
 import 'package:fashion_paints/main.dart';
-import 'package:fashion_paints/models/database_models/doubled_fencee_database_%20model.dart';
 import 'package:fashion_paints/screens/generate/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import '../../models/database_models/cosmetic_int_emulsion_database_model.dart';
 import 'generate_color_page.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -38,12 +38,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     fanDeckId = Constants.fanDeckNameToId(passedFanDeckName);
   }
 
-  List<DoubleDefenceee> databaseDataList = [];
+  List<CosmeticInt> databaseDataList = [];
   //fandeck id anusar database ko data filter gardai databaseDataList ma halaya ko ho
   filterDatabaseData()async{
-    final databaseData =await DatabaseHelper.instance.getDoubleFenceeData();
+    final databaseData =await DatabaseHelper.instance.getCosmeticIntData();
     for(int i=0;i<databaseData.length;i++){
-      if(databaseData[i].fanDeck == fanDeckId){
+      // print("This is fandeck from database ${databaseData[i].cosmeticId}");
+      if(databaseData[i].fandeck == fanDeckId){
         setState(() {
           databaseDataList.add(databaseData[i]);
         });
@@ -132,6 +133,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       children: [
                         SizedBox(height: size.height*0.010),
                         Text("Fandeck",style: TextStyle(fontSize: size.height*0.010+size.width*0.010),),
+                        SizedBox(height: size.height*0.005),
                         Row(
                           mainAxisAlignment:
                           MainAxisAlignment.spaceBetween,
@@ -156,6 +158,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             )
                           ],
                         ),
+                        SizedBox(height:size.height*0.005),
                         Text("Product",style: TextStyle(fontSize: size.height*0.010+size.width*0.010),),
                         SizedBox(height: size.height*0.010),
                         Text(
@@ -219,7 +222,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 SizedBox(height: size.height*0.020),
                 Text("Can Size:",style: TextStyle(fontSize: size.height*0.010+size.width*0.010,color: ChooseColor(0).appBarColor1,fontWeight: FontWeight.bold),),
                 SizedBox(height: size.height*0.010),
-                if(passedProductName=="doubleDefenceEE" || passedProductName=="newUltraProtecEE" || passedProductName=="protecEE" || passedProductName=="newShangrilaEE" || passedProductName=="elegaIE" || passedProductName=="newBarpimoIE" || passedProductName=="newShangrilaIE")
+                if(passedProductName=="cosmeticintemulsion" || passedProductName=="magnetextemulsion" || passedProductName=="weatherproofextemulsion")
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -301,7 +304,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ],
                 ),
 
-                if(passedProductName=="relianceDist" || passedProductName=="shangrilaDist")
+                if(passedProductName=="smartdist" || passedProductName=="styledist")
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

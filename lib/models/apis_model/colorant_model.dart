@@ -33,8 +33,6 @@ class ColorColorantElement {
     this.rValue,
     this.gValue,
     this.bValue,
-    this.createdAt,
-    this.updatedAt,
   });
 
   int? id;
@@ -44,8 +42,7 @@ class ColorColorantElement {
   int? rValue;
   int? gValue;
   int? bValue;
-  dynamic createdAt;
-  dynamic updatedAt;
+
 
   factory ColorColorantElement.fromJson(Map<String, dynamic> json) => ColorColorantElement(
     id: json["id"],
@@ -55,8 +52,6 @@ class ColorColorantElement {
     rValue: json["rValue"],
     gValue: json["gValue"],
     bValue: json["bValue"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -67,7 +62,5 @@ class ColorColorantElement {
     "rValue": rValue,
     "gValue": gValue,
     "bValue": bValue,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
   };
 }

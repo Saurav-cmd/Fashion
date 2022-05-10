@@ -1,37 +1,49 @@
 import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:fashion_paints/database/all_data_database.dart';
+import 'package:fashion_paints/models/customer.dart';
 import 'package:fashion_paints/screens/saved/saved_detail.dart';
 import 'package:fashion_paints/widgets/dilogue_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import '../../main.dart';
 import '../../models/database_models/saved_customer_detail_color.dart';
 import '../../models/database_models/saved_customer_detail_model.dart';
 
 class SavedScreen extends StatefulWidget {
-  SavedScreen({Key,this.colorName,this.productName,this.canSize,this.rColor,this.gColor,this.bColor,this.fandeckId,key}) : super(key: key);
-  String?colorName;
-  String?productName;
-  double?canSize;
-  double?rColor;
-  double?gColor;
-  double?bColor;
-  double?fandeckId;
+  SavedScreen(
+      {Key,
+      this.colorName,
+      this.productName,
+      this.canSize,
+      this.rColor,
+      this.gColor,
+      this.bColor,
+      this.fandeckId,
+      key})
+      : super(key: key);
+  String? colorName;
+  String? productName;
+  double? canSize;
+  double? rColor;
+  double? gColor;
+  double? bColor;
+  double? fandeckId;
+
   @override
   State<SavedScreen> createState() => _SavedScreenState();
 }
 
 class _SavedScreenState extends State<SavedScreen> {
-  String?passedColorName;
-  String?passedProductName;
-  double?passedCanSize;
-  double?passedRColor;
-  double?passedGColor;
-  double?passedBColor;
-  double?passedFandeckId;
+  String? passedColorName;
+  String? passedProductName;
+  double? passedCanSize;
+  double? passedRColor;
+  double? passedGColor;
+  double? passedBColor;
+  double? passedFandeckId;
   TextEditingController searchController = TextEditingController();
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -44,17 +56,31 @@ class _SavedScreenState extends State<SavedScreen> {
     passedBColor = widget.bColor;
     passedFandeckId = widget.fandeckId;
     getSavedData();
-    print("This is color Name $passedColorName");
   }
 
-  List<SavedCustomerDetail>savedDataList = [];
-  getSavedData()async{
+  List<SavedCustomerDetail> savedDataList = [];
+  List<int?> databaseColumnId = [];
+  List<int?> anotherDatabase = [];
+
+  getSavedData() async {
     final data = await DatabaseHelper.instance.getSavedData();
-    for(var e in data){
+    final data1 = await DatabaseHelper.instance.getSavedCustomerColorData();
+    for (var e in data) {
       setState(() {
         savedDataList.add(e);
+        databaseColumnId.add(e.id);
       });
     }
+
+    for (var e in data1) {
+      setState(() {
+        anotherDatabase.add(e.cDForeignKey);
+      });
+    }
+
+    print("This is database Column Id ${databaseColumnId}");
+    print("This is another database ${anotherDatabase}");
+
     setState(() {
       searchController.addListener(() {
         _runFilter(searchController.value.text);
@@ -69,10 +95,20 @@ class _SavedScreenState extends State<SavedScreen> {
   List<double?> rColorList = [];
   List<double?> gColorList = [];
   List<double?> bColorList = [];
-  querySavedCustomerColor()async{
-    for(var i in savedDataList) {
-      final data = await DatabaseHelper.instance.queryCustomerSavedColor(i.id);
-      for(var e in data){
+  List<int?> databaseForeignKey = [];
+
+  List<Customer> costumerList = [];
+
+  List<CustomerSavedColor> queryData = [];
+
+  querySavedCustomerColor() async {
+    // final data = await DatabaseHelper.instance.getSavedData();
+    for (var i in savedDataList) {
+      List<ColorInfo> colorInfo=[];
+      /*  print("This is savedDataList is ${i.id}");*/
+      final data = await DatabaseHelper.instance
+          .queryCustomerSavedColor(i.id, i.colorName);
+      for (var e in data) {
         setState(() {
           productNameList.add(e.productName);
           colorNameList.add(e.colorName);
@@ -80,55 +116,65 @@ class _SavedScreenState extends State<SavedScreen> {
           rColorList.add(e.rColor);
           gColorList.add(e.gColor);
           bColorList.add(e.bColor);
-
-          print("This is rColor list ${rColorList}");
+          ColorInfo cI = ColorInfo(cid: e.cDForeignKey,colorName: e.colorName,canSize: e.canSize,rValue: e.rColor,gValue: e.gColor,bValue:e.bColor,productName:e.productName);
+          colorInfo.add(cI);
         });
       }
+
+      Customer cU = Customer(id: i.id,customerName: i.customerName,address: i.address,contact: i.contact,colorData: colorInfo);
+      costumerList.add(cU);
     }
   }
 
-  List<SavedCustomerDetail> searchCustomer = [];
-  void _runFilter(String enterKeyword){
-    //  List<Map<String, dynamic>> results = [];
-    List<SavedCustomerDetail> results = [];
+  List<Customer> searchCustomer = [];
 
-    if (enterKeyword.isEmpty){
-      results = savedDataList;
+  void _runFilter(String enterKeyword) {
+    List<Customer> results = [];
+
+    if (enterKeyword.isEmpty) {
+      results = costumerList;
+    } else {
+      results = costumerList
+          .where(
+            (e) => (e.customerName!.toLowerCase().contains(
+                  enterKeyword.toLowerCase(),
+                )),
+          )
+          .toList();
     }
-    else{
-      results = savedDataList.where(
-            (e) => (e.customerName!.toLowerCase().contains(enterKeyword.toLowerCase(),)),
-      ).toList();
-    }setState(() {
+    setState(() {
       searchCustomer = results;
     });
-
   }
 
-
-  
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar:  AppBar(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor:ChooseColor(0).appBarColor1,
-          statusBarIconBrightness: Brightness.light// For iOS (dark icons)
-        ),
+            statusBarColor: ChooseColor(0).appBarColor1,
+            statusBarIconBrightness: Brightness.light // For iOS (dark icons)
+            ),
         elevation: 0,
         leading: IconButton(
-          onPressed: (){
-            Navigator.of(context).pushReplacementNamed("Dealer_button_Navigation_Bar");
+          onPressed: () {
+            Navigator.of(context)
+                .pushReplacementNamed("Dealer_button_Navigation_Bar");
           },
-          icon:const Icon(Icons.arrow_back_ios),color: Colors.white60,iconSize: 20,
+          icon: const Icon(Icons.arrow_back_ios),
+          color: Colors.white60,
+          iconSize: 20,
         ),
         backgroundColor: ChooseColor(0).appBarColor1,
         title: const Text("Save"),
         actions: [
-          IconButton(onPressed:(){
-            Navigator.of(context).pushNamed("Dealer_button_Navigation_Bar");
-          }, icon:const Icon(Icons.home))
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed("Dealer_button_Navigation_Bar");
+              },
+              icon: const Icon(Icons.home))
         ],
       ),
       body: Column(
@@ -136,284 +182,333 @@ class _SavedScreenState extends State<SavedScreen> {
           Container(
             color: Colors.white,
             child: Padding(
-              padding:EdgeInsets.symmetric(horizontal: size.width*0.040,vertical: size.height*0.015),
+              padding: EdgeInsets.symmetric(
+                  horizontal: size.width * 0.040,
+                  vertical: size.height * 0.015),
               child: Form(
                 key: _form,
-                child:TextFormField(
-                  decoration:InputDecoration(
+                child: TextFormField(
+                  decoration: InputDecoration(
                     border: const OutlineInputBorder(
                       borderSide: BorderSide.none,
                     ),
-                    contentPadding: EdgeInsets.symmetric(vertical: size.height*0.001,horizontal: size.width*0.030),
+                    contentPadding: EdgeInsets.symmetric(
+                        vertical: size.height * 0.001,
+                        horizontal: size.width * 0.030),
                     errorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.red,width: 1),
-                        borderRadius: BorderRadius.circular(5)
-                    ),
+                        borderSide:
+                            const BorderSide(color: Colors.red, width: 1),
+                        borderRadius: BorderRadius.circular(5)),
                     // labelText: 'Phone Number',
-                    fillColor:const Color(0xffF6F9FA),
+                    fillColor: const Color(0xffF6F9FA),
                     filled: true,
                     hintText: 'Search customer',
-                    prefixIcon:const Icon(Icons.search),
-                    hintStyle:TextStyle(fontSize: size.height*0.012+size.width*0.012,color: Colors.black26),
+                    prefixIcon: const Icon(Icons.search),
+                    hintStyle: TextStyle(
+                        fontSize: size.height * 0.012 + size.width * 0.012,
+                        color: Colors.black26),
                   ),
                   controller: searchController,
                 ),
               ),
             ),
           ),
-          if(searchController.text.isNotEmpty)
-          Expanded(
-            child: Padding(
-              padding:EdgeInsets.symmetric(horizontal: size.width*0.040,vertical: size.height*0.020),
+          if (searchController.text.isNotEmpty)
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: size.width * 0.040,
+                  vertical: size.height * 0.020),
               child: ListView.builder(
-                physics:const AlwaysScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: searchCustomer.length,
-                itemBuilder:(ctx,i){
-                  return GestureDetector(
-                    onTap: (){
-                      if(passedColorName!=null || passedProductName != null){
-                        DatabaseHelper.instance.addSavedCustomerColorData(
-                            CustomerSavedColor(
-                                cDForeignKey:searchCustomer[i].id,
-                                colorName: passedColorName,
-                                productName:passedProductName,
-                                canSize:passedCanSize,
-                                fandeckId:passedFandeckId,
-                                rColor:passedRColor,
-                                gColor:passedGColor,
-                                bColor:passedBColor
-                          )
-                        ).whenComplete((){
-                          final SnackBar snackBar = SnackBar(
-                            content: Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                      height: size.height * 0.045,
-                                      width: size.width * 0.2,
-                                      child: Image.asset(
-                                        "icons/logo 2.png", fit: BoxFit.fill,)),
-                                  SizedBox(width: size.width * 0.050),
-                                  Text(
-                                    'Color Saved',
-                                    maxLines: 2,
-                                    style: TextStyle(fontSize: size.height * 0.012 +
-                                        size.width * 0.012),),
-                                ],
-                              ),
-                            ),
-                            duration: const Duration(seconds: 1),
-                            backgroundColor: Colors.grey.shade700,
-                            behavior: SnackBarBehavior.floating,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)
-                            ),
-                          );
-                          snackBarKey.currentState?.showSnackBar(snackBar);
-                        });
-                      }else if(passedColorName==null || passedProductName==null){
-                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=> SavedDetailPage(
-                          customerName: searchCustomer[i].customerName,
-                          customerAddress: searchCustomer[i].address,
-                          contact: searchCustomer[i].contact,
-                        )));
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(width:1.0, color: Colors.lightBlue.shade900),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("${searchCustomer[i].customerName}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: size.height*0.012+size.width*0.012),),
-                              SizedBox(height: size.height*0.008),
-                              Text("${searchCustomer[i].address}"),
-                              SizedBox(height: size.height*0.008),
-                              Text("${searchCustomer[i].contact}"),
-                              SizedBox(height: size.height*0.008),
-                              Divider(
-                                color: Colors.black87,
-                                thickness: size.width*0.005,
-                              )
-                            ],
-
-                          ),
-
-                          Padding(
-                            padding:EdgeInsets.only(right: size.width*0.020),
-                            child: GridView.builder(
-                              itemCount: rColorList.length,
-                              gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                              ),
-                              itemBuilder: (ctx,i){
-                                return  Container(
-                                  height: size.height*0.050,
-                                  width: size.width*0.10,
-                                  decoration: BoxDecoration(
-                                      color: Color.fromRGBO(rColorList[i]!.toInt(),gColorList[i]!.toInt(),bColorList[i]!.toInt(),1),
-                                      boxShadow:const [
-                                        BoxShadow(
-                                          color: Colors.black,
-                                          blurRadius: 1.0,
-                                        )
-                                      ]
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }),
-            ),
-          ),
-          if(searchController.text.isEmpty)
-            Expanded(
-              child: Padding(
-                padding:EdgeInsets.symmetric(horizontal: size.width*0.040,vertical: size.height*0.020),
-                child: ListView.builder(
-                    physics:const AlwaysScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: savedDataList.length,
-                    itemBuilder:(ctx,i){
-                      return GestureDetector(
-                        onTap: ()async{
-                          if(passedColorName!=null || passedProductName != null){
-                            DatabaseHelper.instance.addSavedCustomerColorData(
-                                CustomerSavedColor(
-                                    cDForeignKey:savedDataList[0].id,
-                                    colorName: passedColorName,
-                                    productName:passedProductName,
-                                    canSize:passedCanSize,
-                                    fandeckId:passedFandeckId,
-                                    rColor:passedRColor,
-                                    gColor:passedGColor,
-                                    bColor:passedBColor
-                                )
-                            ).whenComplete((){
-                              final SnackBar snackBar = SnackBar(
-                                content: Padding(
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SizedBox(
-                                          height: size.height * 0.045,
-                                          width: size.width * 0.2,
-                                          child: Image.asset(
-                                            "icons/logo 2.png", fit: BoxFit.fill,)),
-                                      SizedBox(width: size.width * 0.050),
-                                      Text(
-                                        'Color Saved',
-                                        maxLines: 2,
-                                        style: TextStyle(fontSize: size.height * 0.012 +
-                                            size.width * 0.012),),
-                                    ],
-                                  ),
-                                ),
-                                duration: const Duration(seconds: 1),
-                                backgroundColor: Colors.grey.shade700,
-                                behavior: SnackBarBehavior.floating,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)
-                                ),
-                              );
-                              snackBarKey.currentState?.showSnackBar(snackBar);
-                            });
-                          }else if(passedColorName==null || passedProductName==null){
-                            Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=> SavedDetailPage(
-                              customerName: savedDataList[i].customerName,
-                              customerAddress: savedDataList[i].address,
-                              contact: savedDataList[i].contact,
-                            )));
-                          }
-                        },
-                        child: Container(
-                          decoration:const BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(width:1.0, color: Colors.black),
-                            ),
-                          ),
-                          child: Padding(
-                            padding:EdgeInsets.symmetric(vertical: size.height*0.010),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: searchCustomer.length,
+                  itemBuilder: (ctx, i) {
+                    return GestureDetector(
+                      onTap: () {
+                        if (passedColorName != null ||
+                            passedProductName != null) {
+                          DatabaseHelper.instance
+                              .addSavedCustomerColorData(CustomerSavedColor(
+                                  cDForeignKey: searchCustomer[i].id,
+                                  colorName: passedColorName,
+                                  productName: passedProductName,
+                                  canSize: passedCanSize,
+                                  fandeckId: passedFandeckId,
+                                  rColor: passedRColor,
+                                  gColor: passedGColor,
+                                  bColor: passedBColor))
+                              .whenComplete(() {
+                            final SnackBar snackBar = SnackBar(
+                              content: Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text("${savedDataList[i].customerName}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: size.height*0.012+size.width*0.012),),
-                                    SizedBox(height: size.height*0.008),
-                                    Text("${savedDataList[i].address}"),
-                                    SizedBox(height: size.height*0.008),
-                                    Text("${savedDataList[i].contact}"),
-                                    SizedBox(height: size.height*0.008),
+                                    SizedBox(
+                                        height: size.height * 0.045,
+                                        width: size.width * 0.2,
+                                        child: Image.asset(
+                                          "icons/logo 2.png",
+                                          fit: BoxFit.fill,
+                                        )),
+                                    SizedBox(width: size.width * 0.050),
+                                    Text(
+                                      'Color Saved',
+                                      maxLines: 2,
+                                      style: TextStyle(
+                                          fontSize: size.height * 0.012 +
+                                              size.width * 0.012),
+                                    ),
                                   ],
                                 ),
-
-                                Padding(
-                                  padding:EdgeInsets.only(right: size.width*0.020),
-                                  child: Expanded(
-                                    child: SizedBox(
-                                      height: 50,
-                                      width: 80,
-                                      child: GridView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: rColorList.length,
-                                        gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          crossAxisSpacing: 5,
-                                          mainAxisSpacing: 5
-                                        ),
-                                        itemBuilder: (ctx,i){
-                                          return  Container(
-                                            height: size.height*0.050,
-                                            width: size.width*0.10,
-                                            decoration: BoxDecoration(
-                                                color: Color.fromRGBO(rColorList[i]!.toInt(),gColorList[i]!.toInt(),bColorList[i]!.toInt(),1),
-                                                boxShadow:const [
-                                                  BoxShadow(
-                                                    color: Colors.black,
-                                                    blurRadius: 1.0,
-                                                  )
-                                                ]
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                              duration: const Duration(seconds: 1),
+                              backgroundColor: Colors.grey.shade700,
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                            );
+                            snackBarKey.currentState?.showSnackBar(snackBar);
+                          });
+                        } else if (passedColorName == null ||
+                            passedProductName == null) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (ctx) => SavedDetailPage(
+                                customerName: costumerList[i].customerName,
+                                customerAddress: costumerList[i].address,
+                                contact: costumerList[i].contact,
+                                id: costumerList[i].id,
+                                colorData:costumerList[i].colorData,
+                                  )));
+                        }
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                                width: 1.0, color: Colors.lightBlue.shade900),
                           ),
                         ),
-                      );
-                    }),
-              ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${searchCustomer[i].customerName}",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: size.height * 0.012 +
+                                          size.width * 0.012),
+                                ),
+                                SizedBox(height: size.height * 0.008),
+                                Text("${searchCustomer[i].address}"),
+                                SizedBox(height: size.height * 0.008),
+                                Text("${searchCustomer[i].contact}"),
+                                SizedBox(height: size.height * 0.008),
+                              ],
+                            ),
+                            Padding(
+                              padding:
+                              EdgeInsets.only(right: size.width * 0.020),
+                              child: SizedBox(
+                                height: 50,
+                                width: 80,
+                                child: GridView.builder(
+                                  shrinkWrap: true,
+                                  itemCount:searchCustomer.length,
+                                  gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 5,
+                                      mainAxisSpacing: 5),
+                                  itemBuilder: (ctx, j) {
+                                    return Container(
+                                      height: size.height * 0.050,
+                                      width: size.width * 0.10,
+                                      decoration: BoxDecoration(
+                                          color: Color.fromRGBO(
+                                              searchCustomer[i].colorData![j].rValue!.toInt(),
+                                              searchCustomer[i].colorData![j].gValue!.toInt(),
+                                              searchCustomer[i].colorData![j].bValue!.toInt(),
+                                              1),
+                                          boxShadow: const [
+                                            BoxShadow(
+                                              color: Colors.black,
+                                              blurRadius: 1.0,
+                                            )
+                                          ]),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+            ),
+          if (searchController.text.isEmpty)
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: size.width * 0.040,
+                  vertical: size.height * 0.020),
+              child: ListView.builder(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: costumerList.length,
+                  itemBuilder: (ctx, i) {
+                    return GestureDetector(
+                      onTap: () async {
+                        if (passedColorName != null || passedProductName != null) {
+                          DatabaseHelper.instance
+                              .addSavedCustomerColorData(CustomerSavedColor(
+                                  cDForeignKey: costumerList[i].id,
+                                  colorName: passedColorName,
+                                  productName: passedProductName,
+                                  canSize: passedCanSize,
+                                  fandeckId: passedFandeckId,
+                                  rColor: passedRColor,
+                                  gColor: passedGColor,
+                                  bColor: passedBColor))
+                              .whenComplete(() {
+                            final SnackBar snackBar = SnackBar(
+                              content: Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                        height: size.height * 0.045,
+                                        width: size.width * 0.2,
+                                        child: Image.asset(
+                                          "icons/logo 2.png",
+                                          fit: BoxFit.fill,
+                                        )),
+                                    SizedBox(width: size.width * 0.050),
+                                    Text(
+                                      'Color Saved',
+                                      maxLines: 2,
+                                      style: TextStyle(
+                                          fontSize: size.height * 0.012 +
+                                              size.width * 0.012),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              duration: const Duration(seconds: 1),
+                              backgroundColor: Colors.grey.shade700,
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                            );
+                            snackBarKey.currentState?.showSnackBar(snackBar);
+                          });
+                        } else if (passedColorName == null ||
+                            passedProductName == null) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (ctx) => SavedDetailPage(
+                                    customerName: costumerList[i].customerName,
+                                    customerAddress: costumerList[i].address,
+                                    contact: costumerList[i].contact,
+                                    id: costumerList[i].id,
+                                    colorData:costumerList[i].colorData,
+                                  )));
+                        }
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(width: 1.0, color: Colors.black),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: size.height * 0.010),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${costumerList[i].customerName}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: size.height * 0.012 +
+                                            size.width * 0.012),
+                                  ),
+                                  SizedBox(height: size.height * 0.008),
+                                  Text("${costumerList[i].address}"),
+                                  SizedBox(height: size.height * 0.008),
+                                  Text("${costumerList[i].contact}"),
+                                  SizedBox(height: size.height * 0.008),
+                                  Text("${costumerList[i].id}")
+                                ],
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsets.only(right: size.width * 0.020),
+                                child: SizedBox(
+                                  height: 50,
+                                  width: 80,
+                                  child: GridView.builder(
+                                    shrinkWrap: true,
+                                    itemCount:costumerList[i].colorData!.length,
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 2,
+                                            crossAxisSpacing: 5,
+                                            mainAxisSpacing: 5),
+                                    itemBuilder: (ctx, j) {
+                                      return Container(
+                                        height: size.height * 0.050,
+                                        width: size.width * 0.10,
+                                        decoration: BoxDecoration(
+                                            color: Color.fromRGBO(
+                                                costumerList[i].colorData![j].rValue!.toInt(),
+                                                costumerList[i].colorData![j].gValue!.toInt(),
+                                                costumerList[i].colorData![j].bValue!.toInt(),
+                                                1),
+                                            boxShadow: const [
+                                              BoxShadow(
+                                                color: Colors.black,
+                                                blurRadius: 1.0,
+                                              )
+                                            ]),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
             )
         ],
       ),
-
-      floatingActionButton:passedColorName!=null ||passedProductName!=null?FloatingActionButton(
-        onPressed: () {
-          AlertBox().addCustomerDialogueBox(passedColorName,passedProductName,passedCanSize,passedRColor,passedGColor,passedBColor,passedFandeckId,context);
-        },
-        backgroundColor:ChooseColor(0).buttonColor,
-        child: const Icon(Icons.add),
-      ):Container(),
+      floatingActionButton: passedColorName != null || passedProductName != null
+          ? FloatingActionButton(
+              onPressed: () {
+                AlertBox().addCustomerDialogueBox(
+                    passedColorName,
+                    passedProductName,
+                    passedCanSize,
+                    passedRColor,
+                    passedGColor,
+                    passedBColor,
+                    passedFandeckId,
+                    context);
+              },
+              backgroundColor: ChooseColor(0).buttonColor,
+              child: const Icon(Icons.add),
+            )
+          : Container(),
     );
   }
 }

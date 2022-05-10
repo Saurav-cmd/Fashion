@@ -3,14 +3,14 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../models/database_models/book_marked_model.dart';
 import '../models/database_models/colorant_database_model.dart';
-import '../models/database_models/doubled_fencee_database_ model.dart';
+import '../models/database_models/cosmetic_int_emulsion_database_model.dart';
 import '../models/database_models/saved_customer_detail_color.dart';
 import '../models/database_models/saved_customer_detail_model.dart';
 import '../models/database_models/shade_color_database_model.dart';
 
 class DatabaseHelper{
   static const _databaseVersion = 5;
-  static const table1 = "DoubleFenceee";
+  static const table1 = "CosmeticInteriorEmulsion";
   static const table2 = "ColorBase";
   static const table3 = "ColorColorant";
   static const table4 = "ShadeColor";
@@ -18,34 +18,35 @@ class DatabaseHelper{
   static const table6 = "SavedCustomerDetail";
   static const table7 ="SavedCustomerDetailColor";
 
-  //this is for Double Fenceee table.........................................................
+  //this is for CosmeticInteriorEmulsion table.........................................................
   static const id = 'id';
+  static const cosmeticId = "cosmeticId";
   static const colorName = 'colorName';
   static const colorCode = 'colorCode';
-  static const xT = 'xT';
-  static const tT = 'tT';
-  static const lS = 'lS';
-  static const mS = 'mS';
-  static const rT = 'rT';
-  static const fT = 'fT';
-  static const kS = 'kS';
-  static const mM = 'mM';
-  static const rS = 'rS';
-  static const vT = 'vT';
-  static const pP = 'pP';
-  static const zT= 'zT';
-  static const mT= 'mT';
-  static const lT= 'lT';
-  static const uS= 'uS';
-  static const sT= 'sT';
+  static const whf = 'whf';
+  static const fbf = 'fbf';
+  static const fgf = 'fgf';
+  static const fef = 'fef';
+  static const yof = 'yof';
+  static const fvf = 'fvf';
+  static const iyf = 'iyf';
+  static const mgf = 'mgf';
+  static const irf = 'irf';
+  static const rof = 'rof';
+  static const erf = 'erf';
+  static const myf= 'myf';
+  static const lbf= 'lbf';
+  static const lgf= 'lgf';
+  static const eyf= 'eyf';
+  static const ruf= 'ruf';
   static const base= 'base';
   static const bVolume= 'bVolume';
-  static const fanDeck= 'fanDeck';
+  static const fanDeck= 'fandeck';
   static const formulation= 'formulation';
-  //this is for  Double Fenceee table ends......................................................
+  //this is for CosmeticInteriorEmulsion table ends......................................................
 
 
-  //This is for Color Base Table starts here....................................................
+  //This is for Color Base Table CosmeticInteriorEmulsion here....................................................
   static const columnId = "id";
   static const baseId = "bId";
   static const cBase = "base";
@@ -56,7 +57,7 @@ class DatabaseHelper{
   static const kgLtrFlag = "kgLtrFlag";
   //This is for Color Base Table ends here......................................................
 
-  //This is for Color Colorant table Starts here...............................................
+  //This is for Color Colorant table Strats here...............................................
   static const colorantColumnId = "columnId";
   static const colorId = "id";
   static const colorantName = "colorantName";
@@ -69,7 +70,7 @@ class DatabaseHelper{
   static const updatedAt = "updatedAt";
   //This is for Color Colorant table ends here.................................................
 
-  //This is for Shade Color table starts here..................................................
+  //This is for Shade Color table Starts here..................................................
   static const shadeColorColumnId ="columnId";
   static const sCId = "id";
   static const sId = "sId";
@@ -89,7 +90,7 @@ class DatabaseHelper{
   static const sBValue = "bValue";
   //This is for Shade Color table ends here....................................................
 
-  //This is for BookMarked table starts here...................................................
+  //This is for BookMarked table Starts here...................................................
   static const bookMarkedColmId = "id";
   static const bookMarkedFandeckId = "fandeckId";
   static const bookMarkedColorName = "colorName";
@@ -102,14 +103,15 @@ class DatabaseHelper{
   static const canColorB = "canColorB";
   //This is for BookMarked table ends here......................................................
 
-  //This is for Saved customer detail table starts here.........................................................
+  //This is for Saved customer detail table Starts here.........................................................
   static const savedColumnId = "id";
   static const savedCustomerName = "customerName";
   static const savedCustomerAddress = "address";
   static const savedCustomerContact = "contact";
+  static const savedCustomerColorName = "colorName";
   //This is for Saved table ends here...............................................................................
 
-  //This is for saved customer detail color table starts here.................................................................
+  //This is for saved customer detail color table Strats here.................................................................
   static const savedColorColumnId = "id";
   static const savedColorForeignKey = "cDForeignKey";
   static const savedColorName = "colorName";
@@ -156,27 +158,29 @@ class DatabaseHelper{
     await db.execute('''
   CREATE TABLE $table1(
     $id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    $cosmeticId INTEGER NOT NULL,
     $colorName TEXT,
     $colorCode TEXT,
-    $xT TEXT,
-    $tT TEXT,
-    $lS TEXT,
-    $mS TEXT,
-    $rT TEXT,
-    $fT TEXT,
-    $kS TEXT,
-    $mM TEXT,
-    $rS TEXT,
-    $vT TEXT,
-    $pP TEXT,
-    $zT TEXT,
-    $mT TEXT,
-    $lT TEXT,
-    $uS TEXT,
-    $sT TEXT,
+    $whf TEXT,
+    $fbf TEXT,
+    $fgf TEXT,
+    $fef TEXT,
+    $yof TEXT,
+    $fvf TEXT,
+    $iyf TEXT,
+    $mgf TEXT,
+    $irf TEXT,
+    $rof TEXT,
+    $erf TEXT,
+    $myf TEXT,
+    $lbf TEXT,
+    $lgf TEXT,
+    $eyf TEXT,
+    $ruf TEXT,
     $base REAL,
     $bVolume TEXT,
-    $fanDeck REAL
+    $fanDeck REAL,
+    $formulation TEXT
   )
   ''').then((value) => null);
 
@@ -252,7 +256,8 @@ class DatabaseHelper{
         $savedColumnId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
         $savedCustomerName TEXT,
         $savedCustomerAddress TEXT,
-        $savedCustomerContact TEXT
+        $savedCustomerContact TEXT,
+        $savedCustomerColorName TEXT
       )
     ''').then((value) => null);
 
@@ -274,24 +279,24 @@ class DatabaseHelper{
   }
 
   //double defence ko data add,query,all data get ya bata start ho hai................................................................
-  Future<int?> addDoubleFenceeData(DoubleDefenceee doubleFencee) async{
+  Future<int?> addCosmeticIntData(CosmeticInt cosmeticint) async{
     Database? db = await instance.database;
-    return await db?.insert(table1, doubleFencee.toMap());
+    return await db?.insert(table1, cosmeticint.toMap());
   }
 
-  Future<List<DoubleDefenceee>> getDoubleFenceeData() async{
+  Future<List<CosmeticInt>> getCosmeticIntData() async{
     Database? db = await instance.database;
     var data = await db?.query(table1);
-    List<DoubleDefenceee>? doubleFencedDataList = data!.isNotEmpty?data.map((c) => DoubleDefenceee.fromMap(c)).toList():[];
-    return doubleFencedDataList;
+    List<CosmeticInt>? cosmeticInteriorList = data!.isNotEmpty?data.map((c) => CosmeticInt.fromMap(c)).toList():[];
+    return cosmeticInteriorList;
   }
 
  /* double defence database ma query laga ko baseId lina lai and color code ko value matra aaxa vhane color code le query garne haina vhane color
   Name le matra query garne*/
-  Future<List<DoubleDefenceee>> queryDoubleDefence(String? productName,double? fanDeckId,String? colorCodeOrName)async{
+  Future<List<CosmeticInt>> queryCosmeticInt(String? productName,double? fanDeckId,String? colorCodeOrName)async{
     Database? db = await instance.database;
     var data = await  db?.query(table1,where:'$fanDeck=? and $colorName=?',whereArgs: [fanDeckId,colorCodeOrName]);
-    return data!.isNotEmpty?data.map((c) => DoubleDefenceee.fromMap(c)).toList():[];
+    return data!.isNotEmpty?data.map((c) => CosmeticInt.fromMap(c)).toList():[];
   }
   //double defence ko data add,query,all data get ya bata end ho hai................................................................
 
@@ -397,12 +402,11 @@ class DatabaseHelper{
     return savedDataList;
   }
 
-  Future<List<CustomerSavedColor>> queryCustomerSavedColor(id)async{
+  Future<List<CustomerSavedColor>> queryCustomerSavedColor(id,colorName)async{
     Database? db = await instance.database;
     var data =  await db?.query(table7,where:'$savedColorForeignKey=?',whereArgs: [id]);
     return data!.isNotEmpty?data.map((e) => CustomerSavedColor.fromMap(e)).toList():[];
   }
-
   //Saved ko data add,get garne ya bata end ho hai.........................................................................................
 
 }

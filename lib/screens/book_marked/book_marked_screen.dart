@@ -76,7 +76,7 @@ class _BookMarkedScreenState extends State<BookMarkedScreen> {
                           columnId: bookMarkedDataList[i].id,
                           colorName: bookMarkedDataList[i].colorName,
                           productName: bookMarkedDataList[i].productName,
-                          canSize: bookMarkedDataList[i].canSize,
+                          canSize: bookMarkedDataList[i].canSize!.toDouble(),
                           fanDeckName: bookMarkedDataList[i].fandeckName,
                         )));
                       },

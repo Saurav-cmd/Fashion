@@ -2,7 +2,6 @@ import 'package:fashion_paints/database/all_data_database.dart';
 import 'package:fashion_paints/main.dart';
 import 'package:fashion_paints/models/database_models/book_marked_model.dart';
 import 'package:fashion_paints/models/database_models/colorant_database_model.dart';
-import 'package:fashion_paints/models/database_models/doubled_fencee_database_%20model.dart';
 import 'package:fashion_paints/models/database_models/shade_color_database_model.dart';
 import 'package:fashion_paints/screens/generate/product_detail_screen.dart';
 import 'package:fashion_paints/widgets/dilogue_box.dart';
@@ -10,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../Utils/contants.dart';
 import '../../colors/colors_file.dart';
+import '../../models/database_models/cosmetic_int_emulsion_database_model.dart';
 import '../book_marked/book_marked_screen.dart';
 import '../saved/saved_screen.dart';
 
@@ -52,13 +52,13 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
     passedFanDeckName = widget.fanDeckName;
     grabFanDeckId();
     DatabaseHelper;
-    print("THis is columnId $passedColumnId");
   }
 
   getDouble(String? value){
     double d =double.parse(value!);
     return d ;
   }
+
 
   grabFanDeckId(){
     //yo id maila fandeck_id directory vhitra fandeck_name_id.dart vhitra statically id haru save garaya ra rakhaya ko xu tai tanaya ho
@@ -71,15 +71,16 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
   List<String?> baseName = [];
   List<ShadeColorDatabase> colorValue = [];
   getBaseName()async {
-    List<DoubleDefenceee?> doubleDefence = await DatabaseHelper.instance
-        .queryDoubleDefence(passedProductName, fanDeckId, passedColorName);
-    double? baseId = doubleDefence[0]!.base;
+    List<CosmeticInt> cosmeticIntEmu = await DatabaseHelper.instance.queryCosmeticInt(passedProductName, fanDeckId, passedColorName!.split("(").first);
+    double? baseId = cosmeticIntEmu[0].base;
     final baseColorData = await DatabaseHelper.instance.getColorBaseData();
     for (int j = 0; j < baseColorData.length; j++) {
       if (baseId == baseColorData[j].bId) {
         setState(() {
           baseName.add(baseColorData[j].base);
           getCylinderVolume();
+          print("This is baseNAme ${baseName}");
+
         });
       }
     }
@@ -89,200 +90,327 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
   List<String?> cylinder = [];
   List<double> calculatedCylinderVolume = [];
   getCylinderVolume() async{
-    List<DoubleDefenceee?> doubleDefence = await DatabaseHelper.instance.queryDoubleDefence(passedProductName, fanDeckId, passedColorName);
+    List<CosmeticInt?> cosmeticInt = await DatabaseHelper.instance.queryCosmeticInt(passedProductName, fanDeckId, passedColorName!.split("(").first);
     setState(() {
       calculatedCylinderVolume.clear();
     });
-    if (getDouble(doubleDefence[0]?.fT) > 0.0) {
-      cylinder.add("FT");
+    if (getDouble(cosmeticInt[0]?.whf.toString()) > 0.0) {
+      cylinder.add("WHF");
       if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.fT!)*passedCanSize!);
+          String value = double.parse(cosmeticInt[0]!.whf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*passedCanSize!;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0){
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.fT!)*selectedCanSize);
+          String value = double.parse(cosmeticInt[0]!.whf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*selectedCanSize;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }
     }
-    if (getDouble(doubleDefence[0]?.kS) > 0) {
-      cylinder.add("KS");
+    if (getDouble(cosmeticInt[0]?.fbf.toString()) > 0) {
+      cylinder.add("FBF");
       if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0) {
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.kS!)*passedCanSize!);
+          String value = double.parse(cosmeticInt[0]!.fbf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*passedCanSize!;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0){
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.kS!)*selectedCanSize);
+          String value = double.parse(cosmeticInt[0]!.fbf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*selectedCanSize;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }
     }
-    if (getDouble(doubleDefence[0]?.lS) > 0) {
-      cylinder.add("LS");
+    if (getDouble(cosmeticInt[0]?.fgf.toString()) > 0) {
+      cylinder.add("FGF");
       if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.lS!)*passedCanSize!);
+          String value = double.parse(cosmeticInt[0]!.fgf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*passedCanSize!;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0){
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.lS!)*selectedCanSize);
+          String value = double.parse(cosmeticInt[0]!.fgf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*selectedCanSize;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }
     }
-    if (getDouble(doubleDefence[0]?.lT) > 0) {
-      cylinder.add("LT");
+    if (getDouble(cosmeticInt[0]?.fef.toString()) > 0) {
+      cylinder.add("FEF");
       if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.lT!)*passedCanSize!);
+          String value = double.parse(cosmeticInt[0]!.fef.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*passedCanSize!;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0){
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.lT!)*selectedCanSize);
+          String value = double.parse(cosmeticInt[0]!.fef.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*selectedCanSize;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }
     }
-    if (getDouble(doubleDefence[0]?.mM) > 0) {
-      cylinder.add("MM");
-      if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
+    if (getDouble(cosmeticInt[0]?.yof.toString()) > 0) {
+      cylinder.add("YOF");
+      if(selectedCanSize.toString().isEmpty || selectedCanSize == 0){
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.mM!)*passedCanSize!);
+          String value = double.parse(cosmeticInt[0]!.yof.toString()).toStringAsFixed(3);
+          double? value1 = double.parse(value);
+          double?calculate = value1*passedCanSize!;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0){
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.mM!)*selectedCanSize);
+          String value = double.parse(cosmeticInt[0]!.yof.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*selectedCanSize;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }
     }
-    if (getDouble(doubleDefence[0]?.mS) > 0) {
-      cylinder.add("MS");
+    if (getDouble(cosmeticInt[0]?.fvf.toString()) > 0) {
+      cylinder.add("FVF");
       if (selectedCanSize.toString().isEmpty || selectedCanSize == 0.0) {
         setState(() {
-          calculatedCylinderVolume.clear();
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.mS!) * passedCanSize!);
+          String value = double.parse(cosmeticInt[0]!.fvf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*passedCanSize!;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       } else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0) {
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.mS!) * selectedCanSize);
+          String value = double.parse(cosmeticInt[0]!.fvf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*selectedCanSize;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }
     }
-    if (getDouble(doubleDefence[0]?.mT) > 0) {
-      cylinder.add("MT");
+    if (getDouble(cosmeticInt[0]?.iyf.toString()) > 0) {
+      cylinder.add("IYF");
       if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.mT!)*passedCanSize!);
+          String value = double.parse(cosmeticInt[0]!.iyf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*passedCanSize!;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0){
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.mT!)*selectedCanSize);
+          String value = double.parse(cosmeticInt[0]!.iyf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*selectedCanSize;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }
     }
-    if (getDouble(doubleDefence[0]?.pP) > 0) {
-      cylinder.add("PP");
+    if (getDouble(cosmeticInt[0]?.mgf.toString()) > 0) {
+      cylinder.add("MGF");
       if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.pP!)*passedCanSize!);
+          String value = double.parse(cosmeticInt[0]!.mgf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*passedCanSize!;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0){
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.pP!)*selectedCanSize);
+          String value = double.parse(cosmeticInt[0]!.mgf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*selectedCanSize;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }
     }
-    if (getDouble(doubleDefence[0]?.rS) > 0) {
-      cylinder.add("RS");
+    if (getDouble(cosmeticInt[0]?.irf.toString()) > 0) {
+      cylinder.add("IRF");
       if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.rS!)*passedCanSize!);
+          String value = double.parse(cosmeticInt[0]!.irf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*passedCanSize!;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0){
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.rS!)*selectedCanSize);
+          String value = double.parse(cosmeticInt[0]!.irf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*selectedCanSize;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }
     }
-    if (getDouble(doubleDefence[0]?.rT) > 0) {
-      cylinder.add("RT");
+    if (getDouble(cosmeticInt[0]?.rof.toString()) > 0) {
+      cylinder.add("ROF");
       if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.rT!)*passedCanSize!);
+          String value = double.parse(cosmeticInt[0]!.rof.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*passedCanSize!;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0) {
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.rT!)*selectedCanSize);
+          String value = double.parse(cosmeticInt[0]!.rof.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*selectedCanSize;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }
     }
-    if (getDouble(doubleDefence[0]?.sT) > 0) {
-      cylinder.add("ST");
+    if (getDouble(cosmeticInt[0]?.erf.toString()) > 0) {
+      cylinder.add("ERF");
       if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.sT!)*passedCanSize!);
+          String value = double.parse(cosmeticInt[0]!.erf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*passedCanSize!;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0) {
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.sT!)*selectedCanSize);
+          String value = double.parse(cosmeticInt[0]!.erf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*selectedCanSize;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }
     }
-    if (getDouble(doubleDefence[0]?.tT) > 0) {
-      cylinder.add("TT");
+    if (getDouble(cosmeticInt[0]?.myf.toString()) > 0) {
+      cylinder.add("MYF");
       if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.tT!)*passedCanSize!);
+          String value = double.parse(cosmeticInt[0]!.myf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*passedCanSize!;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0) {
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.tT!)*selectedCanSize);
+          String value = double.parse(cosmeticInt[0]!.myf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*selectedCanSize;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }
     }
-    if (getDouble(doubleDefence[0]?.uS) > 0) {
-      cylinder.add("US");
+    if (getDouble(cosmeticInt[0]?.lbf.toString()) > 0) {
+      cylinder.add("LBF");
       if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.uS!)*passedCanSize!);
+          String value = double.parse(cosmeticInt[0]!.lbf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*passedCanSize!;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0) {
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.uS!)*selectedCanSize);
+          String value = double.parse(cosmeticInt[0]!.lbf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*selectedCanSize;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }
     }
-    if (getDouble(doubleDefence[0]?.vT) > 0) {
-      cylinder.add("VT");
+    if (getDouble(cosmeticInt[0]?.lgf.toString()) > 0) {
+      cylinder.add("LGF");
       if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.vT!).round()*passedCanSize!);
+          String value = double.parse(cosmeticInt[0]!.lgf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*passedCanSize!;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0) {
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.vT!)*selectedCanSize);
+          String value = double.parse(cosmeticInt[0]!.lgf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*selectedCanSize;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }
     }
-    if (getDouble(doubleDefence[0]?.xT) > 0) {
-      cylinder.add("XT");
+    if (getDouble(cosmeticInt[0]?.eyf.toString()) > 0) {
+      cylinder.add("EYF");
       if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.xT!)*passedCanSize!);
+          String value = double.parse(cosmeticInt[0]!.eyf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*passedCanSize!;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0) {
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.xT!)*selectedCanSize);
+          String value = double.parse(cosmeticInt[0]!.eyf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*selectedCanSize;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }
     }
-    if (getDouble(doubleDefence[0]?.zT) > 0) {
-      cylinder.add("ZT");
+    if (getDouble(cosmeticInt[0]?.ruf.toString()) > 0) {
+      cylinder.add("RUF");
       if(selectedCanSize.toString().isEmpty || selectedCanSize == 0.0){
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.zT!)*passedCanSize!);
+          String value = double.parse(cosmeticInt[0]!.ruf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*passedCanSize!;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }else if(selectedCanSize.toString().isEmpty || selectedCanSize != 0.0) {
         setState(() {
-          calculatedCylinderVolume.add(double.parse(doubleDefence[0]!.zT!)*selectedCanSize);
+          String value = double.parse(cosmeticInt[0]!.ruf.toString()).toStringAsFixed(2);
+          double? value1 = double.parse(value);
+          double?calculate = value1*selectedCanSize;
+          double? fixed = double.parse(calculate.toStringAsFixed(2));
+          calculatedCylinderVolume.add(fixed);
         });
       }
     }
@@ -323,15 +451,15 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
   int singleGValue = 0;
   int singleBValue = 0;
   getSingleColorantValue()async{
-  List<ShadeColorDatabase>? shadeColorDataList = await DatabaseHelper.instance.queryShadeColor(passedColorName);
-    setState(() {
+  List<ShadeColorDatabase> shadeColorDataList = await DatabaseHelper.instance.queryShadeColor(passedColorName!.split("(").first);
+    // setState(() {
       singleRValue = shadeColorDataList[0].rValue!.toInt();
       singleGValue = shadeColorDataList[0].gValue!.toInt();
       singleBValue = shadeColorDataList[0].bValue!.toInt();
-    });
+    // });
   }
   String selectedContainer="";
-  double selectedCanSize=0;
+  double selectedCanSize=0.0;
 
   double? height1 =100;
   int? height2;
@@ -369,7 +497,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
             Navigator.of(context).pushReplacement(MaterialPageRoute(builder:(ctx)=>SavedScreen(
               colorName: passedColorName,
               productName: passedProductName,
-              canSize: selectedCanSize==0.0?passedCanSize:selectedCanSize,
+              canSize:selectedCanSize==0?passedCanSize:selectedCanSize,
               rColor: double.parse(singleRValue.toString()),
               gColor: double.parse(singleGValue.toString()),
               bColor: double.parse(singleBValue.toString()),
@@ -386,9 +514,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                         colorName: passedColorName,
                         productName: passedProductName,
                         fandeckName: passedFanDeckName,
-                        canSize: selectedCanSize == 0.0
-                            ? passedCanSize
-                            : selectedCanSize,
+                        canSize: selectedCanSize==0?passedCanSize:selectedCanSize.toDouble(),
                         canColorR: double.parse(singleRValue.toString()),
                         canColorG: double.parse(singleGValue.toString()),
                         canColorB: double.parse(singleBValue.toString()),
@@ -430,9 +556,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                       colorName: passedColorName,
                       productName: passedProductName,
                       fandeckName: passedFanDeckName,
-                      canSize: selectedCanSize == 0.0
-                          ? passedCanSize
-                          : selectedCanSize,
+                      canSize: selectedCanSize == 0.0 ?passedCanSize:selectedCanSize,
                       canColorR: double.parse(singleRValue.toString()),
                       canColorG: double.parse(singleGValue.toString()),
                       canColorB: double.parse(singleBValue.toString()),
@@ -580,6 +704,8 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                     fontWeight: FontWeight.w500),
               ),
               SizedBox(height: size.height*0.010),
+              //here
+              if(passedProductName=="cosmeticintemulsion" || passedProductName=="magnetextemulsion" || passedProductName=="weatherproofextemulsion")
               Text(
                 '$baseName  $passedCanSize Ltr',
                 style: TextStyle(
@@ -587,6 +713,14 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                     fontSize: size.height*0.012+size.width*0.012,
                     fontWeight: FontWeight.w500),
               ),
+              if(passedProductName=="smartdist" || passedProductName=="styledist")
+                Text(
+                  '$baseName  $passedCanSize Kg',
+                  style: TextStyle(
+                      color:Colors.black,
+                      fontSize: size.height*0.012+size.width*0.012,
+                      fontWeight: FontWeight.w500),
+                ),
               SizedBox(height: size.height*0.020),
               Text(
                 'Colourants:',
@@ -630,10 +764,10 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                         ],
                       ),
                       Text(cylinder[i]!),
-                      if(passedProductName=="relianceDist" || passedProductName=="shangrilaDist")
-                        Text("${calculatedCylinderVolume[i]} Kg"),
-                      if(passedProductName=="doubleDefenceEE" || passedProductName=="newUltraProtecEE" || passedProductName=="protecEE" || passedProductName=="newShangrilaEE" || passedProductName=="elegaIE" || passedProductName=="newBarpimoIE" || passedProductName=="newShangrilaIE")
-                      Text("${calculatedCylinderVolume[i]} ML"),
+                      if(passedProductName=="cosmeticintemulsion" || passedProductName=="magnetextemulsion" || passedProductName=="weatherproofextemulsion")
+                        Text("${calculatedCylinderVolume[i]} ML"),
+                      if(passedProductName=="smartdist" || passedProductName=="styledist")
+                      Text("${calculatedCylinderVolume[i]} KG"),
                     ],
                   );
 
@@ -644,7 +778,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
               SizedBox(height: size.height*0.020),
               Text("Can Size:",style: TextStyle(fontSize: size.height*0.010+size.width*0.010,color: ChooseColor(0).appBarColor1,fontWeight: FontWeight.bold),),
               SizedBox(height: size.height*0.010),
-              if(passedProductName=="doubleDefenceEE" || passedProductName=="newUltraProtecEE" || passedProductName=="protecEE" || passedProductName=="newShangrilaEE" || passedProductName=="elegaIE" || passedProductName=="newBarpimoIE" || passedProductName=="newShangrilaIE")
+              if(passedProductName=="cosmeticintemulsion" || passedProductName=="magnetextemulsion" || passedProductName=="weatherproofextemulsion")
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -652,7 +786,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                       onTap: (){
                         setState(() {
                           selectedContainer = "first";
-                          selectedCanSize=1.0;
+                          selectedCanSize=1;
                           getCylinderVolume();
                         });
                       },
@@ -672,7 +806,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                       onTap: (){
                         setState(() {
                           selectedContainer="second";
-                          selectedCanSize = 4.0;
+                          selectedCanSize = 4;
                           getCylinderVolume();
                         });
                       },
@@ -683,7 +817,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                         ),
                         child:Padding(
                           padding:EdgeInsets.symmetric(vertical: size.height*0.010,horizontal: size.width*0.030),
-                          child: const Text("4 Ltr.",style: TextStyle(color: Colors.white),),
+                          child: const Text("4 Ltr",style: TextStyle(color: Colors.white),),
                         ),
                       ),
                     ),
@@ -692,7 +826,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                       onTap: (){
                         setState(() {
                           selectedContainer="third";
-                          selectedCanSize = 10.0;
+                          selectedCanSize = 10;
                           getCylinderVolume();
                         });
                       },
@@ -703,7 +837,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                         ),
                         child:Padding(
                           padding:EdgeInsets.symmetric(vertical: size.height*0.010,horizontal: size.width*0.030),
-                          child: const Text("10 Ltr.",style: TextStyle(color: Colors.white),),
+                          child: const Text("10 Ltr",style: TextStyle(color: Colors.white),),
                         ),
                       ),
                     ),
@@ -712,7 +846,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                       onTap: (){
                         setState(() {
                           selectedContainer = "fourth";
-                          selectedCanSize = 20.0;
+                          selectedCanSize = 20;
                           getCylinderVolume();
                         });
                       },
@@ -730,7 +864,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                   ],
                 ),
 
-              if(passedProductName=="relianceDist" || passedProductName=="shangrilaDist")
+              if(passedProductName=="smartdist" || passedProductName=="styledist")
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -824,7 +958,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                   onPressed: ()async{
                     AlertBox().priceDialogueBox(
                         baseName[0],
-                        selectedCanSize.toString().isEmpty ||selectedCanSize==0.0?passedCanSize:selectedCanSize,
+                        selectedCanSize.toString().isEmpty || selectedCanSize==0.0?passedCanSize:selectedCanSize,
                         rValue,
                         gValue,
                         bValue,

@@ -50,573 +50,12 @@ class _ProductScreenState extends State<ProductScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              if(passedFandeckName=="RELIANCE ULTRA PROTEC SC")
-              GestureDetector(
-                onTap: (){
-                  Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "doubleDefenceEE",fanDeckName: "RELIANCE ULTRA PROTEC SC",emulsionOrDistemper: "Exterior Emulsion",)));
-                },
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:
-                    BorderRadius.all(Radius.circular(10.0)),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 5.0, left: 20, right: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
-                          children: const [
-                            SizedBox(
-                                width: 210,
-                                child: Text(
-                                  'Double Defence',
-                                  style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                )),
-
-                            Image(
-                              fit: BoxFit.fill,
-                              image: AssetImage(
-                                'icons/generate (1).png',
-                              ),
-                              height: 50,
-                              width: 50,
-                            )
-                          ],
-                        ),
-                        Text(
-                          'Exterior Emulsion',
-                          style: TextStyle(
-                              color: Colors.grey.shade600,
-                              fontSize: 14),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-
-              if(passedFandeckName=="SPIRIT 1050")
-              Column(
-                children: [
-                  GestureDetector(
-                    onTap: (){
-                      Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "doubleDefenceEE",fanDeckName: "SPIRIT 1050",emulsionOrDistemper: "Exterior Emulsion",)));
-                    },
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 5.0, left: 20, right: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: const [
-                                SizedBox(
-                                    width: 210,
-                                    child: Text(
-                                      'Double Defence',
-                                      style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-
-                                Image(
-                                  fit: BoxFit.fill,
-                                  image: AssetImage(
-                                    'icons/generate (1).png',
-                                  ),
-                                  height: 50,
-                                  width: 50,
-                                )
-                              ],
-                            ),
-                            Text(
-                              'Exterior Emulsion',
-                              style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 14),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: size.height*0.015),
-
-                  GestureDetector(
-                    onTap: (){
-                      Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "newUltraProtecEE",fanDeckName: "SPIRIT 1050",emulsionOrDistemper: "Exterior Emulsion",)));
-                    },
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 5.0, left: 20, right: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: const [
-                                SizedBox(
-                                    width: 210,
-                                    child: Text(
-                                      'New Ultra Protect',
-                                      style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-
-                                Image(
-                                  fit: BoxFit.fill,
-                                  image: AssetImage(
-                                    'icons/generate (1).png',
-                                  ),
-                                  height: 50,
-                                  width: 50,
-                                )
-                              ],
-                            ),
-                            Text(
-                              'Exterior Emulsion',
-                              style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 14),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: size.height*0.015),
-
-                  GestureDetector(
-                    onTap: (){
-                      Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "protecEE",fanDeckName: "SPIRIT 1050",emulsionOrDistemper: "Exterior Emulsion",)));
-                    },
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 5.0, left: 20, right: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: const [
-                                SizedBox(
-                                    width: 210,
-                                    child: Text(
-                                      'Protect',
-                                      style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-
-                                Image(
-                                  fit: BoxFit.fill,
-                                  image: AssetImage(
-                                    'icons/generate (1).png',
-                                  ),
-                                  height: 50,
-                                  width: 50,
-                                )
-                              ],
-                            ),
-                            Text(
-                              'Exterior Emulsion',
-                              style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 14),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: size.height*0.015),
-
-                  GestureDetector(
-                    onTap: (){
-                      Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "newShangrilaEE",fanDeckName: "SPIRIT 1050",emulsionOrDistemper: "Exterior Emulsion",)));
-                    },
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 5.0, left: 20, right: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: const [
-                                SizedBox(
-                                    width: 210,
-                                    child: Text(
-                                      'New Shangrila',
-                                      style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-
-                                Image(
-                                  fit: BoxFit.fill,
-                                  image: AssetImage(
-                                    'icons/generate (1).png',
-                                  ),
-                                  height: 50,
-                                  width: 50,
-                                )
-                              ],
-                            ),
-                            Text(
-                              'Exterior Emulsion',
-                              style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 14),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: size.height*0.015),
-                  GestureDetector(
-                    onTap: (){
-                      Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "elegaIE",fanDeckName: "SPIRIT 1050",emulsionOrDistemper: "Interior Emulsion",)));
-                    },
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 5.0, left: 20, right: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: const [
-                                SizedBox(
-                                    width: 210,
-                                    child: Text(
-                                      'Elega',
-                                      style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-
-                                Image(
-                                  fit: BoxFit.fill,
-                                  image: AssetImage(
-                                    'icons/generate (1).png',
-                                  ),
-                                  height: 50,
-                                  width: 50,
-                                )
-                              ],
-                            ),
-                            Text(
-                              'Interior Emulsion',
-                              style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 14),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: size.height*0.015),
-                  GestureDetector(
-                    onTap: (){
-                      Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "newBarpimoIE",fanDeckName: "SPIRIT 1050",emulsionOrDistemper: "Interior Emulsion",)));
-                    },
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 5.0, left: 20, right: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: const [
-                                SizedBox(
-                                    width: 210,
-                                    child: Text(
-                                      'New Barpimo',
-                                      style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-
-                                Image(
-                                  fit: BoxFit.fill,
-                                  image: AssetImage(
-                                    'icons/generate (1).png',
-                                  ),
-                                  height: 50,
-                                  width: 50,
-                                )
-                              ],
-                            ),
-                            Text(
-                              'Interior Emulsion',
-                              style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 14),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: size.height*0.015),
-                  GestureDetector(
-                    onTap: (){
-                      Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "newShangrilaIE",fanDeckName: "SPIRIT 1050",emulsionOrDistemper: "Interior Emulsion",)));
-                    },
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 5.0, left: 20, right: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: const [
-                                SizedBox(
-                                    width: 210,
-                                    child: Text(
-                                      'New Shangrila',
-                                      style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-
-                                Image(
-                                  fit: BoxFit.fill,
-                                  image: AssetImage(
-                                    'icons/generate (1).png',
-                                  ),
-                                  height: 50,
-                                  width: 50,
-                                )
-                              ],
-                            ),
-                            Text(
-                              'Interior Emulsion',
-                              style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 14),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: size.height*0.015),
-                  GestureDetector(
-                    onTap: (){
-                      Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "relianceDist",fanDeckName: "SPIRIT 1050",emulsionOrDistemper: "Distemper",)));
-                    },
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 5.0, left: 20, right: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: const [
-                                SizedBox(
-                                    width: 210,
-                                    child: Text(
-                                      'Reliance',
-                                      style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-
-                                Image(
-                                  fit: BoxFit.fill,
-                                  image: AssetImage(
-                                    'icons/generate (1).png',
-                                  ),
-                                  height: 50,
-                                  width: 50,
-                                )
-                              ],
-                            ),
-                            Text(
-                              'Distemper',
-                              style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 14),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: size.height*0.015),
-                  GestureDetector(
-                    onTap: (){
-                      Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "shangrilaDist",fanDeckName: "SPIRIT 1050",emulsionOrDistemper: "Distemper",)));
-                    },
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 5.0, left: 20, right: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: const [
-                                SizedBox(
-                                    width: 210,
-                                    child: Text(
-                                      'Shangrila',
-                                      style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-
-                                Image(
-                                  fit: BoxFit.fill,
-                                  image: AssetImage(
-                                    'icons/generate (1).png',
-                                  ),
-                                  height: 50,
-                                  width: 50,
-                                )
-                              ],
-                            ),
-                            Text(
-                              'Distemper',
-                              style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 14),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: size.height*0.015),
-                ],
-              ),
-
-              if(passedFandeckName=="SHADE CARD")
+              if(passedFandeckName=="Fashion Paints Ambiance Plus CS")
                 Column(
                   children: [
                     GestureDetector(
                       onTap: (){
-                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "newUltraProtecEE",fanDeckName: "SHADE CARD",emulsionOrDistemper: "Exterior Emulsion",)));
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "cosmeticintemulsion",fanDeckName: "Fashion Paints Ambiance Plus CS",emulsionOrDistemper: "Interior Emulsion",)));
                       },
                       child: Container(
                         decoration: const BoxDecoration(
@@ -637,7 +76,64 @@ class _ProductScreenState extends State<ProductScreen> {
                                   SizedBox(
                                       width: 210,
                                       child: Text(
-                                        'New Ultra Protect',
+                                        'cosmetic',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Interior Emulsion',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: size.height*0.015),
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "magnetextemulsion",fanDeckName: "Fashion Paints Ambiance Plus CS",emulsionOrDistemper: "Exterior Emulsion",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'Magnet',
                                         style: TextStyle(
                                             color: Colors.black87,
                                             fontSize: 16,
@@ -672,7 +168,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
                     GestureDetector(
                       onTap: (){
-                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "protecEE",fanDeckName: "SHADE CARD",emulsionOrDistemper: "Exterior Emulsion",)));
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "smartdist",fanDeckName: "Fashion Paints Ambiance Plus CS",emulsionOrDistemper: "Distemper",)));
                       },
                       child: Container(
                         decoration: const BoxDecoration(
@@ -693,7 +189,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                   SizedBox(
                                       width: 210,
                                       child: Text(
-                                        'Protect',
+                                        'Smart',
                                         style: TextStyle(
                                             color: Colors.black87,
                                             fontSize: 16,
@@ -711,7 +207,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                 ],
                               ),
                               Text(
-                                'Exterior Emulsion',
+                                'Distemper',
                                 style: TextStyle(
                                     color: Colors.grey.shade600,
                                     fontSize: 14),
@@ -728,7 +224,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
                     GestureDetector(
                       onTap: (){
-                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "newShangrilaEE",fanDeckName: "SHADE CARD",emulsionOrDistemper: "Exterior Emulsion",)));
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "styledist",fanDeckName: "Fashion Paints Ambiance Plus CS",emulsionOrDistemper: "Distemper",)));
                       },
                       child: Container(
                         decoration: const BoxDecoration(
@@ -749,227 +245,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                   SizedBox(
                                       width: 210,
                                       child: Text(
-                                        'New Shangrila',
-                                        style: TextStyle(
-                                            color: Colors.black87,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                      )),
-
-                                  Image(
-                                    fit: BoxFit.fill,
-                                    image: AssetImage(
-                                      'icons/generate (1).png',
-                                    ),
-                                    height: 50,
-                                    width: 50,
-                                  )
-                                ],
-                              ),
-                              Text(
-                                'Exterior Emulsion',
-                                style: TextStyle(
-                                    color: Colors.grey.shade600,
-                                    fontSize: 14),
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: size.height*0.015),
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "elegaIE",fanDeckName: "SHADE CARD",emulsionOrDistemper: "Interior Emulsion",)));
-                      },
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10.0)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 5.0, left: 20, right: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  SizedBox(
-                                      width: 210,
-                                      child: Text(
-                                        'Elega',
-                                        style: TextStyle(
-                                            color: Colors.black87,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                      )),
-
-                                  Image(
-                                    fit: BoxFit.fill,
-                                    image: AssetImage(
-                                      'icons/generate (1).png',
-                                    ),
-                                    height: 50,
-                                    width: 50,
-                                  )
-                                ],
-                              ),
-                              Text(
-                                'Interior Emulsion',
-                                style: TextStyle(
-                                    color: Colors.grey.shade600,
-                                    fontSize: 14),
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: size.height*0.015),
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "newBarpimoIE",fanDeckName: "SHADE CARD",emulsionOrDistemper: "Interior Emulsion",)));
-                      },
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10.0)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 5.0, left: 20, right: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  SizedBox(
-                                      width: 210,
-                                      child: Text(
-                                        'New Barpimo',
-                                        style: TextStyle(
-                                            color: Colors.black87,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                      )),
-
-                                  Image(
-                                    fit: BoxFit.fill,
-                                    image: AssetImage(
-                                      'icons/generate (1).png',
-                                    ),
-                                    height: 50,
-                                    width: 50,
-                                  )
-                                ],
-                              ),
-                              Text(
-                                'Interior Emulsion',
-                                style: TextStyle(
-                                    color: Colors.grey.shade600,
-                                    fontSize: 14),
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: size.height*0.015),
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "newShangrilaIE",fanDeckName: "SHADE CARD",emulsionOrDistemper: "Interior Emulsion",)));
-                      },
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10.0)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 5.0, left: 20, right: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  SizedBox(
-                                      width: 210,
-                                      child: Text(
-                                        'New Shangrila',
-                                        style: TextStyle(
-                                            color: Colors.black87,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                      )),
-
-                                  Image(
-                                    fit: BoxFit.fill,
-                                    image: AssetImage(
-                                      'icons/generate (1).png',
-                                    ),
-                                    height: 50,
-                                    width: 50,
-                                  )
-                                ],
-                              ),
-                              Text(
-                                'Interior Emulsion',
-                                style: TextStyle(
-                                    color: Colors.grey.shade600,
-                                    fontSize: 14),
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: size.height*0.015),
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "relianceDist",fanDeckName: "SHADE CARD",emulsionOrDistemper: "Distemper",)));
-                      },
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10.0)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 5.0, left: 20, right: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  SizedBox(
-                                      width: 210,
-                                      child: Text(
-                                        'Reliance',
+                                        'Style',
                                         style: TextStyle(
                                             color: Colors.black87,
                                             fontSize: 16,
@@ -1003,7 +279,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     SizedBox(height: size.height*0.015),
                     GestureDetector(
                       onTap: (){
-                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "shangrilaDist",fanDeckName: "SHADE CARD",emulsionOrDistemper: "Distemper",)));
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "weatherproofextemulsion",fanDeckName: "Fashion Paints Ambiance Plus CS",emulsionOrDistemper: "Exterior Emulsion",)));
                       },
                       child: Container(
                         decoration: const BoxDecoration(
@@ -1024,7 +300,181 @@ class _ProductScreenState extends State<ProductScreen> {
                                   SizedBox(
                                       width: 210,
                                       child: Text(
-                                        'Shangrila',
+                                        'Weather Proof',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Exterior Emulsion',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height*0.015),
+                  ],
+                ),
+
+              if(passedFandeckName=="Spirit 1050 Fandeck")
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "cosmeticintemulsion",fanDeckName: "Spirit 1050 Fandeck",emulsionOrDistemper: "Interior Emulsion",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'cosmetic',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Interior Emulsion',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: size.height*0.015),
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "magnetextemulsion",fanDeckName: "Spirit 1050 Fandeck",emulsionOrDistemper: "Exterior Emulsion",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'Magnet',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Exterior Emulsion',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height*0.015),
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "smartdist",fanDeckName: "Spirit 1050 Fandeck",emulsionOrDistemper: "Distemper",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'Smart',
                                         style: TextStyle(
                                             color: Colors.black87,
                                             fontSize: 16,
@@ -1043,6 +493,1257 @@ class _ProductScreenState extends State<ProductScreen> {
                               ),
                               Text(
                                 'Distemper',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height*0.015),
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "styledist",fanDeckName: "Spirit 1050 Fandeck",emulsionOrDistemper: "Distemper",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'Style',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Distemper',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height*0.015),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "weatherproofextemulsion",fanDeckName: "Spirit 1050 Fandeck",emulsionOrDistemper: "Exterior Emulsion",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'Weather Proof',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Exterior Emulsion',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height*0.015),
+                  ],
+                ),
+
+              if(passedFandeckName=="Color Symphony Fandeck")
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "cosmeticintemulsion",fanDeckName: "Color Symphony Fandeck",emulsionOrDistemper: "Interior Emulsion",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'cosmetic',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Interior Emulsion',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: size.height*0.015),
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "magnetextemulsion",fanDeckName: "Color Symphony Fandeck",emulsionOrDistemper: "Exterior Emulsion",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'Magnet',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Exterior Emulsion',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height*0.015),
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "smartdist",fanDeckName: "Color Symphony Fandeck",emulsionOrDistemper: "Distemper",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'Smart',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Distemper',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height*0.015),
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "styledist",fanDeckName: "Color Symphony Fandeck",emulsionOrDistemper: "Distemper",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'Style',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Distemper',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height*0.015),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "weatherproofextemulsion",fanDeckName: "Color Symphony Fandeck",emulsionOrDistemper: "Exterior Emulsion",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'Weather Proof',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Exterior Emulsion',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height*0.015),
+                  ],
+                ),
+
+              if(passedFandeckName=="Color Cosmos Fandeck")
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "cosmeticintemulsion",fanDeckName: "Color Cosmos Fandeck",emulsionOrDistemper: "Interior Emulsion",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'cosmetic',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Interior Emulsion',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: size.height*0.015),
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "magnetextemulsion",fanDeckName: "Color Cosmos Fandeck",emulsionOrDistemper: "Exterior Emulsion",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'Magnet',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Exterior Emulsion',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height*0.015),
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "smartdist",fanDeckName: "Color Cosmos Fandeck",emulsionOrDistemper: "Distemper",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'Smart',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Distemper',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height*0.015),
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "styledist",fanDeckName: "Color Cosmos Fandeck",emulsionOrDistemper: "Distemper",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'Style',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Distemper',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height*0.015),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "weatherproofextemulsion",fanDeckName: "Color Cosmos Fandeck",emulsionOrDistemper: "Exterior Emulsion",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'Weather Proof',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Exterior Emulsion',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height*0.015),
+                  ],
+                ),
+
+              if(passedFandeckName=="BP-2300")
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "cosmeticintemulsion",fanDeckName: "BP-2300",emulsionOrDistemper: "Interior Emulsion",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'cosmetic',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Interior Emulsion',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: size.height*0.015),
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "magnetextemulsion",fanDeckName: "BP-2300",emulsionOrDistemper: "Exterior Emulsion",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'Magnet',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Exterior Emulsion',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height*0.015),
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "smartdist",fanDeckName: "BP-2300",emulsionOrDistemper: "Distemper",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'Smart',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Distemper',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height*0.015),
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "styledist",fanDeckName: "BP-2300",emulsionOrDistemper: "Distemper",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'Style',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Distemper',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height*0.015),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "weatherproofextemulsion",fanDeckName: "BP-2300",emulsionOrDistemper: "Exterior Emulsion",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'Weather Proof',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Exterior Emulsion',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height*0.015),
+                  ],
+                ),
+
+              if(passedFandeckName=="AP-CP")
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "cosmeticintemulsion",fanDeckName: "AP-CP",emulsionOrDistemper: "Interior Emulsion",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'cosmetic',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Interior Emulsion',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: size.height*0.015),
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "magnetextemulsion",fanDeckName: "AP-CP",emulsionOrDistemper: "Exterior Emulsion",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'Magnet',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Exterior Emulsion',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height*0.015),
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "smartdist",fanDeckName: "AP-CP",emulsionOrDistemper: "Distemper",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'Smart',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Distemper',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height*0.015),
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "styledist",fanDeckName: "AP-CP",emulsionOrDistemper: "Distemper",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'Style',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Distemper',
+                                style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 14),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height*0.015),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>ProductDetailScreen(productName: "weatherproofextemulsion",fanDeckName: "AP-CP",emulsionOrDistemper: "Exterior Emulsion",)));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  SizedBox(
+                                      width: 210,
+                                      child: Text(
+                                        'Weather Proof',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+
+                                  Image(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      'icons/generate (1).png',
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                ],
+                              ),
+                              Text(
+                                'Exterior Emulsion',
                                 style: TextStyle(
                                     color: Colors.grey.shade600,
                                     fontSize: 14),

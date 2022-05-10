@@ -3,12 +3,13 @@ class SavedCustomerDetail {
   String? customerName;
   String? address;
   String? contact;
-
+  String? colorName;
   SavedCustomerDetail({
     this.id,
     this.customerName,
     this.address,
     this.contact,
+    this.colorName
   });
 
   factory SavedCustomerDetail.fromMap(Map<String,dynamic>json)=>SavedCustomerDetail(
@@ -16,6 +17,7 @@ class SavedCustomerDetail {
     customerName: json["customerName"],
     address: json["address"],
     contact: json["contact"],
+    colorName: json["colorName"]
   );
 
   Map<String,dynamic> toMap(){
@@ -24,6 +26,7 @@ class SavedCustomerDetail {
       "customerName":customerName,
       "address":address,
       "contact":contact,
+      "colorName":colorName
     };
   }
 }
