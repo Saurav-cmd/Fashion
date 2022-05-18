@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:path_drawing/path_drawing.dart';
 
+import '../../database/all_data_database.dart';
+import '../../models/database_models/shade_color_database_model.dart';
+import '../../widgets/dilogue_box.dart';
+
 class ExteriorImagePaint extends StatefulWidget {
   const ExteriorImagePaint({Key? key}) : super(key: key);
 
@@ -13,6 +17,22 @@ class ExteriorImagePaint extends StatefulWidget {
 Color? fillColor;
 
 class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getAllShadeColor();
+  }
+
+  List<ShadeColorDatabase> allColorsData = [];
+  getAllShadeColor() async {
+    final shadeData = await DatabaseHelper.instance.getShadeColorData();
+    for (var e in shadeData) {
+      allColorsData.add(e);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final notifier = ValueNotifier(Offset.zero);
     final size = MediaQuery.of(context).size;
@@ -61,7 +81,81 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
                   ],
                 ),
               ),
-              Row(
+              SizedBox(height: size.height * 0.020),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: size.height * 0.010,
+                    horizontal: size.width * 0.015),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                          width: 1.0, color: Colors.lightBlue.shade900),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Shade",
+                            style:
+                                TextStyle(color: ChooseColor(0).appBarColor1),
+                          ),
+                          Text(
+                            "Original",
+                            style:
+                                TextStyle(color: ChooseColor(0).appBarColor1),
+                          )
+                        ],
+                      ),
+                      SizedBox(height: size.height * 0.010),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              AlertBox().showAllColors(allColorsData, context);
+                            },
+                            child: Stack(
+                              children: [
+                                Container(
+                                  height: 40,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 5,
+                                        blurRadius: 7,
+                                        offset: const Offset(
+                                            0, 3), // changes position of shadow
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.only(top: 20, left: 10),
+                                  child: Text("N/A"),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            height: 50,
+                            width: 50,
+                            child: Image.asset("images/1.png"),
+                          )
+                        ],
+                      ),
+                      SizedBox(height: size.height * 0.010),
+                    ],
+                  ),
+                ),
+              ),
+              /* Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   TextButton(
@@ -101,7 +195,7 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
                             MaterialStateProperty.all(Colors.cyan)),
                   ),
                 ],
-              ),
+              ),*/
             ],
           ),
         ));

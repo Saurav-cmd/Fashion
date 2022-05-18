@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:connectivity/connectivity.dart';
 import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:fashion_paints/database/all_data_database.dart';
@@ -7,19 +8,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import '../controllers/notice_controller.dart';
-import '../main.dart';
 import 'package:intl/intl.dart';
 
+import '../controllers/notice_controller.dart';
+import '../main.dart';
 import '../models/database_models/saved_customer_detail_color.dart';
+import '../models/database_models/shade_color_database_model.dart';
 
-class AlertBox{
+class AlertBox {
   loginAlertBox1(BuildContext context) {
     showDialog(
-        barrierDismissible:false,
+        barrierDismissible: false,
         context: context,
-        builder: (ctx) =>
-            WillPopScope(
+        builder: (ctx) => WillPopScope(
               onWillPop: () async => false,
               child: AlertDialog(
                 title: const Text('Invalid Phone Number and password'),
@@ -29,105 +30,111 @@ class AlertBox{
                     width: 80.0,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            primary: ChooseColor(0).appBarColor1
-                        ),
+                            primary: ChooseColor(0).appBarColor1),
                         onPressed: () {
-                      Navigator.of(ctx).pop(true);
-                    }, child: const Text('Edit')),
+                          Navigator.of(ctx).pop(true);
+                        },
+                        child: const Text('Edit')),
                   ),
                 ],
               ),
-            )
-    );
+            ));
   }
 
-  loginAlertBox2(BuildContext context){
+  loginAlertBox2(BuildContext context) {
     showDialog(
-      barrierDismissible: false,
+        barrierDismissible: false,
         context: context,
-        builder: (ctx)=>
-            WillPopScope(
-              onWillPop: ()async=>false,
-                child:AlertDialog(
-                  title: const Text("Bad request",style: TextStyle(fontWeight: FontWeight.w400),),
-                  actions: [
-                    SizedBox(
-                      height: 40.0,
-                      width: 80.0,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: ChooseColor(0).appBarColor1
-                        ),
-                        onPressed: (){
-                        Navigator.of(context).pop(true);
-                      }, child: const Text("OK"),),
-                    )
-                  ],
+        builder: (ctx) => WillPopScope(
+              onWillPop: () async => false,
+              child: AlertDialog(
+                title: const Text(
+                  "Bad request",
+                  style: TextStyle(fontWeight: FontWeight.w400),
                 ),
-            )
-    );
-  }
-
-  loginAlertBox3(BuildContext context){
-    showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (ctx)=>
-            WillPopScope(
-              onWillPop: ()async=>false,
-              child:AlertDialog(
-                title: const Text("Invalid dealer code or password/unAuthorized user",style: TextStyle(fontWeight: FontWeight.w400),),
                 actions: [
                   SizedBox(
                     height: 40.0,
                     width: 80.0,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: ChooseColor(0).appBarColor1
-                      ),
-                      onPressed: (){
-                      Navigator.of(context).pop(true);
-                    }, child: const Text("OK"),),
+                          primary: ChooseColor(0).appBarColor1),
+                      onPressed: () {
+                        Navigator.of(context).pop(true);
+                      },
+                      child: const Text("OK"),
+                    ),
                   )
                 ],
               ),
-            )
-    );
+            ));
   }
 
-  universalAlertBox(BuildContext context){
+  loginAlertBox3(BuildContext context) {
     showDialog(
         barrierDismissible: false,
         context: context,
-        builder: (ctx)=>
-            WillPopScope(
-              onWillPop: ()async=>false,
-              child:AlertDialog(
-                title: const Text("Some Unexpected error occurred",style: TextStyle(fontWeight: FontWeight.w400),),
+        builder: (ctx) => WillPopScope(
+              onWillPop: () async => false,
+              child: AlertDialog(
+                title: const Text(
+                  "Invalid dealer code or password/unAuthorized user",
+                  style: TextStyle(fontWeight: FontWeight.w400),
+                ),
                 actions: [
                   SizedBox(
                     height: 40.0,
                     width: 80.0,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          primary: ChooseColor(0).appBarColor1
-                      ),
-                      onPressed: (){
-                      Navigator.of(context).pop(true);
-                    }, child: const Text("OK"),),
+                          primary: ChooseColor(0).appBarColor1),
+                      onPressed: () {
+                        Navigator.of(context).pop(true);
+                      },
+                      child: const Text("OK"),
+                    ),
                   )
                 ],
               ),
-            )
-    );
+            ));
   }
+
+  universalAlertBox(BuildContext context) {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (ctx) => WillPopScope(
+              onWillPop: () async => false,
+              child: AlertDialog(
+                title: const Text(
+                  "Some Unexpected error occurred",
+                  style: TextStyle(fontWeight: FontWeight.w400),
+                ),
+                actions: [
+                  SizedBox(
+                    height: 40.0,
+                    width: 80.0,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary: ChooseColor(0).appBarColor1),
+                      onPressed: () {
+                        Navigator.of(context).pop(true);
+                      },
+                      child: const Text("OK"),
+                    ),
+                  )
+                ],
+              ),
+            ));
+  }
+
   noWifiConnection(BuildContext context) async {
     await showDialog(
       context: context,
       barrierDismissible: true,
       builder: (context) {
-        return  WillPopScope(
-          onWillPop: ()async=>false,
+        return WillPopScope(
+          onWillPop: () async => false,
           child: AlertDialog(
             title: Center(
               child: SingleChildScrollView(
@@ -144,14 +151,12 @@ class AlertBox{
                               fontSize: 14,
                               fontFamily: 'Oswald',
                               fontWeight: FontWeight.w400),
-                        )
-                    ),
+                        )),
                     Container(
-                        margin: const EdgeInsets.only(top: 12,bottom: 12),
-                        child:Image.asset("icons/network.png")
-                    ),
+                        margin: const EdgeInsets.only(top: 12, bottom: 12),
+                        child: Image.asset("icons/network.png")),
                     Container(
-                        margin: const EdgeInsets.only(top: 12,bottom: 12),
+                        margin: const EdgeInsets.only(top: 12, bottom: 12),
                         child: const Text(
                           "Please check your internet connection",
                           textAlign: TextAlign.start,
@@ -160,22 +165,21 @@ class AlertBox{
                               fontSize: 14,
                               fontFamily: 'Oswald',
                               fontWeight: FontWeight.w400),
-                        )
-                    ),
+                        )),
                     Row(
                       children: <Widget>[
                         Expanded(
                           child: GestureDetector(
-                            onTap: () async{
+                            onTap: () async {
                               SystemNavigator.pop();
                             },
                             child: Container(
                                 decoration: BoxDecoration(
-                                    color:ChooseColor(0).appBarColor1,
-                                    borderRadius:
-                                    const BorderRadius.all(Radius.circular(5))),
+                                    color: ChooseColor(0).appBarColor1,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(5))),
                                 child: const Padding(
-                                  padding: EdgeInsets.only(top: 10,bottom: 10),
+                                  padding: EdgeInsets.only(top: 10, bottom: 10),
                                   child: Text(
                                     "Abort",
                                     style: TextStyle(
@@ -190,38 +194,43 @@ class AlertBox{
                         const SizedBox(width: 10),
                         Expanded(
                           child: GestureDetector(
-                            onTap: () async{
-                              try{
-                                final result = await InternetAddress.lookup("example.com");
-                                if(result.isNotEmpty && result[0].rawAddress.isNotEmpty){
+                            onTap: () async {
+                              try {
+                                final result =
+                                    await InternetAddress.lookup("example.com");
+                                if (result.isNotEmpty &&
+                                    result[0].rawAddress.isNotEmpty) {
                                   Navigator.pop(context);
                                 }
-                              }on SocketException catch (_) {
+                              } on SocketException catch (_) {
                                 final SnackBar snackBar = SnackBar(
-                                  content:const Padding(
-                                    padding: EdgeInsets.only(right:10),
+                                  content: const Padding(
+                                    padding: EdgeInsets.only(right: 10),
                                     child: Text(
                                       'No Internet Connection',
                                       textAlign: TextAlign.center,
                                       maxLines: 2,
-                                      style: TextStyle(fontSize:14,color: Colors.red),),
+                                      style: TextStyle(
+                                          fontSize: 14, color: Colors.red),
+                                    ),
                                   ),
                                   duration: const Duration(seconds: 1),
                                   backgroundColor: Colors.white,
                                   behavior: SnackBarBehavior.floating,
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)
-                                  ),
+                                      borderRadius: BorderRadius.circular(20)),
                                 );
-                                snackBarKey.currentState?.showSnackBar(snackBar);
+                                snackBarKey.currentState
+                                    ?.showSnackBar(snackBar);
                               }
                             },
                             child: Container(
-                                decoration:BoxDecoration(
-                                    color:ChooseColor(0).appBarColor1,
-                                    borderRadius:const BorderRadius.all(Radius.circular(5))),
+                                decoration: BoxDecoration(
+                                    color: ChooseColor(0).appBarColor1,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(5))),
                                 child: const Padding(
-                                  padding: EdgeInsets.only(top: 10,bottom: 10),
+                                  padding: EdgeInsets.only(top: 10, bottom: 10),
                                   child: Text(
                                     "OK",
                                     style: TextStyle(
@@ -246,7 +255,14 @@ class AlertBox{
     // Navigator.of(context).pop();
   }
 
-  Widget setupColorantsContainer(List<int>rValue,List<int>gValue,List<int>bValue, List<String?> cylinder,List<double?> cylinderVolume,List<double> price,BuildContext context) {
+  Widget setupColorantsContainer(
+      List<int> rValue,
+      List<int> gValue,
+      List<int> bValue,
+      List<String?> cylinder,
+      List<double?> cylinderVolume,
+      List<double> price,
+      BuildContext context) {
     final size = MediaQuery.of(context).size;
     var f = NumberFormat("###.0#", "en_US");
     return SizedBox(
@@ -260,16 +276,18 @@ class AlertBox{
               itemCount: cylinderVolume.length,
               itemBuilder: (BuildContext context, int i) {
                 return Padding(
-                  padding:EdgeInsets.symmetric(vertical: size.height*0.010),
+                  padding: EdgeInsets.symmetric(vertical: size.height * 0.010),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        height: size.height*0.030,
-                        width: size.width*0.1,
-                        decoration:BoxDecoration(
-                          color:Color.fromRGBO(rValue[i], gValue[i], bValue[i], 3),
-                          borderRadius:const BorderRadius.all(Radius.circular(5)),
+                        height: size.height * 0.030,
+                        width: size.width * 0.1,
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(
+                              rValue[i], gValue[i], bValue[i], 3),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(5)),
                         ),
                       ),
                       Text(
@@ -277,7 +295,7 @@ class AlertBox{
                         textAlign: TextAlign.start,
                         style: TextStyle(
                             color: Colors.black,
-                            fontSize: size.height*0.012+size.width*0.012,
+                            fontSize: size.height * 0.012 + size.width * 0.012,
                             fontWeight: FontWeight.w300),
                       ),
                       Text(
@@ -285,7 +303,7 @@ class AlertBox{
                         textAlign: TextAlign.start,
                         style: TextStyle(
                             color: Colors.black,
-                            fontSize: size.height*0.012+size.width*0.012,
+                            fontSize: size.height * 0.012 + size.width * 0.012,
                             fontWeight: FontWeight.w300),
                       ),
                       Text(
@@ -293,10 +311,9 @@ class AlertBox{
                         textAlign: TextAlign.start,
                         style: TextStyle(
                             color: Colors.black,
-                            fontSize: size.height*0.012+size.width*0.012,
+                            fontSize: size.height * 0.012 + size.width * 0.012,
                             fontWeight: FontWeight.w300),
                       ),
-
                     ],
                   ),
                 );
@@ -304,7 +321,7 @@ class AlertBox{
             ),
           ),
           Divider(
-            thickness: size.width*0.005,
+            thickness: size.width * 0.005,
           ),
           IntrinsicHeight(
             child: Row(
@@ -315,19 +332,19 @@ class AlertBox{
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color: Colors.black87,
-                      fontSize: size.height*0.015+size.width*0.015,
+                      fontSize: size.height * 0.015 + size.width * 0.015,
                       fontWeight: FontWeight.w400),
                 ),
                 VerticalDivider(
                   color: Colors.black45,
-                  thickness: size.width*0.005,
+                  thickness: size.width * 0.005,
                 ),
                 Text(
                   "50 Rs",
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color: Colors.black,
-                      fontSize: size.height*0.012+size.width*0.012,
+                      fontSize: size.height * 0.012 + size.width * 0.012,
                       fontWeight: FontWeight.w500),
                 ),
               ],
@@ -338,14 +355,23 @@ class AlertBox{
     );
   }
 
-  priceDialogueBox(String? baseName,double? canSize,List<int>rValue,List<int>gValue,List<int>bValue, List<String?> cylinder,List<double?> cylinderVolume,List<double> price,BuildContext context) async {
+  priceDialogueBox(
+      String? baseName,
+      double? canSize,
+      List<int> rValue,
+      List<int> gValue,
+      List<int> bValue,
+      List<String?> cylinder,
+      List<double?> cylinderVolume,
+      List<double> price,
+      BuildContext context) async {
     final size = MediaQuery.of(context).size;
     await showDialog(
-      context:context,
+      context: context,
       barrierDismissible: true,
       builder: (context) {
-        return  WillPopScope(
-          onWillPop: ()async=>false,
+        return WillPopScope(
+          onWillPop: () async => false,
           child: AlertDialog(
             title: Center(
               child: SingleChildScrollView(
@@ -360,13 +386,15 @@ class AlertBox{
                           textAlign: TextAlign.start,
                           style: TextStyle(
                               color: Colors.black87,
-                              fontSize: size.height*0.015+size.width*0.015,
+                              fontSize:
+                                  size.height * 0.015 + size.width * 0.015,
                               fontWeight: FontWeight.w500),
                         ),
-                        IconButton(onPressed: (){
-                          Navigator.pop(context);
-                        }, icon:const Icon(Icons.clear))
-
+                        IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(Icons.clear))
                       ],
                     ),
                     Text(
@@ -374,11 +402,11 @@ class AlertBox{
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           color: Colors.black87,
-                          fontSize: size.height*0.014+size.width*0.014,
+                          fontSize: size.height * 0.014 + size.width * 0.014,
                           fontWeight: FontWeight.w500),
                     ),
                     Divider(
-                      thickness: size.width*0.005,
+                      thickness: size.width * 0.005,
                     ),
                     IntrinsicHeight(
                       child: Row(
@@ -389,68 +417,70 @@ class AlertBox{
                             textAlign: TextAlign.start,
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: size.height*0.012+size.width*0.012,
+                                fontSize:
+                                    size.height * 0.012 + size.width * 0.012,
                                 fontWeight: FontWeight.w300),
                           ),
                           VerticalDivider(
                             color: Colors.black45,
-                            thickness: size.width*0.005,
+                            thickness: size.width * 0.005,
                           ),
                           Text(
                             "$canSize ",
                             textAlign: TextAlign.start,
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: size.height*0.012+size.width*0.012,
+                                fontSize:
+                                    size.height * 0.012 + size.width * 0.012,
                                 fontWeight: FontWeight.w300),
                           ),
                           VerticalDivider(
                             color: Colors.black45,
-                            thickness: size.width*0.005,
+                            thickness: size.width * 0.005,
                           ),
                           Text(
                             "Rs 0",
                             textAlign: TextAlign.start,
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: size.height*0.012+size.width*0.012,
+                                fontSize:
+                                    size.height * 0.012 + size.width * 0.012,
                                 fontWeight: FontWeight.w300),
                           ),
                           VerticalDivider(
                             color: Colors.black45,
-                            thickness: size.width*0.005,
+                            thickness: size.width * 0.005,
                           ),
                           Text(
                             "Rs 0",
                             textAlign: TextAlign.start,
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: size.height*0.012+size.width*0.012,
+                                fontSize:
+                                    size.height * 0.012 + size.width * 0.012,
                                 fontWeight: FontWeight.w300),
                           ),
                         ],
                       ),
                     ),
                     Divider(
-                      thickness: size.width*0.005,
+                      thickness: size.width * 0.005,
                     ),
-
-                    SizedBox(height: size.height*0.005),
+                    SizedBox(height: size.height * 0.005),
                     Text(
                       "Colorants",
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           color: Colors.black87,
-                          fontSize: size.height*0.015+size.width*0.015,
+                          fontSize: size.height * 0.015 + size.width * 0.015,
                           fontWeight: FontWeight.w500),
                     ),
-
-
                   ],
                 ),
               ),
             ),
-            content: setupColorantsContainer(rValue,gValue,bValue,cylinder,cylinderVolume,price,context),
+            content: setupColorantsContainer(rValue, gValue, bValue, cylinder,
+                cylinderVolume, price, context),
           ),
         );
       },
@@ -458,139 +488,153 @@ class AlertBox{
     // Navigator.of(context).pop();
   }
 
-  addCustomerDialogueBox(String?colorName,String?productName,double?canSize,double?rValue,double?gValue,double?bValue,double?fandeckId,BuildContext context)async{
+  addCustomerDialogueBox(
+      String? colorName,
+      String? productName,
+      double? canSize,
+      double? rValue,
+      double? gValue,
+      double? bValue,
+      double? fandeckId,
+      BuildContext context) async {
     final size = MediaQuery.of(context).size;
     final GlobalKey<FormState> _form = GlobalKey<FormState>();
     TextEditingController nameController = TextEditingController();
     TextEditingController addressController = TextEditingController();
     TextEditingController contactController = TextEditingController();
     showDialog(
-      barrierDismissible: true,
-        context: context, builder:(ctx){
+        barrierDismissible: true,
+        context: context,
+        builder: (ctx) {
           return WillPopScope(
-            onWillPop:()async=>false,
-            child:AlertDialog(
-              title:Center(
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Add Customer",
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              color: Colors.black87,
-                              fontSize: size.height*0.015+size.width*0.015,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        IconButton(onPressed: (){
-                          Navigator.pop(context);
-                        }, icon:const Icon(Icons.clear))
-                      ],
-                    ),
-                    Form(
+            onWillPop: () async => false,
+            child: AlertDialog(
+                title: Center(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Add Customer",
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: size.height * 0.015 + size.width * 0.015,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.clear))
+                    ],
+                  ),
+                  Form(
                       key: _form,
-                        child:Column(
-                          children: [
-                            TextFormField(
-                              decoration:const InputDecoration(
-                                hintText: "Customer Name",
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              hintText: "Customer Name",
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Name is required";
+                              } else {
+                                return "";
+                              }
+                            },
+                            controller: nameController,
+                          ),
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              hintText: "Customer Address",
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Address is required";
+                              } else {
+                                return "";
+                              }
+                            },
+                            controller: addressController,
+                          ),
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              hintText: "Contact",
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Contact is required";
+                              } else if (value.length > 10) {
+                                return "Enter valid number";
+                              } else if (!value.startsWith("9")) {
+                                return "Enter valid number";
+                              } else {
+                                return "";
+                              }
+                            },
+                            controller: contactController,
+                            keyboardType: TextInputType.phone,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(10),
+                            ],
+                          ),
+                          SizedBox(height: size.height * 0.035),
+                          ConstrainedBox(
+                            constraints: BoxConstraints.tightFor(
+                                width: size.width * 0.2,
+                                height: size.height * 0.055),
+                            child: ElevatedButton(
+                              child: Text(
+                                'Save',
+                                maxLines: 1,
+                                style: TextStyle(
+                                    fontSize: size.height * 0.014 +
+                                        size.width * 0.014),
                               ),
-                              validator: (value){
-                                if(value!.isEmpty){
-                                  return "Name is required";
-                                }else{
-                                  return "";
-                                }
+                              onPressed: () async {
+                                // if(_form.currentState?.validate()??true){
+                                DatabaseHelper.instance
+                                    .addSavedData(SavedCustomerDetail(
+                                        customerName: nameController.text,
+                                        address: addressController.text,
+                                        contact: contactController.text,
+                                        colorName: colorName))
+                                    .whenComplete(() async {
+                                  final data = await DatabaseHelper.instance
+                                      .getSavedData();
+                                  // for(var e in data) {
+                                  DatabaseHelper.instance
+                                      .addSavedCustomerColorData(
+                                          CustomerSavedColor(
+                                              cDForeignKey: data.last.id,
+                                              colorName: colorName,
+                                              productName: productName,
+                                              canSize: canSize,
+                                              fandeckId: fandeckId,
+                                              rColor: rValue,
+                                              gColor: gValue,
+                                              bColor: bValue));
+                                  // }
+                                });
+                                // Navigator.pop(context);
+                                Navigator.of(context)
+                                    .pushReplacementNamed("Saved_screen");
                               },
-                              controller: nameController,
-                            ),
-                            TextFormField(
-                              decoration:const InputDecoration(
-                                hintText: "Customer Address",
-                              ),
-                              validator: (value){
-                                if(value!.isEmpty){
-                                  return "Address is required";
-                                }else {
-                                  return "";
-                                }
-                              },
-                              controller: addressController,
-                            ),
-                            TextFormField(
-                              decoration:const InputDecoration(
-                                hintText: "Contact",
-                              ),
-                              validator: (value){
-                                if(value!.isEmpty){
-                                  return "Contact is required";
-                                }else if(value.length>10){
-                                  return "Enter valid number";
-                                }else if(!value.startsWith("9")){
-                                  return "Enter valid number";
-                                }
-                                else{
-                                  return "";
-                                }
-                              },
-                              controller: contactController,
-                              keyboardType: TextInputType.phone,
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(10),
-                              ],
-                            ),
-
-                            SizedBox(height: size.height*0.035),
-                            ConstrainedBox(
-                              constraints:BoxConstraints.tightFor(width:size.width*0.2,height:size.height*0.055),
-                              child: ElevatedButton(
-                                child:Text('Save',maxLines: 1,style: TextStyle(fontSize:size.height*0.014+size.width*0.014),),
-                                onPressed: ()async{
-                                  // if(_form.currentState?.validate()??true){
-                                   DatabaseHelper.instance.addSavedData(
-                                       SavedCustomerDetail(
-                                         customerName: nameController.text,
-                                         address: addressController.text,
-                                         contact: contactController.text,
-                                         colorName:colorName
-                                     )
-                                   ).whenComplete(()async{
-                                     final data =await DatabaseHelper.instance.getSavedData();
-                                     // for(var e in data) {
-                                           DatabaseHelper.instance.addSavedCustomerColorData(
-                                               CustomerSavedColor(
-                                                   cDForeignKey:data.last.id,
-                                                   colorName: colorName,
-                                                   productName: productName,
-                                                   canSize: canSize,
-                                                   fandeckId: fandeckId,
-                                                   rColor: rValue,
-                                                   gColor: gValue,
-                                                   bColor: bValue
-                                               )
-                                           );
-                                     // }
-                                   });
-                                 // Navigator.pop(context);
-                                  Navigator.of(context).pushReplacementNamed("Saved_screen");
-                                },
-
-                                style: ElevatedButton.styleFrom(
-                                  primary:ChooseColor(0).buttonColor,
-                                ),
+                              style: ElevatedButton.styleFrom(
+                                primary: ChooseColor(0).buttonColor,
                               ),
                             ),
-                          ],
-                        )
-                    )
-                  ],
-                ),
-              )
-            ),
+                          ),
+                        ],
+                      ))
+                ],
+              ),
+            )),
           );
-    });
+        });
   }
 
   forAddToCart(BuildContext context) {
@@ -600,7 +644,8 @@ class AlertBox{
             if (newinternetconnection != ConnectivityResult.none) {
               Navigator.pop(context);
               Navigator.pop(context);
-              final NoticeController _noticeController = Get.put(NoticeController());
+              final NoticeController _noticeController =
+                  Get.put(NoticeController());
               _noticeController.getAllNotices(context);
             }
           });
@@ -672,4 +717,107 @@ class AlertBox{
     );
   }
 
+  Widget setupShadeColorContainer(
+      List<ShadeColorDatabase> allShadeData, BuildContext context) {
+    return SizedBox(
+      height: 300.0, // Change as per your requirement
+      width: 300.0, // Change as per your requirement
+      child: Flexible(
+        child: GridView.builder(
+            shrinkWrap: true,
+            itemCount: allShadeData.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4, crossAxisSpacing: 10, mainAxisSpacing: 10),
+            itemBuilder: (ctx, i) {
+              return Container(
+                child: Stack(
+                  children: [
+                    Container(
+                      color: Color.fromRGBO(
+                          allShadeData[i].rValue!.toInt(),
+                          allShadeData[i].gValue!.toInt(),
+                          allShadeData[i].bValue!.toInt(),
+                          1),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 45, left: 5),
+                      child: Text("${allShadeData[i].colorCode}"),
+                    )
+                  ],
+                ),
+              );
+            }),
+      ),
+    );
+  }
+
+  showAllColors(
+      List<ShadeColorDatabase> shadeData, BuildContext context) async {
+    final size = MediaQuery.of(context).size;
+    final GlobalKey<FormState> _form = GlobalKey<FormState>();
+    TextEditingController searchController = TextEditingController();
+    showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (ctx) {
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: AlertDialog(
+              title: Center(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Fashion's Color",
+                          style: TextStyle(
+                              color: ChooseColor(0).appBarColor1, fontSize: 14),
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(Icons.clear))
+                      ],
+                    ),
+                    Form(
+                        key: _form,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              decoration: InputDecoration(
+                                border: const OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: size.height * 0.001,
+                                    horizontal: size.width * 0.030),
+                                errorBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Colors.red, width: 1),
+                                    borderRadius: BorderRadius.circular(5)),
+                                // labelText: 'Phone Number',
+                                fillColor: const Color(0xffF6F9FA),
+                                filled: true,
+                                hintText: 'Search Color',
+                                prefixIcon: const Icon(Icons.search),
+                                hintStyle: TextStyle(
+                                    fontSize: size.height * 0.012 +
+                                        size.width * 0.012,
+                                    color: Colors.black26),
+                              ),
+                              controller: searchController,
+                            ),
+                            SizedBox(height: size.height * 0.035),
+                          ],
+                        )),
+                  ],
+                ),
+              ),
+              content: setupShadeColorContainer(shadeData, context),
+            ),
+          );
+        });
+  }
 }
