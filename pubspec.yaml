@@ -49,6 +49,9 @@ dependencies:
   image_downloader: ^0.31.0
   photo_view: ^0.13.0
   connectivity: ^3.0.6
+  flutter_svg: ^1.0.3
+  flutter_svg_provider: ^1.0.3
+  svg_path_parser: ^1.1.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

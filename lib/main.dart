@@ -1,5 +1,7 @@
 import 'package:fashion_paints/screens/bipana_preview/bipana_preview.dart';
 import 'package:fashion_paints/screens/bipana_preview/camera_screen.dart';
+import 'package:fashion_paints/screens/bipana_preview/exterior_image_paint.dart';
+import 'package:fashion_paints/screens/bipana_preview/exterior_images.dart';
 import 'package:fashion_paints/screens/bipana_preview/gallery_screen.dart';
 import 'package:fashion_paints/screens/book_marked/book_marked_screen.dart';
 import 'package:fashion_paints/screens/button_navigation_bars/home_screen_button_navigation_bar.dart';
@@ -23,11 +25,13 @@ import 'package:fashion_paints/screens/store/store_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+
 import 'screens/button_navigation_bars/dealer_home_screen_button_navigation_bar.dart';
 
-final GlobalKey<ScaffoldMessengerState> snackBarKey = GlobalKey<ScaffoldMessengerState>();
-Future<void> backgroundNotificationHandler(RemoteMessage message) async{}
-void main()async{
+final GlobalKey<ScaffoldMessengerState> snackBarKey =
+    GlobalKey<ScaffoldMessengerState>();
+Future<void> backgroundNotificationHandler(RemoteMessage message) async {}
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(backgroundNotificationHandler);
@@ -48,30 +52,33 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const SplashScreen(),
-      routes:{
-        "Home_page_screen":(ctx)=>const HomePage(),
-        "Button_Navigation_Bar":(ctx)=>const BottomNavigation(),
-        "Dealer_button_Navigation_Bar":(ctx)=>const DealerBottomNavigation(),
-        "Search_Screen":(ctx)=>const SearchScreen(),
-        "Bipana_Preview_screen":(ctx)=>const BipanaPreviewScreen(),
-        "Price_List_screen":(ctx)=>const PriceList(),
-        "Scheme_List_screen":(ctx)=>const SchemeList(),
-        "Notification_List_screen":(ctx)=>const NotificationScreen(),
-        "Dealer_Notification_List_screen":(ctx)=>const DealerNotificationScreen(),
-        "Order_history_screen":(ctx)=>const OrderHistory(),
-        "Comments_screen":(ctx)=>const CommentsScreen(),
-        "Saved_screen":(ctx)=>SavedScreen(),
-        "Gallery_screen":(ctx)=>const GalleryScreen(),
-        "Camera_screen":(ctx)=>const CameraScreen(),
-        "Color_screen":(ctx)=>const ColorScreen(),
-        "Color_Personality_screen":(ctx)=>const ColorPersonalityScreen(),
-        "Find_Painter_screen":(ctx)=>const FindPainter(),
-        "Find_Painter_Second_screen":(ctx)=>const PainterStatus(),
-        "Generate_screen":(ctx)=>const GenerateFirstScreen(),
-        "Book_Marked_screen":(ctx)=>const BookMarkedScreen(),
-        "Cart_screen":(ctx)=>const CartItem(),
-        "store_screen":(ctx)=>const StoreScreen(),
-        },
+      routes: {
+        "Home_page_screen": (ctx) => const HomePage(),
+        "Button_Navigation_Bar": (ctx) => const BottomNavigation(),
+        "Dealer_button_Navigation_Bar": (ctx) => const DealerBottomNavigation(),
+        "Search_Screen": (ctx) => const SearchScreen(),
+        "Bipana_Preview_screen": (ctx) => const BipanaPreviewScreen(),
+        "Price_List_screen": (ctx) => const PriceList(),
+        "Scheme_List_screen": (ctx) => const SchemeList(),
+        "Notification_List_screen": (ctx) => const NotificationScreen(),
+        "Dealer_Notification_List_screen": (ctx) =>
+            const DealerNotificationScreen(),
+        "Order_history_screen": (ctx) => const OrderHistory(),
+        "Comments_screen": (ctx) => const CommentsScreen(),
+        "Saved_screen": (ctx) => SavedScreen(),
+        "Gallery_screen": (ctx) => const GalleryScreen(),
+        "Camera_screen": (ctx) => const CameraScreen(),
+        "Color_screen": (ctx) => const ColorScreen(),
+        "Color_Personality_screen": (ctx) => const ColorPersonalityScreen(),
+        "Find_Painter_screen": (ctx) => const FindPainter(),
+        "Find_Painter_Second_screen": (ctx) => const PainterStatus(),
+        "Generate_screen": (ctx) => const GenerateFirstScreen(),
+        "Book_Marked_screen": (ctx) => const BookMarkedScreen(),
+        "Cart_screen": (ctx) => const CartItem(),
+        "store_screen": (ctx) => const StoreScreen(),
+        "Exterior_screen": (ctx) => ExteriorImages(),
+        "Exterior_image_paint": (ctx) => ExteriorImagePaint(),
+      },
     );
   }
 }

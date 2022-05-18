@@ -1,6 +1,7 @@
 import 'package:fashion_paints/models/database_models/color_base_database_model.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+
 import '../models/database_models/book_marked_model.dart';
 import '../models/database_models/colorant_database_model.dart';
 import '../models/database_models/cosmetic_int_emulsion_database_model.dart';
@@ -8,7 +9,7 @@ import '../models/database_models/saved_customer_detail_color.dart';
 import '../models/database_models/saved_customer_detail_model.dart';
 import '../models/database_models/shade_color_database_model.dart';
 
-class DatabaseHelper{
+class DatabaseHelper {
   static const _databaseVersion = 5;
   static const table1 = "CosmeticInteriorEmulsion";
   static const table2 = "ColorBase";
@@ -16,7 +17,7 @@ class DatabaseHelper{
   static const table4 = "ShadeColor";
   static const table5 = "BookMarked";
   static const table6 = "SavedCustomerDetail";
-  static const table7 ="SavedCustomerDetailColor";
+  static const table7 = "SavedCustomerDetailColor";
 
   //this is for CosmeticInteriorEmulsion table.........................................................
   static const id = 'id';
@@ -34,17 +35,16 @@ class DatabaseHelper{
   static const irf = 'irf';
   static const rof = 'rof';
   static const erf = 'erf';
-  static const myf= 'myf';
-  static const lbf= 'lbf';
-  static const lgf= 'lgf';
-  static const eyf= 'eyf';
-  static const ruf= 'ruf';
-  static const base= 'base';
-  static const bVolume= 'bVolume';
-  static const fanDeck= 'fandeck';
-  static const formulation= 'formulation';
+  static const myf = 'myf';
+  static const lbf = 'lbf';
+  static const lgf = 'lgf';
+  static const eyf = 'eyf';
+  static const ruf = 'ruf';
+  static const base = 'base';
+  static const bVolume = 'bVolume';
+  static const fanDeck = 'fandeck';
+  static const formulation = 'formulation';
   //this is for CosmeticInteriorEmulsion table ends......................................................
-
 
   //This is for Color Base Table CosmeticInteriorEmulsion here....................................................
   static const columnId = "id";
@@ -71,20 +71,16 @@ class DatabaseHelper{
   //This is for Color Colorant table ends here.................................................
 
   //This is for Shade Color table Starts here..................................................
-  static const shadeColorColumnId ="columnId";
+  static const shadeColorColumnId = "columnId";
   static const sCId = "id";
   static const sId = "sId";
   static const sColorCode = "colorCode";
   static const sColorName = "colorName";
-  static const doubleDefenceEe = "doubleDefenceEe";
-  static const elegaIe = "elegaIe";
-  static const newBarpimoIe = "newBarpimoIe";
-  static const newShangrilaEe = "newShangrilaEe";
-  static const newShangrilaIe = "newShangrilaIe";
-  static const newUltraProtecEe = "newUltraProtecEe";
-  static const protecEe = "protecEe";
-  static const relianceDist = "relianceDist";
-  static const shangrilaDist = "shangrilaDist";
+  static const styledist = "styledist";
+  static const weatherproofextemulsion = "weatherproofextemulsion";
+  static const smartdist = "smartdist";
+  static const cosmeticintemulsion = "cosmeticintemulsion";
+  static const magnetextemulsion = "magnetextemulsion";
   static const sRValue = "rValue";
   static const sGValue = "gValue";
   static const sBValue = "bValue";
@@ -129,30 +125,33 @@ class DatabaseHelper{
   static Database? _database;
 
   Future<Database?> get database async {
-    if (_database != null){
+    if (_database != null) {
       return _database;
     }
     _database = await _initDatabase();
     return _database;
   }
+
   var dbpath;
   String? dbpath1;
   var path;
 
   _initDatabase() async {
     path = await getDatabasesPath();
-    dbpath1 = join(path,"FashionPaints.db");
-    dbpath =  await openDatabase(dbpath1!,version: _databaseVersion, onCreate: _onCreate);
+    dbpath1 = join(path, "FashionPaints.db");
+    dbpath = await openDatabase(dbpath1!,
+        version: _databaseVersion, onCreate: _onCreate);
     print("This is database path $dbpath");
     return dbpath;
   }
 
-  Future<void> cleanDatabase()async{
+  Future<void> cleanDatabase() async {
     final db = await instance.database;
-    if(table1.isNotEmpty){
+    if (table1.isNotEmpty) {
       db?.delete(table1);
     }
   }
+
   Future _onCreate(Database db, int version) async {
     //class Double defeence table........................................................
     await db.execute('''
@@ -221,15 +220,11 @@ class DatabaseHelper{
     $sId INTEGER,
     $sColorCode TEXT,
     $sColorName REAL,
-    $doubleDefenceEe REAL,
-    $elegaIe REAL,
-    $newBarpimoIe REAL,
-    $newShangrilaEe REAL,
-    $newShangrilaIe REAL,
-    $newUltraProtecEe REAL,
-    $protecEe REAL,
-    $relianceDist REAL,
-    $shangrilaDist REAL,
+    $styledist REAL,
+    $weatherproofextemulsion REAL,
+    $smartdist REAL,
+    $cosmeticintemulsion REAL,
+    $magnetextemulsion REAL,
     $sRValue REAL,
     $sGValue REAL,
     $sBValue REAL
@@ -279,133 +274,158 @@ class DatabaseHelper{
   }
 
   //double defence ko data add,query,all data get ya bata start ho hai................................................................
-  Future<int?> addCosmeticIntData(CosmeticInt cosmeticint) async{
+  Future<int?> addCosmeticIntData(CosmeticInt cosmeticint) async {
     Database? db = await instance.database;
     return await db?.insert(table1, cosmeticint.toMap());
   }
 
-  Future<List<CosmeticInt>> getCosmeticIntData() async{
+  Future<List<CosmeticInt>> getCosmeticIntData() async {
     Database? db = await instance.database;
     var data = await db?.query(table1);
-    List<CosmeticInt>? cosmeticInteriorList = data!.isNotEmpty?data.map((c) => CosmeticInt.fromMap(c)).toList():[];
+    List<CosmeticInt>? cosmeticInteriorList = data!.isNotEmpty
+        ? data.map((c) => CosmeticInt.fromMap(c)).toList()
+        : [];
     return cosmeticInteriorList;
   }
 
- /* double defence database ma query laga ko baseId lina lai and color code ko value matra aaxa vhane color code le query garne haina vhane color
+  /* double defence database ma query laga ko baseId lina lai and color code ko value matra aaxa vhane color code le query garne haina vhane color
   Name le matra query garne*/
-  Future<List<CosmeticInt>> queryCosmeticInt(String? productName,double? fanDeckId,String? colorCodeOrName)async{
+  Future<List<CosmeticInt>> queryCosmeticInt(
+      String? productName, double? fanDeckId, String? colorCodeOrName) async {
     Database? db = await instance.database;
-    var data = await  db?.query(table1,where:'$fanDeck=? and $colorName=?',whereArgs: [fanDeckId,colorCodeOrName]);
-    return data!.isNotEmpty?data.map((c) => CosmeticInt.fromMap(c)).toList():[];
+    var data = await db?.query(table1,
+        where: '$fanDeck=? and $colorName=?',
+        whereArgs: [fanDeckId, colorCodeOrName]);
+    return data!.isNotEmpty
+        ? data.map((c) => CosmeticInt.fromMap(c)).toList()
+        : [];
   }
   //double defence ko data add,query,all data get ya bata end ho hai................................................................
 
-
   //color Base ko data add,all data get ya bata start ho hai........................................................................
-  Future<int?> addColorBaseData(DatabaseColorBase colorBase) async{
+  Future<int?> addColorBaseData(DatabaseColorBase colorBase) async {
     Database? db = await instance.database;
     return await db?.insert(table2, colorBase.toMap());
   }
 
-  Future<List<DatabaseColorBase>> getColorBaseData() async{
+  Future<List<DatabaseColorBase>> getColorBaseData() async {
     Database? db = await instance.database;
     var data = await db?.query(table2);
-    List<DatabaseColorBase>? colorBaseDataList = data!.isNotEmpty?data.map((e) => DatabaseColorBase.fromMap(e)).toList():[];
+    List<DatabaseColorBase>? colorBaseDataList = data!.isNotEmpty
+        ? data.map((e) => DatabaseColorBase.fromMap(e)).toList()
+        : [];
     return colorBaseDataList;
   }
   //color Base ko data add,all data get ya bata end ho hai........................................................................
 
-
   //color colorant ko data add,query,all data get ya bata start ho hai........................................................................
-  Future<int?> addColorColorantData(Colorants colorColorants) async{
+  Future<int?> addColorColorantData(Colorants colorColorants) async {
     Database? db = await instance.database;
     return await db?.insert(table3, colorColorants.toMap());
   }
 
-
-  Future<List<Colorants>> queryColorantsColor(String? colorantCodeOrName)async{
+  Future<List<Colorants>> queryColorantsColor(
+      String? colorantCodeOrName) async {
     Database? db = await instance.database;
-    var data = await  db?.query(table3,where:'$colorantCode=?',whereArgs: [colorantCodeOrName]);
-    return data!.isNotEmpty?data.map((c) => Colorants.fromMap(c)).toList():[];
+    var data = await db?.query(table3,
+        where: '$colorantCode=?', whereArgs: [colorantCodeOrName]);
+    return data!.isNotEmpty
+        ? data.map((c) => Colorants.fromMap(c)).toList()
+        : [];
   }
 
-  Future<List<Colorants>> getColorColorantData() async{
+  Future<List<Colorants>> getColorColorantData() async {
     Database? db = await instance.database;
     var data = await db?.query(table3);
-    List<Colorants>? colorColorantsDataList = data!.isNotEmpty?data.map((e) => Colorants.fromMap(e)).toList():[];
+    List<Colorants>? colorColorantsDataList =
+        data!.isNotEmpty ? data.map((e) => Colorants.fromMap(e)).toList() : [];
     return colorColorantsDataList;
   }
   //color colorant ko data add,query,all data get ya bata end ho hai........................................................................
 
-
   //shade color ko data add,query,all data get ya bata start ho hai........................................................................
-  Future<int?> addShadeColorData(ShadeColorDatabase shadeColor) async{
+  Future<int?> addShadeColorData(ShadeColorDatabase shadeColor) async {
     Database? db = await instance.database;
     return await db?.insert(table4, shadeColor.toMap());
   }
 
-  Future<List<ShadeColorDatabase>> getShadeColorData() async{
+  Future<List<ShadeColorDatabase>> getShadeColorData() async {
     Database? db = await instance.database;
     var data = await db?.query(table4);
-    List<ShadeColorDatabase>? shadeColorDataList = data!.isNotEmpty?data.map((e) => ShadeColorDatabase.fromMap(e)).toList():[];
+    List<ShadeColorDatabase>? shadeColorDataList = data!.isNotEmpty
+        ? data.map((e) => ShadeColorDatabase.fromMap(e)).toList()
+        : [];
     return shadeColorDataList;
   }
 
-  Future<List<ShadeColorDatabase>> queryShadeColor(String? colorName)async{
+  Future<List<ShadeColorDatabase>> queryShadeColor(String? colorName) async {
     Database? db = await instance.database;
-    var data =  await db?.query(table4,where:'$sColorName=?',whereArgs: [colorName]);
-    return data!.isNotEmpty?data.map((e) => ShadeColorDatabase.fromMap(e)).toList():[];
+    var data =
+        await db?.query(table4, where: '$sColorName=?', whereArgs: [colorName]);
+    return data!.isNotEmpty
+        ? data.map((e) => ShadeColorDatabase.fromMap(e)).toList()
+        : [];
   }
   //shade color ko data add,query,all data get ya bata end ho hai........................................................................
 
   //Book Marked ko data add,get garne ya bata start ho..................................................................................
-  Future<int?> addBookMarkedData(BookMarked bookMarked)async{
-      Database? db = await instance.database;
-      return await db?.insert(table5, bookMarked.toMap());
+  Future<int?> addBookMarkedData(BookMarked bookMarked) async {
+    Database? db = await instance.database;
+    return await db?.insert(table5, bookMarked.toMap());
   }
 
-  Future<List<BookMarked>> getBookMarkedData()async{
+  Future<List<BookMarked>> getBookMarkedData() async {
     Database? db = await instance.database;
-    var data =await db?.query(table5);
-    List<BookMarked>? bookMarkedDataList = data!.isNotEmpty?data.map((e) => BookMarked.fromMap(e)).toList():[];
+    var data = await db?.query(table5);
+    List<BookMarked>? bookMarkedDataList =
+        data!.isNotEmpty ? data.map((e) => BookMarked.fromMap(e)).toList() : [];
     return bookMarkedDataList;
   }
 
-  Future<int?> updateBookMarkedData(BookMarked bookMarked,id)async{
-    Database? db =await instance.database;
-    return await db?.update(table5,bookMarked.toMap(),where: "$bookMarkedColmId=?",whereArgs: [id]);
+  Future<int?> updateBookMarkedData(BookMarked bookMarked, id) async {
+    Database? db = await instance.database;
+    return await db?.update(table5, bookMarked.toMap(),
+        where: "$bookMarkedColmId=?", whereArgs: [id]);
   }
   //Book Marked ko data add,get garne ya bata end ho.........................................................................................
 
   //Saved ko data add,get garne ya bata start ho hai.........................................................................................
-  Future<int?> addSavedData(SavedCustomerDetail saved)async{
+  Future<int?> addSavedData(SavedCustomerDetail saved) async {
     Database? db = await instance.database;
     return await db?.insert(table6, saved.toMap());
   }
 
-  Future<List<SavedCustomerDetail>> getSavedData()async{
+  Future<List<SavedCustomerDetail>> getSavedData() async {
     Database? db = await instance.database;
     var data = await db?.query(table6);
-    List<SavedCustomerDetail> savedDataList = data!.isNotEmpty?data.map((e) => SavedCustomerDetail.fromMap(e)).toList():[];
+    List<SavedCustomerDetail> savedDataList = data!.isNotEmpty
+        ? data.map((e) => SavedCustomerDetail.fromMap(e)).toList()
+        : [];
     return savedDataList;
   }
 
-  Future<int?> addSavedCustomerColorData(CustomerSavedColor saved)async{
+  Future<int?> addSavedCustomerColorData(CustomerSavedColor saved) async {
     Database? db = await instance.database;
     return await db?.insert(table7, saved.toMap());
   }
 
-  Future<List<CustomerSavedColor>> getSavedCustomerColorData()async{
+  Future<List<CustomerSavedColor>> getSavedCustomerColorData() async {
     Database? db = await instance.database;
     var data = await db?.query(table7);
-    List<CustomerSavedColor> savedDataList = data!.isNotEmpty?data.map((e) => CustomerSavedColor.fromMap(e)).toList():[];
+    List<CustomerSavedColor> savedDataList = data!.isNotEmpty
+        ? data.map((e) => CustomerSavedColor.fromMap(e)).toList()
+        : [];
     return savedDataList;
   }
 
-  Future<List<CustomerSavedColor>> queryCustomerSavedColor(id,colorName)async{
+  Future<List<CustomerSavedColor>> queryCustomerSavedColor(
+      id, colorName) async {
     Database? db = await instance.database;
-    var data =  await db?.query(table7,where:'$savedColorForeignKey=?',whereArgs: [id]);
-    return data!.isNotEmpty?data.map((e) => CustomerSavedColor.fromMap(e)).toList():[];
+    var data = await db
+        ?.query(table7, where: '$savedColorForeignKey=?', whereArgs: [id]);
+    return data!.isNotEmpty
+        ? data.map((e) => CustomerSavedColor.fromMap(e)).toList()
+        : [];
   }
   //Saved ko data add,get garne ya bata end ho hai.........................................................................................
 

@@ -145,7 +145,7 @@ class _DealerHomePageState extends State<DealerHomePage> {
                       child: Card(
                         elevation: 0,
                         child: Padding(
-                          padding:EdgeInsets.symmetric(horizontal: size.width*0.010,vertical: size.height*0),
+                          padding:EdgeInsets.symmetric(horizontal: size.width*0.030,vertical: size.height*0),
                           child: Column(
                             children: [
                               SizedBox(

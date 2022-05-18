@@ -11,8 +11,9 @@ import 'package:fashion_paints/models/database_models/shade_color_database_model
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../database/all_data_database.dart';
 import '../models/apis_model/colorant_model.dart';
 import '../models/apis_model/cosmetic_int_emulsion_model.dart';
@@ -33,7 +34,8 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     value = sharedPreferences.getBool(Constants.DATA_DOWNLOAD);
     if (value == null || value != true) {
-      const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvZmFzaGlvbnBhaW50cy5iaWhhbml0ZWNoLmNvbVwvYXBpXC9sb2dpbiIsImlhdCI6MTY1MTk5NDMyNSwibmJmIjoxNjUxOTk0MzI1LCJqdGkiOiJ3Qk5WaHJiT1RKV0xCRlJHIiwic3ViIjoyMjIsInBydiI6IjMyY2IzOTAwNGMyYThlMjc1MWNlOTE2NTg4MmFiMDlmZGE0ZDEzMTcifQ.pDDXh0CqWvfn7l4tgiAE-Hn5j3weYHc-1VMBbUJBWOM";
+      const token =
+          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvZmFzaGlvbnBhaW50cy5iaWhhbml0ZWNoLmNvbVwvYXBpXC9sb2dpbiIsImlhdCI6MTY1MTk5NDMyNSwibmJmIjoxNjUxOTk0MzI1LCJqdGkiOiJ3Qk5WaHJiT1RKV0xCRlJHIiwic3ViIjoyMjIsInBydiI6IjMyY2IzOTAwNGMyYThlMjc1MWNlOTE2NTg4MmFiMDlmZGE0ZDEzMTcifQ.pDDXh0CqWvfn7l4tgiAE-Hn5j3weYHc-1VMBbUJBWOM";
       final url = Constants.baseUrl + "getdata";
       final response = await http.get(Uri.parse(url), headers: {
         "Content-Type": "application/json",
@@ -46,7 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
         ColorBase cB = colorBaseFromJson(response.body);
         ColorColorant cC = colorColorantFromJson(response.body);
         ShadeColor sCE = shadeColorFromJson(response.body);
-        for (int i = 0; i <cE.cosmeticintemulsion!.length; i++) {
+        for (int i = 0; i < cE.cosmeticintemulsion!.length; i++) {
           DatabaseHelper.instance.addCosmeticIntData(CosmeticInt(
               cosmeticId: cE.cosmeticintemulsion![i].id,
               colorName: cE.cosmeticintemulsion![i].colorName,
@@ -69,12 +71,12 @@ class _SplashScreenState extends State<SplashScreen> {
               ruf: cE.cosmeticintemulsion![i].RUF,
               base: cE.cosmeticintemulsion![i].base!.toDouble(),
               // base: double.parse(cE.cosmeticintemulsion![i].base.toString()),
-              bVolume: double.parse(cE.cosmeticintemulsion![i].bVolume.toString()).toStringAsFixed(2),
+              bVolume:
+                  double.parse(cE.cosmeticintemulsion![i].bVolume.toString())
+                      .toStringAsFixed(2),
               fandeck: cE.cosmeticintemulsion![i].fandeck!.toDouble(),
               // fandeck: double.parse(cE.cosmeticintemulsion![i].fandeck.toString()),
-              formulation: cE.cosmeticintemulsion![i].formulation
-          )
-          );
+              formulation: cE.cosmeticintemulsion![i].formulation));
         }
         for (int i = 0; i < cB.colorBase!.length; i++) {
           DatabaseHelper.instance.addColorBaseData(DatabaseColorBase(
@@ -87,48 +89,52 @@ class _SplashScreenState extends State<SplashScreen> {
             kGLtrFlag: cB.colorBase![i].kgLtrFlag!.toDouble(),
           ));
         }
-        for(int i=0;i<cC.colorColorant!.length;i++){
-                  DatabaseHelper.instance.addColorColorantData(Colorants(
-                    id: cC.colorColorant![i].id,
-                    colorantName: cC.colorColorant![i].colorantName,
-                    colorantCode: cC.colorColorant![i].colorantCode,
-                    unitPrice: double.parse(cC.colorColorant![i].unitPrice!.toStringAsFixed(2)),
-                    rValue:double.parse(cC.colorColorant![i].rValue.toString()),
-                    gValue:double.parse(cC.colorColorant![i].gValue.toString()),
-                    bValue:double.parse(cC.colorColorant![i].bValue.toString()),
-                  )).whenComplete(()async{
-                    SharedPreferences prefs = await SharedPreferences.getInstance();
-                    value = true;
-                    prefs.setBool(Constants.DATA_DOWNLOAD, value!);
-                    doLogin();
-                    /*setState(() {
+        for (int i = 0; i < cC.colorColorant!.length; i++) {
+          DatabaseHelper.instance
+              .addColorColorantData(Colorants(
+            id: cC.colorColorant![i].id,
+            colorantName: cC.colorColorant![i].colorantName,
+            colorantCode: cC.colorColorant![i].colorantCode,
+            unitPrice: double.parse(
+                cC.colorColorant![i].unitPrice!.toStringAsFixed(2)),
+            rValue: double.parse(cC.colorColorant![i].rValue.toString()),
+            gValue: double.parse(cC.colorColorant![i].gValue.toString()),
+            bValue: double.parse(cC.colorColorant![i].bValue.toString()),
+          ))
+              .whenComplete(() async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            value = true;
+            prefs.setBool(Constants.DATA_DOWNLOAD, value!);
+            doLogin();
+            /*setState(() {
                      doLogin();
                     });*/
-              /*      for(int i=0;i<sCE.shadeColor!.length;i++){
-                      DatabaseHelper.instance.addShadeColorData(ShadeColorDatabase(
-                          id: sCE.shadeColor![i].id,
-                          sId: sCE.shadeColor![i].sId,
-                          colorCode: sCE.shadeColor![i].colorCode,
-                          colorName: sCE.shadeColor![i].colorName,
-                          doubleDefenceEe:double.parse(sCE.shadeColor![i].doubleDefenceEe.toString()),
-                          elegaIe: double.parse(sCE.shadeColor![i].elegaIe.toString()),
-                          newBarpimoIe: double.parse(sCE.shadeColor![i].newBarpimoIe.toString()),
-                          newShangrilaIe: double.parse(sCE.shadeColor![i].newShangrilaIe.toString()),
-                          newShangrilaEe: double.parse(sCE.shadeColor![i].newShangrilaEe.toString()),
-                          protecEe: double.parse(sCE.shadeColor![i].protecEe.toString()),
-                          relianceDist: double.parse(sCE.shadeColor![i].relianceDist.toString()),
-                          shangrilaDist: double.parse(sCE.shadeColor![i].shangrilaDist.toString()),
-                          rValue: double.parse(sCE.shadeColor![i].rValue.toString()),
-                          gValue: double.parse(sCE.shadeColor![i].gValue.toString()),
-                          bValue: double.parse(sCE.shadeColor![i].bValue.toString()),
-                          newUltraProtecEe: double.parse(sCE.shadeColor![i].newUltraProtecEe.toString())
-                      )).whenComplete(()async{
-
-                      });
-                    }*/
-                  });
-                }
+            for (int i = 0; i < sCE.shadeColor!.length; i++) {
+              DatabaseHelper.instance
+                  .addShadeColorData(ShadeColorDatabase(
+                    id: sCE.shadeColor![i].id,
+                    sId: sCE.shadeColor![i].s_id,
+                    colorCode: sCE.shadeColor![i].colorCode,
+                    colorName: sCE.shadeColor![i].colorName,
+                    styledist:
+                        double.parse(sCE.shadeColor![i].styledist.toString()),
+                    weatherproofextemulsion: double.parse(
+                        sCE.shadeColor![i].weatherproofextemulsion.toString()),
+                    smartdist:
+                        double.parse(sCE.shadeColor![i].smartdist.toString()),
+                    cosmeticintemulsion: double.parse(
+                        sCE.shadeColor![i].cosmeticintemulsion.toString()),
+                    magnetextemulsion: double.parse(
+                        sCE.shadeColor![i].magnetextemulsion.toString()),
+                    rValue: double.parse(sCE.shadeColor![i].rValue.toString()),
+                    gValue: double.parse(sCE.shadeColor![i].gValue.toString()),
+                    bValue: double.parse(sCE.shadeColor![i].bValue.toString()),
+                  ))
+                  .whenComplete(() async {});
             }
+          });
+        }
+      }
     } else {
       doLogin();
     }
@@ -138,15 +144,15 @@ class _SplashScreenState extends State<SplashScreen> {
     print("doLogin vhitra");
     Future.delayed(const Duration(seconds: 3), () async {
       final autoLogin = await aC.autoLogin();
-        if (autoLogin.toString().isEmpty || autoLogin==null) {
-          Navigator.of(context).pushReplacementNamed('Button_Navigation_Bar');
-        }else{
-          if(mounted) {
-            Navigator.of(context).pushReplacementNamed(
-                'Dealer_button_Navigation_Bar');
-          }
+      if (autoLogin.toString().isEmpty || autoLogin == null) {
+        Navigator.of(context).pushReplacementNamed('Button_Navigation_Bar');
+      } else {
+        if (mounted) {
+          Navigator.of(context)
+              .pushReplacementNamed('Dealer_button_Navigation_Bar');
         }
-        /*else if (autoLogin.toString().isNotEmpty || autoLogin!=null) {
+      }
+      /*else if (autoLogin.toString().isNotEmpty || autoLogin!=null) {
 
         }*/
     });
@@ -163,7 +169,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    if(mounted) {
+    if (mounted) {
       doLogin();
     }
   }
@@ -172,25 +178,27 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Container(
         color: Colors.white,
-        child: value==null || value==false?Card(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset("icons/logo 2.png"),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children:[
-                Center(child: CircularProgressIndicator(
-                  color: ChooseColor(0).appBarColor1,
-                )),
-                const SizedBox(width: 10),
-                const Center(child: Text("Downloading Data Please Wait..."))
-              ],
-            ),
-
-          ],
-        )
-    ):Image.asset("icons/logo 2.png"));
+        child: value == null || value == false
+            ? Card(
+                child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset("icons/logo 2.png"),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                          child: CircularProgressIndicator(
+                        color: ChooseColor(0).appBarColor1,
+                      )),
+                      const SizedBox(width: 10),
+                      const Center(
+                          child: Text("Downloading Data Please Wait..."))
+                    ],
+                  ),
+                ],
+              ))
+            : Image.asset("icons/logo 2.png"));
   }
 }

@@ -47,7 +47,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: Card(
                     elevation: 0,
                     child: Padding(
-                      padding:EdgeInsets.symmetric(horizontal: size.width*0.050,vertical: size.height*0.015),
+                      padding:EdgeInsets.symmetric(horizontal: size.width*0.015,vertical: size.height*0.015),
                       child: Column(
                         children: [
                           SizedBox(
@@ -65,7 +65,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: Card(
                     elevation: 0,
                     child: Padding(
-                      padding:EdgeInsets.symmetric(horizontal: size.width*0.070,vertical: size.height*0.010),
+                      padding:EdgeInsets.symmetric(horizontal: size.width*0.060,vertical: size.height*0.015),
                       child: Column(
                         children: [
                           Image.asset("icons/gallery.png"),
@@ -84,8 +84,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 Navigator.of(context).pushNamed("Color_screen");
               },
               child: SizedBox(
-                height:110,
-                width:150,
+                height:120,
+                width:130,
                 child: Card(
                   elevation: 0,
                   child: Padding(

@@ -4,7 +4,8 @@
 
 import 'dart:convert';
 
-ShadeColor shadeColorFromJson(String str) => ShadeColor.fromJson(json.decode(str));
+ShadeColor shadeColorFromJson(String str) =>
+    ShadeColor.fromJson(json.decode(str));
 
 String shadeColorToJson(ShadeColor data) => json.encode(data.toJson());
 
@@ -16,86 +17,72 @@ class ShadeColor {
   List<ShadeColorElement>? shadeColor;
 
   factory ShadeColor.fromJson(Map<String, dynamic> json) => ShadeColor(
-    shadeColor: List<ShadeColorElement>.from(json["shadeColor"].map((x) => ShadeColorElement.fromJson(x))),
-  );
+        shadeColor: List<ShadeColorElement>.from(
+            json["shadeColor"].map((x) => ShadeColorElement.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "shadeColor": List<dynamic>.from(shadeColor!.map((x) => x.toJson())),
-  };
+        "shadeColor": List<dynamic>.from(shadeColor!.map((x) => x.toJson())),
+      };
 }
 
 class ShadeColorElement {
   ShadeColorElement({
     this.id,
-    this.sId,
+    this.s_id,
     this.colorCode,
     this.colorName,
-    this.doubleDefenceEe,
-    this.elegaIe,
-    this.newBarpimoIe,
-    this.newShangrilaEe,
-    this.newShangrilaIe,
-    this.newUltraProtecEe,
-    this.protecEe,
-    this.relianceDist,
-    this.shangrilaDist,
+    this.styledist,
+    this.weatherproofextemulsion,
+    this.smartdist,
+    this.cosmeticintemulsion,
+    this.magnetextemulsion,
     this.rValue,
     this.gValue,
     this.bValue,
   });
 
   int? id;
-  int? sId;
+  int? s_id;
   String? colorCode;
   String? colorName;
-  int? doubleDefenceEe;
-  int? elegaIe;
-  int? newBarpimoIe;
-  int? newShangrilaEe;
-  int? newShangrilaIe;
-  int? newUltraProtecEe;
-  int? protecEe;
-  int? relianceDist;
-  int? shangrilaDist;
+  int? styledist;
+  int? weatherproofextemulsion;
+  int? smartdist;
+  int? cosmeticintemulsion;
+  int? magnetextemulsion;
   int? rValue;
   int? gValue;
   int? bValue;
 
-  factory ShadeColorElement.fromJson(Map<String, dynamic> json) => ShadeColorElement(
-    id: json["id"],
-    sId: json["s_id"],
-    colorCode: json["colorCode"],
-    colorName: json["colorName"],
-    doubleDefenceEe: json["doubleDefenceEE"],
-    elegaIe: json["elegaIE"],
-    newBarpimoIe: json["newBarpimoIE"],
-    newShangrilaEe: json["newShangrilaEE"],
-    newShangrilaIe: json["newShangrilaIE"],
-    newUltraProtecEe: json["newUltraProtecEE"],
-    protecEe: json["protecEE"],
-    relianceDist: json["relianceDist"],
-    shangrilaDist: json["shangrilaDist"],
-    rValue: json["rValue"],
-    gValue: json["gValue"],
-    bValue: json["bValue"],
-  );
+  factory ShadeColorElement.fromJson(Map<String, dynamic> json) =>
+      ShadeColorElement(
+        id: json["id"],
+        s_id: json["s_id"],
+        colorCode: json["colorCode"],
+        colorName: json["colorName"],
+        styledist: json["styledist"],
+        weatherproofextemulsion: json["weatherproofextemulsion"],
+        smartdist: json["smartdist"],
+        cosmeticintemulsion: json["cosmeticintemulsion"],
+        magnetextemulsion: json["magnetextemulsion"],
+        rValue: json["rValue"],
+        gValue: json["gValue"],
+        bValue: json["bValue"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "s_id": sId,
-    "colorCode": colorCode,
-    "colorName": colorName,
-    "doubleDefenceEE": doubleDefenceEe,
-    "elegaIE": elegaIe,
-    "newBarpimoIE": newBarpimoIe,
-    "newShangrilaEE": newShangrilaEe,
-    "newShangrilaIE": newShangrilaIe,
-    "newUltraProtecEE": newUltraProtecEe,
-    "protecEE": protecEe,
-    "relianceDist": relianceDist,
-    "shangrilaDist": shangrilaDist,
-    "rValue": rValue,
-    "gValue": gValue,
-    "bValue": bValue,
-  };
+        "id": id,
+        "s_id": s_id,
+        "colorCode": colorCode,
+        "colorName": colorName,
+        "styledist": styledist,
+        "weatherproofextemulsion": weatherproofextemulsion,
+        "smartdist": smartdist,
+        "cosmeticintemulsion": cosmeticintemulsion,
+        "magnetextemulsion": magnetextemulsion,
+        "rValue": rValue,
+        "gValue": gValue,
+        "bValue": bValue,
+      };
 }
