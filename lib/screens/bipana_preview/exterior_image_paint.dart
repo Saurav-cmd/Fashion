@@ -10,6 +10,8 @@ double? rPassedChooseColor;
 double? gPassedChooseColor;
 double? bPassedChooseColor;
 Color? colorValue;
+List<Color?> recentColorList = [];
+TextEditingController searchController = TextEditingController();
 
 class ExteriorImagePaint extends StatefulWidget {
   ExteriorImagePaint({Key, key}) : super(key: key);
@@ -20,6 +22,8 @@ class ExteriorImagePaint extends StatefulWidget {
 
 class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
   List<ShadeColorDatabase> allColorsData = [];
+  List<ShadeColorDatabase> searchColor = [];
+
   getAllShadeColor() async {
     final shadeData = await DatabaseHelper.instance.getShadeColorData();
     for (var e in shadeData) {
@@ -32,65 +36,145 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
     // TODO: implement initState
     super.initState();
     getAllShadeColor();
+    setState(() {
+      searchController.addListener(() {
+        _runFilter(searchController.value.text);
+      });
+    });
+
+    if (recentColorList.isNotEmpty) {
+      recentColorList = [];
+    }
+
+    if (colorValue != null) {
+      colorValue = Colors.transparent;
+    }
   }
 
-  Widget setupShadeColorContainer(
-      List<ShadeColorDatabase> allShadeData, BuildContext context) {
-    return SizedBox(
-      height: 300.0, // Change as per your requirement
-      width: 300.0, // Change as per your requirement
-      child: GridView.builder(
-          shrinkWrap: true,
-          itemCount: allShadeData.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4, crossAxisSpacing: 10, mainAxisSpacing: 10),
-          itemBuilder: (ctx, i) {
-            return Listener(
-              child: GestureDetector(
-                onTap: () {
-                  rPassedChooseColor = allShadeData[i].rValue;
-                  gPassedChooseColor = allShadeData[i].gValue;
-                  bPassedChooseColor = allShadeData[i].bValue;
-                  colorValue = Color.fromRGBO(
-                      rPassedChooseColor!.toInt(),
-                      gPassedChooseColor!.toInt(),
-                      bPassedChooseColor!.toInt(),
-                      1);
-                  Navigator.pop(context, [
-                    rPassedChooseColor,
-                    gPassedChooseColor,
-                    bPassedChooseColor,
-                    colorValue
-                  ]);
-                },
-                child: Container(
-                  child: Stack(
-                    children: [
-                      Container(
-                        color: Color.fromRGBO(
-                            allShadeData[i].rValue!.toInt(),
-                            allShadeData[i].gValue!.toInt(),
-                            allShadeData[i].bValue!.toInt(),
-                            1),
+  void _runFilter(String enterKeyword) {
+    List<ShadeColorDatabase> results = [];
+    if (enterKeyword.isEmpty) {
+      results = allColorsData;
+    } else {
+      results = allColorsData
+          .where(
+            (e) => (e.colorCode!.contains(
+              enterKeyword.toLowerCase(),
+            )),
+          )
+          .toList();
+    }
+    setState(() {
+      searchColor = results;
+    });
+
+    print("This is search color ${searchColor[0].colorCode}");
+  }
+
+  Widget setupShadeColorContainer(BuildContext context) {
+    return searchController.text.isEmpty
+        ? SizedBox(
+            height: 300.0, // Change as per your requirement
+            width: 300.0, // Change as per your requirement
+            child: GridView.builder(
+                shrinkWrap: true,
+                itemCount: allColorsData.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10),
+                itemBuilder: (ctx, i) {
+                  return GestureDetector(
+                    onTap: () {
+                      rPassedChooseColor = allColorsData[i].rValue;
+                      gPassedChooseColor = allColorsData[i].gValue;
+                      bPassedChooseColor = allColorsData[i].bValue;
+                      recentColorList.add(colorValue);
+                      colorValue = Color.fromRGBO(
+                          rPassedChooseColor!.toInt(),
+                          gPassedChooseColor!.toInt(),
+                          bPassedChooseColor!.toInt(),
+                          1);
+                      Navigator.pop(context, [
+                        rPassedChooseColor,
+                        gPassedChooseColor,
+                        bPassedChooseColor,
+                        colorValue,
+                        recentColorList
+                      ]);
+                    },
+                    child: Container(
+                      child: Stack(
+                        children: [
+                          Container(
+                            color: Color.fromRGBO(
+                                allColorsData[i].rValue!.toInt(),
+                                allColorsData[i].gValue!.toInt(),
+                                allColorsData[i].bValue!.toInt(),
+                                1),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 45, left: 5),
+                            child: Text("${allColorsData[i].colorCode}"),
+                          )
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 45, left: 5),
-                        child: Text("${allShadeData[i].colorCode}"),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            );
-          }),
-    );
+                    ),
+                  );
+                }),
+          )
+        : SizedBox(
+            height: 300.0, // Change as per your requirement
+            width: 300.0, // Change as per your requirement
+            child: GridView.builder(
+                shrinkWrap: true,
+                itemCount: searchColor.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10),
+                itemBuilder: (ctx, i) {
+                  return GestureDetector(
+                    onTap: () {
+                      rPassedChooseColor = searchColor[i].rValue;
+                      gPassedChooseColor = searchColor[i].gValue;
+                      bPassedChooseColor = searchColor[i].bValue;
+                      colorValue = Color.fromRGBO(
+                          rPassedChooseColor!.toInt(),
+                          gPassedChooseColor!.toInt(),
+                          bPassedChooseColor!.toInt(),
+                          1);
+                      Navigator.pop(context, [
+                        rPassedChooseColor,
+                        gPassedChooseColor,
+                        bPassedChooseColor,
+                        colorValue
+                      ]);
+                    },
+                    child: Container(
+                      child: Stack(
+                        children: [
+                          Container(
+                            color: Color.fromRGBO(
+                                searchColor[i].rValue!.toInt(),
+                                searchColor[i].gValue!.toInt(),
+                                searchColor[i].bValue!.toInt(),
+                                1),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 45, left: 5),
+                            child: Text("${searchColor[i].colorCode}"),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                }),
+          );
   }
 
-  showAllColors(
-      List<ShadeColorDatabase> shadeData, BuildContext context) async {
-    final size = MediaQuery.of(context).size;
+  showAllColors(BuildContext context) async {
     final GlobalKey<FormState> _form = GlobalKey<FormState>();
-    TextEditingController searchController = TextEditingController();
     showDialog(
         barrierDismissible: true,
         context: context,
@@ -116,7 +200,7 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
                             icon: const Icon(Icons.clear))
                       ],
                     ),
-                    Form(
+                    /*                Form(
                         key: _form,
                         child: Column(
                           children: [
@@ -146,11 +230,11 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
                             ),
                             SizedBox(height: size.height * 0.035),
                           ],
-                        )),
+                        )),*/
                   ],
                 ),
               ),
-              content: setupShadeColorContainer(shadeData, context),
+              content: setupShadeColorContainer(context),
             ),
           );
         });
@@ -158,18 +242,12 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
 
   @override
   Widget build(BuildContext context) {
-    print("This is r value $rPassedChooseColor");
-    print("This is g value $gPassedChooseColor");
-    print("This is b value $bPassedChooseColor");
     final notifier = ValueNotifier(Offset.zero);
     final size = MediaQuery.of(context).size;
-    if (rPassedChooseColor != null &&
-        gPassedChooseColor != null &&
-        bPassedChooseColor != null) {
-      colorValue = Color.fromRGBO(rPassedChooseColor!.toInt(),
-          gPassedChooseColor!.toInt(), bPassedChooseColor!.toInt(), 1);
-    }
+    print("This is recent value $recentColorList");
+    print("THis is color value $colorValue");
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: ChooseColor(0).bodyBackgroundColor,
         appBar: AppBar(
           elevation: 0,
@@ -182,7 +260,6 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("This is r value $rPassedChooseColor"),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.010),
                 child: Text(
@@ -250,7 +327,7 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              showAllColors(allColorsData, context);
+                              showAllColors(context);
                             },
                             child: Stack(
                               children: [
@@ -258,7 +335,7 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
                                   height: 40,
                                   width: 50,
                                   decoration: BoxDecoration(
-                                    color: Colors.transparent,
+                                    color: colorValue ?? Colors.transparent,
                                     boxShadow: [
                                       BoxShadow(
                                         color: Colors.grey.withOpacity(0.5),
@@ -289,6 +366,27 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
                   ),
                 ),
               ),
+              if (recentColorList.isNotEmpty)
+                Container(
+                  height: 50,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                          width: 1.0, color: Colors.lightBlue.shade900),
+                    ),
+                  ),
+                  child: GridView.builder(
+                      itemCount: recentColorList.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 10, crossAxisSpacing: 5),
+                      itemBuilder: (ctx, i) {
+                        return Container(
+                          color: recentColorList[i],
+                        );
+                      }),
+                ),
             ],
           ),
         ));
@@ -558,21 +656,23 @@ m153 404.73 20.5-12.47 54.62-8.06q-.37 7.41-.74 14.82l-74.78 11.41z,m154 414.12-
       }
     }
 
-    for (int i = 0; i < _shapes.length; i++) {
-      if (svgColor == _shapes[i].defaultColor) {
-        _paint
-          ..color = (colorValue)!
-          ..style = PaintingStyle.fill;
-        _shapes[i].selectedColor = Colors.transparent;
-        canvas.drawPath(_shapes[i]._transformedPath!, _paint);
-        _shapes[i].selectedColor = colorValue;
-      }
-      if (_shapes[i].selectedColor != null) {
-        _paint
-          ..color = (_shapes[i].selectedColor)!
-          ..style = PaintingStyle.fill;
-        canvas.drawPath(_shapes[i]._transformedPath!, _paint);
-        _shapes[i].selectedColor == null;
+    if (colorValue != null) {
+      for (int i = 0; i < _shapes.length; i++) {
+        if (svgColor == _shapes[i].defaultColor) {
+          _paint
+            ..color = (colorValue)!
+            ..style = PaintingStyle.fill;
+          _shapes[i].selectedColor = Colors.transparent;
+          canvas.drawPath(_shapes[i]._transformedPath!, _paint);
+          _shapes[i].selectedColor = colorValue;
+        }
+        if (_shapes[i].selectedColor != null) {
+          _paint
+            ..color = (_shapes[i].selectedColor)!
+            ..style = PaintingStyle.fill;
+          canvas.drawPath(_shapes[i]._transformedPath!, _paint);
+          _shapes[i].selectedColor == null;
+        }
       }
     }
   }

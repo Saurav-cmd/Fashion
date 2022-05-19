@@ -17,8 +17,9 @@ class _BipanaPreviewScreenState extends State<BipanaPreviewScreen> {
       backgroundColor: ChooseColor(0).bodyBackgroundColor,
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: ChooseColor(0).appBarColor1, // For iOS (dark icons)
-        ),
+            statusBarColor: ChooseColor(0).appBarColor1,
+            statusBarIconBrightness: Brightness.light // For iOS (dark icons)
+            ),
         elevation: 0,
         leading: IconButton(
           onPressed: () {
