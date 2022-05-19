@@ -5,25 +5,20 @@ import 'package:path_drawing/path_drawing.dart';
 
 import '../../database/all_data_database.dart';
 import '../../models/database_models/shade_color_database_model.dart';
-import '../../widgets/dilogue_box.dart';
+
+double? rPassedChooseColor;
+double? gPassedChooseColor;
+double? bPassedChooseColor;
+Color? colorValue;
 
 class ExteriorImagePaint extends StatefulWidget {
-  const ExteriorImagePaint({Key? key}) : super(key: key);
+  ExteriorImagePaint({Key, key}) : super(key: key);
 
   @override
   State<ExteriorImagePaint> createState() => _ExteriorImagePaintState();
 }
 
-Color? fillColor;
-
 class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getAllShadeColor();
-  }
-
   List<ShadeColorDatabase> allColorsData = [];
   getAllShadeColor() async {
     final shadeData = await DatabaseHelper.instance.getShadeColorData();
@@ -33,9 +28,147 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getAllShadeColor();
+  }
+
+  Widget setupShadeColorContainer(
+      List<ShadeColorDatabase> allShadeData, BuildContext context) {
+    return SizedBox(
+      height: 300.0, // Change as per your requirement
+      width: 300.0, // Change as per your requirement
+      child: GridView.builder(
+          shrinkWrap: true,
+          itemCount: allShadeData.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4, crossAxisSpacing: 10, mainAxisSpacing: 10),
+          itemBuilder: (ctx, i) {
+            return Listener(
+              child: GestureDetector(
+                onTap: () {
+                  rPassedChooseColor = allShadeData[i].rValue;
+                  gPassedChooseColor = allShadeData[i].gValue;
+                  bPassedChooseColor = allShadeData[i].bValue;
+                  colorValue = Color.fromRGBO(
+                      rPassedChooseColor!.toInt(),
+                      gPassedChooseColor!.toInt(),
+                      bPassedChooseColor!.toInt(),
+                      1);
+                  Navigator.pop(context, [
+                    rPassedChooseColor,
+                    gPassedChooseColor,
+                    bPassedChooseColor,
+                    colorValue
+                  ]);
+                },
+                child: Container(
+                  child: Stack(
+                    children: [
+                      Container(
+                        color: Color.fromRGBO(
+                            allShadeData[i].rValue!.toInt(),
+                            allShadeData[i].gValue!.toInt(),
+                            allShadeData[i].bValue!.toInt(),
+                            1),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 45, left: 5),
+                        child: Text("${allShadeData[i].colorCode}"),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }),
+    );
+  }
+
+  showAllColors(
+      List<ShadeColorDatabase> shadeData, BuildContext context) async {
+    final size = MediaQuery.of(context).size;
+    final GlobalKey<FormState> _form = GlobalKey<FormState>();
+    TextEditingController searchController = TextEditingController();
+    showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (ctx) {
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: AlertDialog(
+              title: Center(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Fashion's Color",
+                          style: TextStyle(
+                              color: ChooseColor(0).appBarColor1, fontSize: 14),
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(Icons.clear))
+                      ],
+                    ),
+                    Form(
+                        key: _form,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              decoration: InputDecoration(
+                                border: const OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: size.height * 0.001,
+                                    horizontal: size.width * 0.030),
+                                errorBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Colors.red, width: 1),
+                                    borderRadius: BorderRadius.circular(5)),
+                                // labelText: 'Phone Number',
+                                fillColor: const Color(0xffF6F9FA),
+                                filled: true,
+                                hintText: 'Search Color',
+                                prefixIcon: const Icon(Icons.search),
+                                hintStyle: TextStyle(
+                                    fontSize: size.height * 0.012 +
+                                        size.width * 0.012,
+                                    color: Colors.black26),
+                              ),
+                              controller: searchController,
+                            ),
+                            SizedBox(height: size.height * 0.035),
+                          ],
+                        )),
+                  ],
+                ),
+              ),
+              content: setupShadeColorContainer(shadeData, context),
+            ),
+          );
+        });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print("This is r value $rPassedChooseColor");
+    print("This is g value $gPassedChooseColor");
+    print("This is b value $bPassedChooseColor");
     final notifier = ValueNotifier(Offset.zero);
     final size = MediaQuery.of(context).size;
+    if (rPassedChooseColor != null &&
+        gPassedChooseColor != null &&
+        bPassedChooseColor != null) {
+      colorValue = Color.fromRGBO(rPassedChooseColor!.toInt(),
+          gPassedChooseColor!.toInt(), bPassedChooseColor!.toInt(), 1);
+    }
     return Scaffold(
         backgroundColor: ChooseColor(0).bodyBackgroundColor,
         appBar: AppBar(
@@ -49,6 +182,7 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text("This is r value $rPassedChooseColor"),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.010),
                 child: Text(
@@ -75,7 +209,7 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
                       width: 340,
                       child: CustomPaint(
                         isComplex: true,
-                        painter: HouseFillerPainter1(notifier),
+                        painter: HouseFillerPainter1(notifier, colorValue),
                       ),
                     ),
                   ],
@@ -116,7 +250,7 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              AlertBox().showAllColors(allColorsData, context);
+                              showAllColors(allColorsData, context);
                             },
                             child: Stack(
                               children: [
@@ -155,47 +289,6 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
                   ),
                 ),
               ),
-              /* Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      fillColor = Colors.brown;
-                    },
-                    child: const Text(
-                      "Brown",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.brown)),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      fillColor = Colors.amber;
-                    },
-                    child: const Text(
-                      "Amber",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.amber)),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      fillColor = Colors.cyan;
-                    },
-                    child: const Text(
-                      "Cyan",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.cyan)),
-                  ),
-                ],
-              ),*/
             ],
           ),
         ));
@@ -225,7 +318,9 @@ class Shape {
 }
 
 class HouseFillerPainter1 extends CustomPainter {
-  HouseFillerPainter1(this._notifier) : super(repaint: _notifier);
+  HouseFillerPainter1(this._notifier, this._colorValue)
+      : super(repaint: _notifier);
+  Color? _colorValue;
   static final _data =
       '''m829.35 691.34.96 21.77h-33.58l-1.01-23z,m829.35 691.34-33.63-1.23 4.15-2.05 34.26 1.03 1.37 22.38-5.19 1.64z,
 m818.5 506v7l-20.53.49 16.34-1.82s-.41-8.7 0-8.29 4.19 2.62 4.19 2.62z,m810.96 497.49-39.34-25.66v-2.25l47.98 31.72.13 1.92-5.82-3.81-1.55 7.79z,
@@ -437,7 +532,6 @@ m153 404.73 20.5-12.47 54.62-8.06q-.37 7.41-.74 14.82l-74.78 11.41z,m154 414.12-
   var selected;
   @override
   void paint(Canvas canvas, Size size) {
-    print("This is down fill color $fillColor");
     if (size != _size) {
       _size = size;
       final fs = applyBoxFit(BoxFit.fill, const Size(710, 750), size);
@@ -467,11 +561,11 @@ m153 404.73 20.5-12.47 54.62-8.06q-.37 7.41-.74 14.82l-74.78 11.41z,m154 414.12-
     for (int i = 0; i < _shapes.length; i++) {
       if (svgColor == _shapes[i].defaultColor) {
         _paint
-          ..color = (fillColor)!
+          ..color = (colorValue)!
           ..style = PaintingStyle.fill;
         _shapes[i].selectedColor = Colors.transparent;
         canvas.drawPath(_shapes[i]._transformedPath!, _paint);
-        _shapes[i].selectedColor = fillColor;
+        _shapes[i].selectedColor = colorValue;
       }
       if (_shapes[i].selectedColor != null) {
         _paint

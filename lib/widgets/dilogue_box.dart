@@ -13,7 +13,6 @@ import 'package:intl/intl.dart';
 import '../controllers/notice_controller.dart';
 import '../main.dart';
 import '../models/database_models/saved_customer_detail_color.dart';
-import '../models/database_models/shade_color_database_model.dart';
 
 class AlertBox {
   loginAlertBox1(BuildContext context) {
@@ -715,109 +714,5 @@ class AlertBox {
         return alert;
       },
     );
-  }
-
-  Widget setupShadeColorContainer(
-      List<ShadeColorDatabase> allShadeData, BuildContext context) {
-    return SizedBox(
-      height: 300.0, // Change as per your requirement
-      width: 300.0, // Change as per your requirement
-      child: Flexible(
-        child: GridView.builder(
-            shrinkWrap: true,
-            itemCount: allShadeData.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4, crossAxisSpacing: 10, mainAxisSpacing: 10),
-            itemBuilder: (ctx, i) {
-              return Container(
-                child: Stack(
-                  children: [
-                    Container(
-                      color: Color.fromRGBO(
-                          allShadeData[i].rValue!.toInt(),
-                          allShadeData[i].gValue!.toInt(),
-                          allShadeData[i].bValue!.toInt(),
-                          1),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 45, left: 5),
-                      child: Text("${allShadeData[i].colorCode}"),
-                    )
-                  ],
-                ),
-              );
-            }),
-      ),
-    );
-  }
-
-  showAllColors(
-      List<ShadeColorDatabase> shadeData, BuildContext context) async {
-    final size = MediaQuery.of(context).size;
-    final GlobalKey<FormState> _form = GlobalKey<FormState>();
-    TextEditingController searchController = TextEditingController();
-    showDialog(
-        barrierDismissible: true,
-        context: context,
-        builder: (ctx) {
-          return WillPopScope(
-            onWillPop: () async => false,
-            child: AlertDialog(
-              title: Center(
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Fashion's Color",
-                          style: TextStyle(
-                              color: ChooseColor(0).appBarColor1, fontSize: 14),
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: const Icon(Icons.clear))
-                      ],
-                    ),
-                    Form(
-                        key: _form,
-                        child: Column(
-                          children: [
-                            TextFormField(
-                              decoration: InputDecoration(
-                                border: const OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                ),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: size.height * 0.001,
-                                    horizontal: size.width * 0.030),
-                                errorBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Colors.red, width: 1),
-                                    borderRadius: BorderRadius.circular(5)),
-                                // labelText: 'Phone Number',
-                                fillColor: const Color(0xffF6F9FA),
-                                filled: true,
-                                hintText: 'Search Color',
-                                prefixIcon: const Icon(Icons.search),
-                                hintStyle: TextStyle(
-                                    fontSize: size.height * 0.012 +
-                                        size.width * 0.012,
-                                    color: Colors.black26),
-                              ),
-                              controller: searchController,
-                            ),
-                            SizedBox(height: size.height * 0.035),
-                          ],
-                        )),
-                  ],
-                ),
-              ),
-              content: setupShadeColorContainer(shadeData, context),
-            ),
-          );
-        });
   }
 }
