@@ -25,6 +25,7 @@ import 'package:fashion_paints/screens/store/store_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 import 'screens/button_navigation_bars/dealer_home_screen_button_navigation_bar.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       scaffoldMessengerKey: snackBarKey,
+      builder: EasyLoading.init(),
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,

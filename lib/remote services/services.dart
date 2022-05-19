@@ -4,6 +4,7 @@ import 'package:fashion_paints/Apis/api_Routes.dart';
 import 'package:fashion_paints/models/apis_model/login_model.dart';
 import 'package:fashion_paints/widgets/dilogue_box.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
@@ -320,6 +321,12 @@ class Services {
     String? userData = prefs.getString("userData");
     String? token = json.decode(userData!)["token"];
     try {
+      EasyLoading.instance.indicatorType = EasyLoadingIndicatorType.ring;
+      EasyLoading.instance.loadingStyle = EasyLoadingStyle.light;
+      EasyLoading.instance.backgroundColor = Colors.black45;
+      EasyLoading.instance.maskType = EasyLoadingMaskType.black;
+      EasyLoading.instance.maskColor = Colors.blue.withOpacity(0.5);
+      EasyLoading.show(status: "Posting Feedback....");
       String? apiRoute = ApiRoute().giveFeedBackUrl(fullName, email, phone,
           comment, appRating, productRating, serviceRating, teamRating);
       final Map<String, String> feedBackParams = {
@@ -341,6 +348,7 @@ class Services {
             "Authorization": "Bearer $token"
           });
       if (response.statusCode == 200) {
+        EasyLoading.dismiss();
         final SnackBar snackBar = SnackBar(
           content: Padding(
             padding: const EdgeInsets.only(right: 10),
