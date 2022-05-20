@@ -145,7 +145,9 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 3), () async {
       final autoLogin = await aC.autoLogin();
       if (autoLogin.toString().isEmpty || autoLogin == null) {
-        Navigator.of(context).pushReplacementNamed('Button_Navigation_Bar');
+        if (mounted) {
+          Navigator.of(context).pushReplacementNamed('Button_Navigation_Bar');
+        }
       } else {
         if (mounted) {
           Navigator.of(context)
