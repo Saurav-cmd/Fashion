@@ -1,8 +1,11 @@
 import 'package:fashion_paints/colors/colors_file.dart';
+import 'package:fashion_paints/controllers/auth_controller.dart';
+import 'package:fashion_paints/database/all_data_database.dart';
 import 'package:fashion_paints/screens/profile_screen/app_info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -12,18 +15,18 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  AuthController aC = Get.put(AuthController());
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor:ChooseColor(0).bodyBackgroundColor,
+        backgroundColor: ChooseColor(0).bodyBackgroundColor,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           elevation: 0,
           systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Colors.white,
-              statusBarIconBrightness: Brightness.dark
-          ),
+              statusBarColor: Colors.white,
+              statusBarIconBrightness: Brightness.dark),
           backgroundColor: ChooseColor(0).appBarColor2,
         ),
         body: Padding(
@@ -32,10 +35,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               const Center(
                   child: Icon(
-                    Icons.account_circle,
-                    size: 40,
-                    color: Colors.black,
-                  )),
+                Icons.account_circle,
+                size: 40,
+                color: Colors.black,
+              )),
               const SizedBox(
                 height: 10,
               ),
@@ -66,7 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     borderRadius: BorderRadius.all(Radius.circular(10.0))),
                 child: Padding(
                   padding:
-                  const EdgeInsets.only(top: 20.0, right: 20, left: 20),
+                      const EdgeInsets.only(top: 20.0, right: 20, left: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -176,13 +179,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
-                      onPressed: (){
-                        Navigator.of(context).push(MaterialPageRoute(builder:(ctx)=>const AppInfo()));
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (ctx) => const AppInfo()));
                       },
                       child: Container(
-                        decoration:BoxDecoration(
+                        decoration: BoxDecoration(
                             color: ChooseColor(0).buttonColor,
-                            borderRadius:const BorderRadius.all(Radius.circular(5.0))),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5.0))),
                         height: 45,
                         width: MediaQuery.of(context).size.width * 0.40,
                         child: const Center(
@@ -196,12 +201,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       )),
                   TextButton(
-                      onPressed: (){
-                      },
+                      onPressed: () {},
                       child: Container(
-                        decoration:BoxDecoration(
-                            color:ChooseColor(0).buttonColor,
-                            borderRadius:const BorderRadius.all(Radius.circular(5.0))),
+                        decoration: BoxDecoration(
+                            color: ChooseColor(0).buttonColor,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5.0))),
                         height: 45,
                         width: MediaQuery.of(context).size.width * 0.40,
                         child: const Center(
@@ -221,7 +226,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               TextButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed("Button_Navigation_Bar");
+                    aC.logout(context);
+                    // DatabaseHelper.instance.cleanDatabase();
                   },
                   child: Container(
                     decoration: const BoxDecoration(

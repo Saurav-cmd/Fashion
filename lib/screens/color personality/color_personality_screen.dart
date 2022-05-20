@@ -11,10 +11,22 @@ class ColorPersonalityScreen extends StatefulWidget {
 }
 
 class _ColorPersonalityScreenState extends State<ColorPersonalityScreen> {
+  final GlobalKey _formKey = GlobalKey();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController genderController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
+  TextEditingController behaviourController = TextEditingController();
+  TextEditingController birthMonthController = TextEditingController();
+  TextEditingController birthDayController = TextEditingController();
+  TextEditingController chooseController = TextEditingController();
+  TextEditingController petController = TextEditingController();
+  TextEditingController freeTimeController = TextEditingController();
+  TextEditingController holidayController = TextEditingController();
+  TextEditingController mailController = TextEditingController();
+  TextEditingController moneyController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
     return Scaffold(
       backgroundColor: ChooseColor(0).appBarColor1,
       appBar: AppBar(
@@ -90,315 +102,333 @@ class _ColorPersonalityScreenState extends State<ColorPersonalityScreen> {
                 style: TextStyle(fontSize: 12, color: Colors.white),
               ),
               const SizedBox(height: 5),
-              TextFormField(
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide.none,
+              Form(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextFormField(
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: size.height * 0.001,
+                          horizontal: size.width * 0.030),
+                      errorBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.red, width: 1),
+                          borderRadius: BorderRadius.circular(5)),
+                      // labelText: 'Phone Number',
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: 'Full Name',
+                      hintStyle: TextStyle(
+                          fontSize: size.height * 0.012 + size.width * 0.012,
+                          color: Colors.black26),
+                    ),
                   ),
-                  contentPadding: EdgeInsets.symmetric(
-                      vertical: size.height * 0.001,
-                      horizontal: size.width * 0.030),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.red, width: 1),
-                      borderRadius: BorderRadius.circular(5)),
-                  // labelText: 'Phone Number',
-                  fillColor: Colors.white,
-                  filled: true,
-                  hintText: 'Full Name',
-                  hintStyle: TextStyle(
-                      fontSize: size.height * 0.012 + size.width * 0.012,
-                      color: Colors.black26),
-                ),
-              ),
-              const SizedBox(height: 15),
-              const Text(
-                'Gender',
-                style: TextStyle(fontSize: 12, color: Colors.white),
-              ),
-              const SizedBox(height: 5),
-              TextFormField(
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide.none,
+                  const SizedBox(height: 15),
+                  const Text(
+                    'Gender',
+                    style: TextStyle(fontSize: 12, color: Colors.white),
                   ),
-                  contentPadding: EdgeInsets.symmetric(
-                      vertical: size.height * 0.001,
-                      horizontal: size.width * 0.030),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.red, width: 1),
-                      borderRadius: BorderRadius.circular(5)),
-                  // labelText: 'Phone Number',
-                  fillColor: Colors.white,
-                  filled: true,
-                  hintText: 'Male',
-                  hintStyle: TextStyle(
-                      fontSize: size.height * 0.012 + size.width * 0.012,
-                      color: Colors.black26),
-                ),
-              ),
-              const SizedBox(height: 15),
-              const Text(
-                'Age Group',
-                style: TextStyle(fontSize: 12, color: Colors.white),
-              ),
-              const SizedBox(height: 5),
-              TextFormField(
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide.none,
+                  const SizedBox(height: 5),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: size.height * 0.001,
+                          horizontal: size.width * 0.030),
+                      errorBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.red, width: 1),
+                          borderRadius: BorderRadius.circular(5)),
+                      // labelText: 'Phone Number',
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: 'Male',
+                      hintStyle: TextStyle(
+                          fontSize: size.height * 0.012 + size.width * 0.012,
+                          color: Colors.black26),
+                    ),
                   ),
-                  contentPadding: EdgeInsets.symmetric(
-                      vertical: size.height * 0.001,
-                      horizontal: size.width * 0.030),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.red, width: 1),
-                      borderRadius: BorderRadius.circular(5)),
-                  // labelText: 'Phone Number',
-                  fillColor: Colors.white,
-                  filled: true,
-                  hintText: '10-20',
-                  hintStyle: TextStyle(
-                      fontSize: size.height * 0.012 + size.width * 0.012,
-                      color: Colors.black26),
-                ),
-              ),
-              const SizedBox(height: 15),
-              const Text(
-                'Behaviour',
-                style: TextStyle(fontSize: 12, color: Colors.white),
-              ),
-              const SizedBox(height: 5),
-              TextFormField(
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide.none,
+                  const SizedBox(height: 15),
+                  const Text(
+                    'Age Group',
+                    style: TextStyle(fontSize: 12, color: Colors.white),
                   ),
-                  contentPadding: EdgeInsets.symmetric(
-                      vertical: size.height * 0.001,
-                      horizontal: size.width * 0.030),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.red, width: 1),
-                      borderRadius: BorderRadius.circular(5)),
-                  // labelText: 'Phone Number',
-                  fillColor: Colors.white,
-                  filled: true,
-                  hintText: 'Introvert',
-                  hintStyle: TextStyle(
-                      fontSize: size.height * 0.012 + size.width * 0.012,
-                      color: Colors.black26),
-                ),
-              ),
-              const SizedBox(height: 15),
-              const Text(
-                'Month of Birth',
-                style: TextStyle(fontSize: 12, color: Colors.white),
-              ),
-              const SizedBox(height: 5),
-              TextFormField(
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide.none,
+                  const SizedBox(height: 5),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: size.height * 0.001,
+                          horizontal: size.width * 0.030),
+                      errorBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.red, width: 1),
+                          borderRadius: BorderRadius.circular(5)),
+                      // labelText: 'Phone Number',
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: '10-20',
+                      hintStyle: TextStyle(
+                          fontSize: size.height * 0.012 + size.width * 0.012,
+                          color: Colors.black26),
+                    ),
                   ),
-                  contentPadding: EdgeInsets.symmetric(
-                      vertical: size.height * 0.001,
-                      horizontal: size.width * 0.030),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.red, width: 1),
-                      borderRadius: BorderRadius.circular(5)),
-                  // labelText: 'Phone Number',
-                  fillColor: Colors.white,
-                  filled: true,
-                  hintText: 'Janurary',
-                  hintStyle: TextStyle(
-                      fontSize: size.height * 0.012 + size.width * 0.012,
-                      color: Colors.black26),
-                ),
-              ),
-              const SizedBox(height: 15),
-              const Text(
-                'Day of Birth',
-                style: TextStyle(fontSize: 12, color: Colors.white),
-              ),
-              const SizedBox(height: 5),
-              TextFormField(
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide.none,
+                  const SizedBox(height: 15),
+                  const Text(
+                    'Behaviour',
+                    style: TextStyle(fontSize: 12, color: Colors.white),
                   ),
-                  contentPadding: EdgeInsets.symmetric(
-                      vertical: size.height * 0.001,
-                      horizontal: size.width * 0.030),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.red, width: 1),
-                      borderRadius: BorderRadius.circular(5)),
-                  // labelText: 'Phone Number',
-                  fillColor: Colors.white,
-                  filled: true,
-                  hintText: 'Sunday',
-                  hintStyle: TextStyle(
-                      fontSize: size.height * 0.012 + size.width * 0.012,
-                      color: Colors.black26),
-                ),
-              ),
-              const SizedBox(height: 15),
-              SizedBox(
-                width: size.width * 0.75,
-                child: const Text(
-                  'Choose any one among this, that inspire you most:',
-                  style: TextStyle(fontSize: 12, color: Colors.white),
-                ),
-              ),
-              const SizedBox(height: 5),
-              TextFormField(
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide.none,
+                  const SizedBox(height: 5),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: size.height * 0.001,
+                          horizontal: size.width * 0.030),
+                      errorBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.red, width: 1),
+                          borderRadius: BorderRadius.circular(5)),
+                      // labelText: 'Phone Number',
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: 'Introvert',
+                      hintStyle: TextStyle(
+                          fontSize: size.height * 0.012 + size.width * 0.012,
+                          color: Colors.black26),
+                    ),
                   ),
-                  contentPadding: EdgeInsets.symmetric(
-                      vertical: size.height * 0.001,
-                      horizontal: size.width * 0.030),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.red, width: 1),
-                      borderRadius: BorderRadius.circular(5)),
-                  // labelText: 'Phone Number',
-                  fillColor: Colors.white,
-                  filled: true,
-                  hintText: 'River',
-                  hintStyle: TextStyle(
-                      fontSize: size.height * 0.012 + size.width * 0.012,
-                      color: Colors.black26),
-                ),
-              ),
-              const SizedBox(height: 15),
-              const Text(
-                'Pet animals you like to have:',
-                style: TextStyle(fontSize: 12, color: Colors.white),
-              ),
-              const SizedBox(height: 5),
-              TextFormField(
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide.none,
+                  const SizedBox(height: 15),
+                  const Text(
+                    'Month of Birth',
+                    style: TextStyle(fontSize: 12, color: Colors.white),
                   ),
-                  contentPadding: EdgeInsets.symmetric(
-                      vertical: size.height * 0.001,
-                      horizontal: size.width * 0.030),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.red, width: 1),
-                      borderRadius: BorderRadius.circular(5)),
-                  // labelText: 'Phone Number',
-                  fillColor: Colors.white,
-                  filled: true,
-                  hintText: 'Dog',
-                  hintStyle: TextStyle(
-                      fontSize: size.height * 0.012 + size.width * 0.012,
-                      color: Colors.black26),
-                ),
-              ),
-              const SizedBox(height: 15),
-              const Text(
-                'What would you love to do in free time?',
-                style: TextStyle(fontSize: 12, color: Colors.white),
-              ),
-              const SizedBox(height: 5),
-              TextFormField(
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide.none,
+                  const SizedBox(height: 5),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: size.height * 0.001,
+                          horizontal: size.width * 0.030),
+                      errorBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.red, width: 1),
+                          borderRadius: BorderRadius.circular(5)),
+                      // labelText: 'Phone Number',
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: 'Janurary',
+                      hintStyle: TextStyle(
+                          fontSize: size.height * 0.012 + size.width * 0.012,
+                          color: Colors.black26),
+                    ),
                   ),
-                  contentPadding: EdgeInsets.symmetric(
-                      vertical: size.height * 0.001,
-                      horizontal: size.width * 0.030),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.red, width: 1),
-                      borderRadius: BorderRadius.circular(5)),
-                  // labelText: 'Phone Number',
-                  fillColor: Colors.white,
-                  filled: true,
-                  hintText: 'watch Movies',
-                  hintStyle: TextStyle(
-                      fontSize: size.height * 0.012 + size.width * 0.012,
-                      color: Colors.black26),
-                ),
-              ),
-              const SizedBox(height: 15),
-              const Text(
-                'Destination you will like to visit for holiday:',
-                style: TextStyle(fontSize: 12, color: Colors.white),
-              ),
-              const SizedBox(height: 5),
-              TextFormField(
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide.none,
+                  const SizedBox(height: 15),
+                  const Text(
+                    'Day of Birth',
+                    style: TextStyle(fontSize: 12, color: Colors.white),
                   ),
-                  contentPadding: EdgeInsets.symmetric(
-                      vertical: size.height * 0.001,
-                      horizontal: size.width * 0.030),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.red, width: 1),
-                      borderRadius: BorderRadius.circular(5)),
-                  // labelText: 'Phone Number',
-                  fillColor: Colors.white,
-                  filled: true,
-                  hintText: 'Sauraha',
-                  hintStyle: TextStyle(
-                      fontSize: size.height * 0.012 + size.width * 0.012,
-                      color: Colors.black26),
-                ),
-              ),
-              const SizedBox(height: 15),
-              const Text(
-                'Where You would like to go for Shopping:',
-                style: TextStyle(fontSize: 12, color: Colors.white),
-              ),
-              const SizedBox(height: 5),
-              TextFormField(
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide.none,
+                  const SizedBox(height: 5),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: size.height * 0.001,
+                          horizontal: size.width * 0.030),
+                      errorBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.red, width: 1),
+                          borderRadius: BorderRadius.circular(5)),
+                      // labelText: 'Phone Number',
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: 'Sunday',
+                      hintStyle: TextStyle(
+                          fontSize: size.height * 0.012 + size.width * 0.012,
+                          color: Colors.black26),
+                    ),
                   ),
-                  contentPadding: EdgeInsets.symmetric(
-                      vertical: size.height * 0.001,
-                      horizontal: size.width * 0.030),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.red, width: 1),
-                      borderRadius: BorderRadius.circular(5)),
-                  // labelText: 'Phone Number',
-                  fillColor: Colors.white,
-                  filled: true,
-                  hintText: 'Mall',
-                  hintStyle: TextStyle(
-                      fontSize: size.height * 0.012 + size.width * 0.012,
-                      color: Colors.black26),
-                ),
-              ),
-              const SizedBox(height: 15),
-              const Text(
-                'if you got 1 lakh, where would you like to spent?',
-                style: TextStyle(fontSize: 12, color: Colors.white),
-              ),
-              const SizedBox(height: 5),
-              TextFormField(
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide.none,
+                  const SizedBox(height: 15),
+                  SizedBox(
+                    width: size.width * 0.75,
+                    child: const Text(
+                      'Choose any one among this, that inspire you most:',
+                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    ),
                   ),
-                  contentPadding: EdgeInsets.symmetric(
-                      vertical: size.height * 0.001,
-                      horizontal: size.width * 0.030),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.red, width: 1),
-                      borderRadius: BorderRadius.circular(5)),
-                  // labelText: 'Phone Number',
-                  fillColor: Colors.white,
-                  filled: true,
-                  hintText: 'Gold',
-                  hintStyle: TextStyle(
-                      fontSize: size.height * 0.012 + size.width * 0.012,
-                      color: Colors.black26),
-                ),
-              ),
+                  const SizedBox(height: 5),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: size.height * 0.001,
+                          horizontal: size.width * 0.030),
+                      errorBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.red, width: 1),
+                          borderRadius: BorderRadius.circular(5)),
+                      // labelText: 'Phone Number',
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: 'River',
+                      hintStyle: TextStyle(
+                          fontSize: size.height * 0.012 + size.width * 0.012,
+                          color: Colors.black26),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  const Text(
+                    'Pet animals you like to have:',
+                    style: TextStyle(fontSize: 12, color: Colors.white),
+                  ),
+                  const SizedBox(height: 5),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: size.height * 0.001,
+                          horizontal: size.width * 0.030),
+                      errorBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.red, width: 1),
+                          borderRadius: BorderRadius.circular(5)),
+                      // labelText: 'Phone Number',
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: 'Dog',
+                      hintStyle: TextStyle(
+                          fontSize: size.height * 0.012 + size.width * 0.012,
+                          color: Colors.black26),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  const Text(
+                    'What would you love to do in free time?',
+                    style: TextStyle(fontSize: 12, color: Colors.white),
+                  ),
+                  const SizedBox(height: 5),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: size.height * 0.001,
+                          horizontal: size.width * 0.030),
+                      errorBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.red, width: 1),
+                          borderRadius: BorderRadius.circular(5)),
+                      // labelText: 'Phone Number',
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: 'watch Movies',
+                      hintStyle: TextStyle(
+                          fontSize: size.height * 0.012 + size.width * 0.012,
+                          color: Colors.black26),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  const Text(
+                    'Destination you will like to visit for holiday:',
+                    style: TextStyle(fontSize: 12, color: Colors.white),
+                  ),
+                  const SizedBox(height: 5),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: size.height * 0.001,
+                          horizontal: size.width * 0.030),
+                      errorBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.red, width: 1),
+                          borderRadius: BorderRadius.circular(5)),
+                      // labelText: 'Phone Number',
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: 'Sauraha',
+                      hintStyle: TextStyle(
+                          fontSize: size.height * 0.012 + size.width * 0.012,
+                          color: Colors.black26),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  const Text(
+                    'Where You would like to go for Shopping:',
+                    style: TextStyle(fontSize: 12, color: Colors.white),
+                  ),
+                  const SizedBox(height: 5),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: size.height * 0.001,
+                          horizontal: size.width * 0.030),
+                      errorBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.red, width: 1),
+                          borderRadius: BorderRadius.circular(5)),
+                      // labelText: 'Phone Number',
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: 'Mall',
+                      hintStyle: TextStyle(
+                          fontSize: size.height * 0.012 + size.width * 0.012,
+                          color: Colors.black26),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  const Text(
+                    'if you got 1 lakh, where would you like to spent?',
+                    style: TextStyle(fontSize: 12, color: Colors.white),
+                  ),
+                  const SizedBox(height: 5),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: size.height * 0.001,
+                          horizontal: size.width * 0.030),
+                      errorBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.red, width: 1),
+                          borderRadius: BorderRadius.circular(5)),
+                      // labelText: 'Phone Number',
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: 'Gold',
+                      hintStyle: TextStyle(
+                          fontSize: size.height * 0.012 + size.width * 0.012,
+                          color: Colors.black26),
+                    ),
+                  ),
+                ],
+              )),
               const SizedBox(height: 35),
               ConstrainedBox(
                 constraints: BoxConstraints.tightFor(

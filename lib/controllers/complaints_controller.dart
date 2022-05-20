@@ -1,10 +1,9 @@
 import 'package:get/get.dart';
 
-import '../../remote services/services.dart';
+import '../remote services/services.dart';
 
 class FeedbackAndComplaintController extends GetxController {
   var isLoading = true.obs;
-
   Future<void> giveFeedBackData(
       String? fullName,
       String? email,

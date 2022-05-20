@@ -53,6 +53,7 @@ dependencies:
   flutter_svg_provider: ^1.0.3
   svg_path_parser: ^1.1.1
   flutter_easyloading: ^3.0.3
+  geolocator: ^8.2.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

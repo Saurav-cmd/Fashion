@@ -46,9 +46,9 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
       recentColorList = [];
     }
 
-    if (colorValue != null) {
-      colorValue = Colors.transparent;
-    }
+    // if (colorValue != null) {
+    //   colorValue = Colors.transparent;
+    // }
   }
 
   void _runFilter(String enterKeyword) {
@@ -286,7 +286,7 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
                       width: 340,
                       child: CustomPaint(
                         isComplex: true,
-                        painter: HouseFillerPainter1(notifier, colorValue),
+                        painter: HouseFillerPainter1(notifier),
                       ),
                     ),
                   ],
@@ -416,9 +416,7 @@ class Shape {
 }
 
 class HouseFillerPainter1 extends CustomPainter {
-  HouseFillerPainter1(this._notifier, this._colorValue)
-      : super(repaint: _notifier);
-  Color? _colorValue;
+  HouseFillerPainter1(this._notifier) : super(repaint: _notifier);
   static final _data =
       '''m829.35 691.34.96 21.77h-33.58l-1.01-23z,m829.35 691.34-33.63-1.23 4.15-2.05 34.26 1.03 1.37 22.38-5.19 1.64z,
 m818.5 506v7l-20.53.49 16.34-1.82s-.41-8.7 0-8.29 4.19 2.62 4.19 2.62z,m810.96 497.49-39.34-25.66v-2.25l47.98 31.72.13 1.92-5.82-3.81-1.55 7.79z,

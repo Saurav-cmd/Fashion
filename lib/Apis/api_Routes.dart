@@ -22,4 +22,12 @@ class ApiRoute {
     return Constants.baseUrl +
         "v2/feedback?full_name=$fullName &email=$email&comments=$comment&app_rating=$appRating&product_rating=$productRating&service_rating=$serviceRating&team_rating=$teamRating";
   }
+
+  String? findPainter(
+    double? latitude,
+    double? longitude,
+  ) {
+    return Constants.baseUrl +
+        "v2/painterWithboundry?latitude=$latitude&longitude=$longitude";
+  }
 }

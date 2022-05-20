@@ -1,3 +1,4 @@
+/*
 import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,7 +17,7 @@ final TextEditingController _dobController = TextEditingController();
 class _FindPainterState extends State<FindPainter> {
   Future getNepaliDate() async {
     picker.NepaliDateTime? _selectedDateTime =
-    await picker.showAdaptiveDatePicker(
+        await picker.showAdaptiveDatePicker(
       context: context,
       initialDate: NepaliDateTime.now(),
       firstDate: NepaliDateTime(2050),
@@ -245,7 +246,8 @@ class _FindPainterState extends State<FindPainter> {
                   onPressed: () {
                     _dobController.clear();
                     //painterStatus_screen
-                    Navigator.of(context).pushNamed("Find_Painter_Second_screen");
+                    Navigator.of(context)
+                        .pushNamed("Find_Painter_Second_screen");
 
                     FocusManager.instance.primaryFocus?.unfocus();
                   },
@@ -261,3 +263,4 @@ class _FindPainterState extends State<FindPainter> {
     );
   }
 }
+*/

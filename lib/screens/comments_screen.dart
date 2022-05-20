@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:fashion_paints/colors/colors_file.dart';
-import 'package:fashion_paints/controllers/feedback/complaints_controller.dart';
+import 'package:fashion_paints/controllers/complaints_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';

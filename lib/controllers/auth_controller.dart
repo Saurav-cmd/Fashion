@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
@@ -9,23 +8,25 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthController extends GetxController{
+class AuthController extends GetxController {
   var isLoading = false.obs;
 
-  Future<LoginModel?> loginApiData(String userCode,String password,String deviceId,String fcmId,BuildContext context)async{
-    try{
+  Future<LoginModel?> loginApiData(String userCode, String password,
+      String deviceId, String fcmId, BuildContext context) async {
+    try {
       isLoading(true);
-      LoginModel? loginData = await Services.loginData(userCode, password, deviceId, fcmId, context);
+      LoginModel? loginData = await Services.loginData(
+          userCode, password, deviceId, fcmId, context);
       return loginData;
-    }finally{
+    } finally {
       isLoading(false);
     }
   }
 
-
   Future<String?> getId() async {
     var deviceInfo = DeviceInfoPlugin();
-    if (Platform.isIOS) { // import 'dart:io'
+    if (Platform.isIOS) {
+      // import 'dart:io'
       var iosDeviceInfo = await deviceInfo.iosInfo;
       return iosDeviceInfo.identifierForVendor; // unique ID on iOS
     } else {
@@ -35,15 +36,20 @@ class AuthController extends GetxController{
     }
   }
 
-  Future<String?> getFirebaseToken()async => FirebaseMessaging.instance.getToken().then((value) {
-    String? token = value;
-    print("This is firebase ${token}");
-    return token;
-  });
+  Future<String?> getFirebaseToken() async =>
+      FirebaseMessaging.instance.getToken().then((value) {
+        String? token = value;
+        return token;
+      });
 
-  Future<String?> autoLogin() async{
+  Future<String?> autoLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('userData');
   }
 
+  Future<void> logout(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+    Navigator.of(context).pushNamed("Button_Navigation_Bar");
+  }
 }

@@ -14,6 +14,7 @@ import '../controllers/get_cart_data_controller.dart';
 import '../main.dart';
 import '../models/apis_model/add_to_cart_model.dart';
 import '../models/apis_model/confirm_order_model.dart';
+import '../models/apis_model/find_painter_model.dart';
 import '../models/apis_model/get_cart_data_model.dart';
 import '../models/apis_model/notice_model.dart';
 import '../models/apis_model/order_history_model.dart';
@@ -372,6 +373,23 @@ class Services {
         snackBarKey.currentState?.showSnackBar(snackBar);
       } else {
         print("error");
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<List<Painter>?> findPainter(
+      double? latitude, double? longitude) async {
+    try {
+      final api = ApiRoute().findPainter(latitude, longitude);
+      final response = await http.get(Uri.parse(api!), headers: {
+        "Content-Type": "application/json",
+      });
+      if (response.statusCode == 200) {
+        return painterFromJson(response.body);
+      } else {
+        print("error aayo");
       }
     } catch (e) {
       rethrow;
