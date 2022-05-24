@@ -33,6 +33,7 @@ class _MatchedColorScreenState extends State<MatchedColorScreen> {
             vertical: size.height * 0.020, horizontal: size.width * 0.050),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               "Selected Color",
@@ -56,6 +57,12 @@ class _MatchedColorScreenState extends State<MatchedColorScreen> {
                   ),
                 )
               ],
+            ),
+            SizedBox(height: size.height * 0.40),
+            Container(
+              width: 100,
+              child: Text(
+                  "Note: Color picked from the image works on the principle of RGB value and Color Difference formulae, so it may not provide the actual result"),
             )
           ],
         ),

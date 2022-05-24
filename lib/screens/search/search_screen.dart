@@ -189,8 +189,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 Navigator.of(context).pushNamed("Color_screen");
               },
               child: SizedBox(
-                height: 120,
-                width: 130,
+                height: 125,
+                width: 150,
                 child: Card(
                   elevation: 0,
                   child: Padding(
