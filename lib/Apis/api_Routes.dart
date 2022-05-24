@@ -30,4 +30,10 @@ class ApiRoute {
     return Constants.baseUrl +
         "v2/painterWithboundry?latitude=$latitude&longitude=$longitude";
   }
+
+  String? complaints(String? name, String? userCode, String? phoneNumber,
+      int? reasonForComplaint, String? complaint) {
+    return Constants.baseUrl +
+        "v2/complaint?title=$reasonForComplaint&issue=$complaint&user_code=$userCode&full_name=$name&phone=$phoneNumber";
+  }
 }

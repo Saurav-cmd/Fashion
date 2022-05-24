@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:fashion_paints/colors/colors_file.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/dilogue_box.dart';
 
@@ -31,16 +33,52 @@ class _CommentsScreenState extends State<CommentsScreen> {
   TextEditingController complaintsController = TextEditingController();
   //ya samma matra ho hai compaints controller.....................................
 
+  List<DropdownMenuItem<String>> reasonComplaintsItem = [
+    const DropdownMenuItem(
+        child: Text("Administration"), value: "Administration"),
+    const DropdownMenuItem(child: Text("Account"), value: "Account"),
+    const DropdownMenuItem(child: Text("Machine"), value: "Machine"),
+  ];
+
+  String reasonValue = "Administration";
+
   final _formKey = GlobalKey<FormState>();
   final _formKey1 = GlobalKey<FormState>();
+
+  String? fullName;
+  String? emailAddress;
+  String? phone;
+  String? userCode;
+  getUserIngo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString("userData");
+    if (userData != null) {
+      setState(() {
+        fullName = jsonDecode(userData)['userName'];
+        emailAddress = jsonDecode(userData)['email'];
+        phone = jsonDecode(userData)['phone'];
+        userCode = jsonDecode(userData)['userCode'];
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUserIngo();
+  }
+
   @override
   Widget build(BuildContext context) {
     double? appRating = 1;
     double? productRating = 1;
     double? serviceRating = 1;
     double? teamRating = 1;
+
     FeedbackAndComplaintController fBCC =
         Get.put(FeedbackAndComplaintController());
+
     final size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async => fBCC.isLoading.value ? false : true,
@@ -149,11 +187,12 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                           return null;
                                         }
                                       },
-                                      controller: fullNameController,
+                                      controller: fullNameController
+                                        ..text = fullName.toString(),
                                     ),
                                     SizedBox(height: size.height * 0.020),
                                     Text(
-                                      "Email Address",
+                                      "User Code",
                                       style: TextStyle(
                                           fontSize: size.height * 0.009 +
                                               size.width * 0.009,
@@ -176,7 +215,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                         // labelText: 'Phone Number',
                                         fillColor: Colors.white,
                                         filled: true,
-                                        hintText: 'Email Address',
+                                        hintText: 'User Code',
                                         hintStyle: TextStyle(
                                             fontSize: size.height * 0.012 +
                                                 size.width * 0.012,
@@ -185,13 +224,12 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return "Enter Your Email Address";
-                                        }
-                                        if (!value.contains("@")) {
-                                          return "Enter Valid Email Address";
                                         } else {
                                           return null;
                                         }
                                       },
+                                      controller: emailAddressController
+                                        ..text = userCode.toString(),
                                     ),
                                     SizedBox(height: size.height * 0.020),
                                     Text(
@@ -236,6 +274,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                           return null;
                                         }
                                       },
+                                      controller: phoneNumberController
+                                        ..text = phone.toString(),
                                     ),
                                     SizedBox(height: size.height * 0.020),
                                     Text(
@@ -246,30 +286,34 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                           color: Colors.white),
                                     ),
                                     SizedBox(height: size.height * 0.005),
-                                    TextFormField(
-                                      decoration: InputDecoration(
-                                        border: const OutlineInputBorder(
-                                          borderSide: BorderSide.none,
-                                        ),
-                                        contentPadding: EdgeInsets.symmetric(
-                                            vertical: size.height * 0.001,
-                                            horizontal: size.width * 0.030),
-                                        errorBorder: OutlineInputBorder(
+                                    DropdownButtonFormField<String?>(
+                                        decoration: InputDecoration(
+                                          enabledBorder: OutlineInputBorder(
                                             borderSide: const BorderSide(
-                                                color: Colors.red, width: 1),
+                                                color: Colors.white, width: 1),
                                             borderRadius:
-                                                BorderRadius.circular(5)),
-                                        // labelText: 'Phone Number',
-                                        fillColor: Colors.white,
-                                        filled: true,
-                                        hintText:
-                                            'Tell your reasons for contacting us',
-                                        hintStyle: TextStyle(
-                                            fontSize: size.height * 0.012 +
-                                                size.width * 0.012,
-                                            color: Colors.black26),
-                                      ),
-                                    ),
+                                                BorderRadius.circular(0),
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderSide: const BorderSide(
+                                                color: Colors.white, width: 1),
+                                            borderRadius:
+                                                BorderRadius.circular(0),
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                        ),
+                                        validator: (value) => value == null
+                                            ? "Select your reason for complaint"
+                                            : null,
+                                        dropdownColor: Colors.white,
+                                        value: reasonValue,
+                                        onChanged: (String? newValue) {
+                                          setState(() {
+                                            reasonValue = newValue!;
+                                          });
+                                        },
+                                        items: reasonComplaintsItem),
                                     SizedBox(height: size.height * 0.020),
                                     Text(
                                       "Complaint",
@@ -303,6 +347,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                       ),
                                       keyboardType: TextInputType.multiline,
                                       maxLines: 5,
+                                      controller: complaintsController,
                                     ),
                                     SizedBox(height: size.height * 0.035),
                                     ConstrainedBox(
@@ -317,9 +362,71 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                               fontSize: size.height * 0.014 +
                                                   size.width * 0.014),
                                         ),
-                                        onPressed: () {
-                                          FocusManager.instance.primaryFocus
-                                              ?.unfocus();
+                                        onPressed: () async {
+                                          try {
+                                            final result =
+                                                await InternetAddress.lookup(
+                                                    "example.com");
+                                            if (result.isNotEmpty &&
+                                                result[0]
+                                                    .rawAddress
+                                                    .isNotEmpty) {
+                                              if (_formKey1.currentState !=
+                                                      null &&
+                                                  _formKey1.currentState!
+                                                      .validate()) {
+                                                if (reasonValue ==
+                                                    "Administration") {
+                                                  fBCC.postComplaintData(
+                                                      fullName ??
+                                                          nameController.text,
+                                                      userCode ??
+                                                          emailController.text,
+                                                      phone ??
+                                                          phoneController.text,
+                                                      1,
+                                                      complaintsController.text,
+                                                      context);
+                                                  FocusManager
+                                                      .instance.primaryFocus
+                                                      ?.unfocus();
+                                                } else if (reasonValue ==
+                                                    "Account") {
+                                                  fBCC.postComplaintData(
+                                                      fullName ??
+                                                          nameController.text,
+                                                      userCode ??
+                                                          emailController.text,
+                                                      phone ??
+                                                          phoneController.text,
+                                                      2,
+                                                      complaintsController.text,
+                                                      context);
+                                                  FocusManager
+                                                      .instance.primaryFocus
+                                                      ?.unfocus();
+                                                } else if (reasonValue ==
+                                                    "Machine") {
+                                                  fBCC.postComplaintData(
+                                                      fullName ??
+                                                          nameController.text,
+                                                      userCode ??
+                                                          emailController.text,
+                                                      phone ??
+                                                          phoneController.text,
+                                                      3,
+                                                      complaintsController.text,
+                                                      context);
+                                                  FocusManager
+                                                      .instance.primaryFocus
+                                                      ?.unfocus();
+                                                }
+                                              }
+                                            }
+                                          } on SocketException catch (_) {
+                                            AlertBox()
+                                                .noWifiConnection(context);
+                                          }
                                         },
                                         style: ElevatedButton.styleFrom(
                                           primary: ChooseColor(0).buttonColor,

@@ -26,8 +26,10 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
 
   getAllShadeColor() async {
     final shadeData = await DatabaseHelper.instance.getShadeColorData();
-    for (var e in shadeData) {
-      allColorsData.add(e);
+    for (int i = 0; i < shadeData.length; i++) {
+      setState(() {
+        allColorsData.add(shadeData[i]);
+      });
     }
   }
 
@@ -36,22 +38,22 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
     // TODO: implement initState
     super.initState();
     getAllShadeColor();
-    setState(() {
+    /*  setState(() {
       searchController.addListener(() {
         _runFilter(searchController.value.text);
       });
-    });
+    });*/
 
-    if (recentColorList.isNotEmpty) {
+    /* if (recentColorList.isNotEmpty) {
       recentColorList = [];
-    }
+    }*/
 
     // if (colorValue != null) {
     //   colorValue = Colors.transparent;
     // }
   }
 
-  void _runFilter(String enterKeyword) {
+/*  void _runFilter(String enterKeyword) {
     List<ShadeColorDatabase> results = [];
     if (enterKeyword.isEmpty) {
       results = allColorsData;
@@ -69,61 +71,61 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
     });
 
     print("This is search color ${searchColor[0].colorCode}");
-  }
+  }*/
 
   Widget setupShadeColorContainer(BuildContext context) {
-    return searchController.text.isEmpty
-        ? SizedBox(
-            height: 300.0, // Change as per your requirement
-            width: 300.0, // Change as per your requirement
-            child: GridView.builder(
-                shrinkWrap: true,
-                itemCount: allColorsData.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10),
-                itemBuilder: (ctx, i) {
-                  return GestureDetector(
-                    onTap: () {
-                      rPassedChooseColor = allColorsData[i].rValue;
-                      gPassedChooseColor = allColorsData[i].gValue;
-                      bPassedChooseColor = allColorsData[i].bValue;
-                      recentColorList.add(colorValue);
-                      colorValue = Color.fromRGBO(
-                          rPassedChooseColor!.toInt(),
-                          gPassedChooseColor!.toInt(),
-                          bPassedChooseColor!.toInt(),
-                          1);
-                      Navigator.pop(context, [
-                        rPassedChooseColor,
-                        gPassedChooseColor,
-                        bPassedChooseColor,
-                        colorValue,
-                        recentColorList
-                      ]);
-                    },
-                    child: Container(
-                      child: Stack(
-                        children: [
-                          Container(
-                            color: Color.fromRGBO(
-                                allColorsData[i].rValue!.toInt(),
-                                allColorsData[i].gValue!.toInt(),
-                                allColorsData[i].bValue!.toInt(),
-                                1),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 45, left: 5),
-                            child: Text("${allColorsData[i].colorCode}"),
-                          )
-                        ],
-                      ),
+    return
+        /*searchController.text.isEmpty
+        ? */
+        SizedBox(
+      height: 300.0, // Change as per your requirement
+      width: 300.0, // Change as per your requirement
+      child: GridView.builder(
+          shrinkWrap: true,
+          itemCount: allColorsData.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4, crossAxisSpacing: 10, mainAxisSpacing: 10),
+          itemBuilder: (ctx, i) {
+            return GestureDetector(
+              onTap: () {
+                rPassedChooseColor = allColorsData[i].rValue;
+                gPassedChooseColor = allColorsData[i].gValue;
+                bPassedChooseColor = allColorsData[i].bValue;
+                recentColorList.add(colorValue);
+                colorValue = Color.fromRGBO(
+                    rPassedChooseColor!.toInt(),
+                    gPassedChooseColor!.toInt(),
+                    bPassedChooseColor!.toInt(),
+                    1);
+                Navigator.pop(context, [
+                  rPassedChooseColor,
+                  gPassedChooseColor,
+                  bPassedChooseColor,
+                  colorValue,
+                  recentColorList
+                ]);
+              },
+              child: Container(
+                child: Stack(
+                  children: [
+                    Container(
+                      color: Color.fromRGBO(
+                          allColorsData[i].rValue!.toInt(),
+                          allColorsData[i].gValue!.toInt(),
+                          allColorsData[i].bValue!.toInt(),
+                          1),
                     ),
-                  );
-                }),
-          )
-        : SizedBox(
+                    Padding(
+                      padding: const EdgeInsets.only(top: 45, left: 5),
+                      child: Text("${allColorsData[i].colorCode}"),
+                    )
+                  ],
+                ),
+              ),
+            );
+          }),
+    );
+    /*  : SizedBox(
             height: 300.0, // Change as per your requirement
             width: 300.0, // Change as per your requirement
             child: GridView.builder(
@@ -170,7 +172,7 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
                     ),
                   );
                 }),
-          );
+          );*/
   }
 
   showAllColors(BuildContext context) async {
@@ -244,8 +246,6 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
   Widget build(BuildContext context) {
     final notifier = ValueNotifier(Offset.zero);
     final size = MediaQuery.of(context).size;
-    print("This is recent value $recentColorList");
-    print("THis is color value $colorValue");
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: ChooseColor(0).bodyBackgroundColor,

@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BipanaPreviewScreen extends StatefulWidget {
   const BipanaPreviewScreen({Key? key}) : super(key: key);
@@ -10,6 +13,25 @@ class BipanaPreviewScreen extends StatefulWidget {
 }
 
 class _BipanaPreviewScreenState extends State<BipanaPreviewScreen> {
+  String? token;
+
+  getToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString("userData");
+    if (userData != null) {
+      setState(() {
+        token = jsonDecode(userData)['token'];
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getToken();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -23,8 +45,13 @@ class _BipanaPreviewScreenState extends State<BipanaPreviewScreen> {
         elevation: 0,
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context)
-                .pushReplacementNamed("Dealer_button_Navigation_Bar");
+            if (token != null) {
+              Navigator.of(context)
+                  .pushReplacementNamed("Dealer_button_Navigation_Bar");
+            } else if (token == null) {
+              Navigator.of(context)
+                  .pushReplacementNamed("Button_Navigation_Bar");
+            }
           },
           icon: const Icon(Icons.arrow_back_ios),
           color: Colors.white60,
@@ -35,7 +62,12 @@ class _BipanaPreviewScreenState extends State<BipanaPreviewScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.of(context).pushNamed("Dealer_button_Navigation_Bar");
+                if (token != null) {
+                  Navigator.of(context)
+                      .pushNamed("Dealer_button_Navigation_Bar");
+                } else {
+                  Navigator.of(context).pushNamed("Button_Navigation_Bar");
+                }
               },
               icon: const Icon(Icons.home))
         ],
@@ -47,61 +79,59 @@ class _BipanaPreviewScreenState extends State<BipanaPreviewScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text("$token"),
               Text(
                 "Try Bipana preview with stock images",
                 style: TextStyle(
                     fontSize: size.height * 0.011 + size.width * 0.011),
               ),
               SizedBox(height: size.height * 0.020),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamed("Exterior_screen");
-                },
-                child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: const Color(0xff031545),
-                    ),
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: size.width * 0.030),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Exterior",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: size.height * 0.014 +
-                                          size.width * 0.014),
-                                ),
-                                SizedBox(height: size.height * 0.020),
-                                Text(
-                                  "Images",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: size.height * 0.012 +
-                                          size.width * 0.012),
-                                ),
-                              ],
-                            ),
+              Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: const Color(0xff031545),
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed("Exterior_screen");
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: size.width * 0.030),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Exterior",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: size.height * 0.014 +
+                                        size.width * 0.014),
+                              ),
+                              SizedBox(height: size.height * 0.020),
+                              Text(
+                                "Images",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: size.height * 0.012 +
+                                        size.width * 0.012),
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                              width: size.width * 0.6,
-                              child: Image.asset(
-                                "images/bipanaPreview1.png",
-                                fit: BoxFit.fill,
-                              )),
-                        ],
-                      ),
-                    )),
-              ),
+                        ),
+                        SizedBox(
+                            width: size.width * 0.6,
+                            child: Image.asset(
+                              "images/bipanaPreview1.png",
+                              fit: BoxFit.fill,
+                            )),
+                      ],
+                    ),
+                  )),
               SizedBox(height: size.height * 0.020),
               Container(
                 decoration: BoxDecoration(

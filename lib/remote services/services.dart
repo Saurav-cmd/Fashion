@@ -24,7 +24,6 @@ class Services {
   static Future<LoginModel?> loginData(String userCode, String password,
       String deviceId, String fcmId, BuildContext context) async {
     String? token;
-    print("This is token ${token}");
     try {
       String? apiRoute =
           ApiRoute().getLoginUrl(userCode, password, deviceId, fcmId);
@@ -34,7 +33,10 @@ class Services {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         final userData = jsonEncode({
           'message': responseData['message'],
-          'token': responseData['token']
+          'token': responseData['token'],
+          'userName': responseData['Dealer_user']['full_name'],
+          'phone': responseData['Dealer_user']['phone'],
+          'userCode': responseData['Dealer_user']['user_code'],
         });
         prefs.setString('userData', userData);
         Navigator.of(context)
@@ -390,6 +392,73 @@ class Services {
         return painterFromJson(response.body);
       } else {
         print("error aayo");
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<void> postComplaints(
+      String? name,
+      String? userCode,
+      String? phoneNumber,
+      int? reasonForComplaint,
+      String? complaint,
+      BuildContext context) async {
+    try {
+      EasyLoading.instance.indicatorType = EasyLoadingIndicatorType.ring;
+      EasyLoading.instance.loadingStyle = EasyLoadingStyle.light;
+      EasyLoading.instance.backgroundColor = Colors.black45;
+      EasyLoading.instance.maskType = EasyLoadingMaskType.black;
+      EasyLoading.instance.maskColor = Colors.blue.withOpacity(0.5);
+      EasyLoading.show(status: "Submitting Complaint....");
+      String? token;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final userData = prefs.getString("userData");
+      if (userData != null) {
+        token = jsonDecode(userData)['token'];
+      }
+      final api = ApiRoute().complaints(
+          name, userCode, phoneNumber, reasonForComplaint, complaint);
+      final response = await http.post(Uri.parse(api!), headers: {
+        "Content-Type": "application/json",
+        "Authorization": "bearer $token"
+      });
+      if (response.statusCode == 200) {
+        EasyLoading.dismiss();
+        final SnackBar snackBar = SnackBar(
+          content: Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  'Complaint successfully submitted',
+                  maxLines: 2,
+                  style: TextStyle(fontSize: 14),
+                ),
+              ],
+            ),
+          ),
+          duration: const Duration(seconds: 1),
+          backgroundColor: Colors.grey.shade700,
+          behavior: SnackBarBehavior.floating,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        );
+        snackBarKey.currentState?.showSnackBar(snackBar);
+      } else if (response.statusCode == 403) {
+        AlertBox().loginAlertBox1(context);
+      } else if (response.statusCode == 400) {
+        AlertBox().loginAlertBox2(context);
+      } else if (response.statusCode == 401) {
+        AlertBox().loginAlertBox3(context);
+      } else if (response.statusCode == 500) {
+        print("Unexpected error on Server");
+      } else if (response.statusCode == 503) {
+        print("Unexpected error on Server");
+      } else {
+        AlertBox().universalAlertBox(context);
       }
     } catch (e) {
       rethrow;

@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_web_browser/flutter_web_browser.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -127,8 +128,11 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context)
-                          .pushNamed("Color_Personality_screen");
+                      FlutterWebBrowser.openWebPage(
+                          url:
+                              "https://fashionpaints.com.np/color-personality/");
+                      // Navigator.of(context)
+                      //     .pushNamed("Color_Personality_screen");
                     },
                     child: SizedBox(
                       child: Card(
@@ -154,51 +158,62 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    child: Card(
-                      elevation: 0,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: size.width * 0.010,
-                            vertical: size.height * 0.010),
-                        child: Column(
-                          children: [
-                            Image.asset(
-                                "icons/undraw_house_searching_re_stk8 (1) 1.png"),
-                            SizedBox(height: size.height * 0.030),
-                            Center(
-                                child: Text(
-                              "Bipana preview",
-                              style: TextStyle(
-                                  color: ChooseColor(0).appBarColor1,
-                                  fontSize:
-                                      size.height * 0.009 + size.width * 0.009),
-                            ))
-                          ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed("Bipana_Preview_screen");
+                    },
+                    child: SizedBox(
+                      child: Card(
+                        elevation: 0,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.010,
+                              vertical: size.height * 0.010),
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                  "icons/undraw_house_searching_re_stk8 (1) 1.png"),
+                              SizedBox(height: size.height * 0.030),
+                              Center(
+                                  child: Text(
+                                "Bipana preview",
+                                style: TextStyle(
+                                    color: ChooseColor(0).appBarColor1,
+                                    fontSize: size.height * 0.009 +
+                                        size.width * 0.009),
+                              ))
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(
-                    child: Card(
-                      elevation: 0,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: size.width * 0.050,
-                            vertical: size.height * 0.010),
-                        child: Column(
-                          children: [
-                            Image.asset("icons/undraw_searching_re_3ra9 1.png"),
-                            SizedBox(height: size.height * 0.020),
-                            Center(
-                                child: Text(
-                              "Search",
-                              style: TextStyle(
-                                  color: ChooseColor(0).appBarColor1,
-                                  fontSize:
-                                      size.height * 0.009 + size.width * 0.009),
-                            ))
-                          ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed("Search_Screen");
+                    },
+                    child: SizedBox(
+                      child: Card(
+                        elevation: 0,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.050,
+                              vertical: size.height * 0.010),
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                  "icons/undraw_searching_re_3ra9 1.png"),
+                              SizedBox(height: size.height * 0.020),
+                              Center(
+                                  child: Text(
+                                "Search",
+                                style: TextStyle(
+                                    color: ChooseColor(0).appBarColor1,
+                                    fontSize: size.height * 0.009 +
+                                        size.width * 0.009),
+                              ))
+                            ],
+                          ),
                         ),
                       ),
                     ),
