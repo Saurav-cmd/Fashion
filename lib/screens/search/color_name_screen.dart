@@ -1,4 +1,7 @@
 import 'package:fashion_paints/colors/colors_file.dart';
+import 'package:fashion_paints/models/database_models/style_dist_model.dart';
+import 'package:fashion_paints/models/database_models/weather_proof_extemulsion_model.dart';
+import 'package:fashion_paints/models/searched_data_holder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +9,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import '../../database/all_data_database.dart';
 import '../../models/database_models/shade_color_database_model.dart';
+import '../../models/database_models/smart_dist_model.dart';
 
 class ColorScreen extends StatefulWidget {
   const ColorScreen({Key? key}) : super(key: key);
@@ -30,14 +34,80 @@ class _ColorScreenState extends State<ColorScreen> {
     }
   }
 
+  List<WeatherProofExtemusion?> weatherDataList = [];
+  List<StyleDist> styleList = [];
+  List<SmartDist> smartList = [];
+  List<SearchedDataHolder> searchedDataList = [];
   getData() async {
     final databaseData = await DatabaseHelper.instance.getShadeColorData();
+    final weatherProofData =
+        await DatabaseHelper.instance.queryWeatherProof(searchController.text);
+    final styleDistemperData = await DatabaseHelper.instance
+        .queryStyleDistemper(searchController.text);
+    final smartDistemperData = await DatabaseHelper.instance
+        .querySmartDistemper(searchController.text);
+    /* final cosmeticInteriorData = await DatabaseHelper.instance
+        .queryCosmeticInterior(searchController.text);*/
     for (int i = 0; i < databaseData.length; i++) {
       if (databaseData[i].colorName == searchController.text) {
         setState(() {
           databaseDataList.add(databaseData[i]);
         });
       }
+    }
+
+    for (int i = 0; i < weatherProofData!.length; i++) {
+      setState(() {
+        weatherDataList.clear();
+        weatherDataList.add(weatherProofData[i]);
+        for (int i = 0; i < weatherDataList.length; i++) {
+          SearchedDataHolder sH = SearchedDataHolder(
+              weatherDataList[i]!.colorName,
+              weatherDataList[i]!.colorCode,
+              weatherDataList[i]!.fandeck.toString(),
+              "",
+              null,
+              null,
+              null);
+          searchedDataList.add(sH);
+        }
+      });
+    }
+
+    for (int i = 0; i < styleDistemperData!.length; i++) {
+      setState(() {
+        styleList.clear();
+        styleList.add(styleDistemperData[i]);
+        for (int i = 0; i < styleList.length; i++) {
+          SearchedDataHolder sH = SearchedDataHolder(
+              styleList[i].colorName,
+              styleList[i].colorCode,
+              styleList[i].fandeck.toString(),
+              "",
+              null,
+              null,
+              null);
+          searchedDataList.add(sH);
+        }
+      });
+    }
+
+    for (int i = 0; i < smartDistemperData!.length; i++) {
+      setState(() {
+        smartList.clear();
+        smartList.add(smartDistemperData[i]);
+        for (int i = 0; i < smartList.length; i++) {
+          SearchedDataHolder sH = SearchedDataHolder(
+              smartList[i].colorName,
+              smartList[i].colorCode,
+              smartList[i].fandeck.toString(),
+              "",
+              null,
+              null,
+              null);
+          searchedDataList.add(sH);
+        }
+      });
     }
   }
 
@@ -141,48 +211,96 @@ class _ColorScreenState extends State<ColorScreen> {
             padding: EdgeInsets.symmetric(horizontal: size.width * 0.020),
             child: SizedBox(
               height: 500,
-              child: ListView.builder(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: databaseDataList.length,
-                  itemBuilder: (ctx, i) {
-                    return Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(width: 1.0, color: Colors.black),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
+              child: searchController.text.isNotEmpty
+                  ? ListView.builder(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: searchedDataList.length,
+                      itemBuilder: (ctx, i) {
+                        return Container(
+                          decoration: const BoxDecoration(
+                            border: Border(
+                              bottom:
+                                  BorderSide(width: 1.0, color: Colors.black),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                "${databaseDataList[i].colorCode}(${databaseDataList[i].colorName})",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${searchedDataList[i].colorCode}(${searchedDataList[i].colorName})",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  if (searchedDataList[i].fandeck == "1.0")
+                                    const Text(
+                                      "Fashion Paints Ambiance Plus CS",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  if (searchedDataList[i].fandeck == "2.0")
+                                    const Text(
+                                      "Spirit 1050 Fandeck",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  if (searchedDataList[i].fandeck == "3.0")
+                                    const Text(
+                                      "Color Symphony Fandeck",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  if (searchedDataList[i].fandeck == "4.0")
+                                    const Text(
+                                      "Color Cosmos Fandeck",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  if (searchedDataList[i].fandeck == "5.0")
+                                    const Text(
+                                      "BP-2300",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  if (searchedDataList[i].fandeck == "6.0")
+                                    const Text(
+                                      "AP-CP",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                ],
                               ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(bottom: 10, top: 10),
+                                child: Container(
+                                  height: 50,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                    color: Color.fromRGBO(
+                                        databaseDataList[i].rValue!.toInt(),
+                                        databaseDataList[i].gValue!.toInt(),
+                                        databaseDataList[i].bValue!.toInt(),
+                                        1),
+                                  ),
+                                ),
+                              )
                             ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 10, top: 10),
-                            child: Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                color: Color.fromRGBO(
-                                    databaseDataList[i].rValue!.toInt(),
-                                    databaseDataList[i].gValue!.toInt(),
-                                    databaseDataList[i].bValue!.toInt(),
-                                    1),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-                  }),
+                        );
+                      })
+                  : Text(
+                      "Type color name or code to search",
+                      style: TextStyle(
+                          color: ChooseColor(0).appBarColor1,
+                          fontSize: size.height * 0.014 + size.width * 0.014,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
             ),
           )
         ],

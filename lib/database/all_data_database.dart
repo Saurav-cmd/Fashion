@@ -737,4 +737,52 @@ class DatabaseHelper {
   }
   //StyleDistemper ko data add, save and aaru task end here...................................................................................
 
+  //all product query here...........................................................................................................
+  Future<List<WeatherProofExtemusion?>?> queryWeatherProof(
+      String? colorName) async {
+    print("This is color Name $colorName");
+    Database? db = await instance.database;
+    var data = await db
+        ?.query(table8, where: '$weatherColorName=?', whereArgs: [colorName]);
+    return data!.isNotEmpty
+        ? data.map((e) => WeatherProofExtemusion.fromMap(e)).toList()
+        : [];
+  }
+
+  Future<List<StyleDist>?> queryStyleDistemper(colorName) async {
+    Database? db = await instance.database;
+    var data = await db
+        ?.query(table11, where: '$styleColorName=?', whereArgs: [colorName]);
+    return data!.isNotEmpty
+        ? data.map((e) => StyleDist.fromMap(e)).toList()
+        : [];
+  }
+
+  Future<List<SmartDist>?> querySmartDistemper(colorName) async {
+    Database? db = await instance.database;
+    var data = await db
+        ?.query(table9, where: '$smartColorName=?', whereArgs: [colorName]);
+    return data!.isNotEmpty
+        ? data.map((e) => SmartDist.fromMap(e)).toList()
+        : [];
+  }
+
+  Future<List<MageneticExtEmulsion>?> queryMagneticEmulsion(colorName) async {
+    Database? db = await instance.database;
+    var data = await db
+        ?.query(table10, where: '$magnetColorName=?', whereArgs: [colorName]);
+    return data!.isNotEmpty
+        ? data.map((e) => MageneticExtEmulsion.fromMap(e)).toList()
+        : [];
+  }
+
+/*  Future<List<CosmeticInt>?> queryCosmeticInterior(colorName) async {
+    Database? db = await instance.database;
+    var data = await db?.query(table1, where: '$colorName=?', whereArgs: [colorName]);
+    return data!.isNotEmpty
+        ? data.map((e) => CosmeticInt.fromMap(e)).toList()
+        : [];
+  }*/
+  //all product query end here...........................................................................................................
+
 }
