@@ -5,9 +5,13 @@ import 'package:sqflite/sqflite.dart';
 import '../models/database_models/book_marked_model.dart';
 import '../models/database_models/colorant_database_model.dart';
 import '../models/database_models/cosmetic_int_emulsion_database_model.dart';
+import '../models/database_models/magnetic_ext_emulsion_model.dart';
 import '../models/database_models/saved_customer_detail_color.dart';
 import '../models/database_models/saved_customer_detail_model.dart';
 import '../models/database_models/shade_color_database_model.dart';
+import '../models/database_models/smart_dist_model.dart';
+import '../models/database_models/style_dist_model.dart';
+import '../models/database_models/weather_proof_extemulsion_model.dart';
 
 class DatabaseHelper {
   static const _databaseVersion = 5;
@@ -18,7 +22,10 @@ class DatabaseHelper {
   static const table5 = "BookMarked";
   static const table6 = "SavedCustomerDetail";
   static const table7 = "SavedCustomerDetailColor";
-
+  static const table8 = "WeatherProofExteriorEmulsion";
+  static const table9 = "SmartDistemper";
+  static const table10 = "MagnetExteriorEmulsion";
+  static const table11 = "StyleDistemper";
   //this is for CosmeticInteriorEmulsion table.........................................................
   static const id = 'id';
   static const cosmeticId = "cosmeticId";
@@ -119,6 +126,110 @@ class DatabaseHelper {
   static const savedGColor = "gColor";
   static const savedBColor = "bColor";
   //This is for saved customer detail color table ends here.................................................................
+
+  //This is for WeatherProofExteriorEmulsion table starts here....................................................................
+  static const colId = 'id';
+  static const weatherId = "weatherId";
+  static const weatherColorName = 'colorName';
+  static const weatherColorCode = 'colorCode';
+  static const weatherWhf = 'whf';
+  static const weatherFbf = 'fbf';
+  static const weatherFgf = 'fgf';
+  static const weatherFef = 'fef';
+  static const weatherYof = 'yof';
+  static const weatherFvf = 'fvf';
+  static const weatherIyf = 'iyf';
+  static const weatherMgf = 'mgf';
+  static const weatherIrf = 'irf';
+  static const weatherRof = 'rof';
+  static const weatherErf = 'erf';
+  static const weatherMyf = 'myf';
+  static const weatherLbf = 'lbf';
+  static const weatherLgf = 'lgf';
+  static const weatherEyf = 'eyf';
+  static const weatherRuf = 'ruf';
+  static const weatherBase = 'base';
+  static const weatherBVolume = 'bVolume';
+  static const weatherFanDeck = 'fandeck';
+  //This is for WeatherProofExteriorEmulsion table ends here....................................................................
+
+  //This is for SmartDistemper table starts here...........................................................................
+  static const colmId = 'id';
+  static const smartId = "smartId";
+  static const smartColorName = 'colorName';
+  static const smartColorCode = 'colorCode';
+  static const smartWhf = 'whf';
+  static const smartFbf = 'fbf';
+  static const smartFgf = 'fgf';
+  static const smartFef = 'fef';
+  static const smartYof = 'yof';
+  static const smartFvf = 'fvf';
+  static const smartIyf = 'iyf';
+  static const smartMgf = 'mgf';
+  static const smartIrf = 'irf';
+  static const smartRof = 'rof';
+  static const smartErf = 'erf';
+  static const smartMyf = 'myf';
+  static const smartLbf = 'lbf';
+  static const smartLgf = 'lgf';
+  static const smartEyf = 'eyf';
+  static const smartRuf = 'ruf';
+  static const smartBase = 'base';
+  static const smartBVolume = 'bVolume';
+  static const smartFanDeck = 'fandeck';
+  //This is for SmartDistemper table ends here..............................................................................
+
+  //This is for MagnetExteriorEmulsion table starts here....................................................................
+  static const colmnId = 'id';
+  static const magneticId = "magneticId";
+  static const magnetColorName = 'colorName';
+  static const magnetColorCode = 'colorCode';
+  static const magnetWhf = 'whf';
+  static const magnetFbf = 'fbf';
+  static const magnetFgf = 'fgf';
+  static const magnetFef = 'fef';
+  static const magnetYof = 'yof';
+  static const magnetFvf = 'fvf';
+  static const magnetIyf = 'iyf';
+  static const magnetMgf = 'mgf';
+  static const magnetIrf = 'irf';
+  static const magnetRof = 'rof';
+  static const magnetErf = 'erf';
+  static const magnetMyf = 'myf';
+  static const magnetLbf = 'lbf';
+  static const magnetLgf = 'lgf';
+  static const magnetEyf = 'eyf';
+  static const magnetRuf = 'ruf';
+  static const magnetBase = 'base';
+  static const magnetBVolume = 'bVolume';
+  static const magnetFanDeck = 'fandeck';
+  //This is for MagnetExteriorEmulsion table ends here......................................................................
+
+  //This is for StyleDistemper table starts here.............................................................................
+  static const styleColId = 'id';
+  static const styleId = "styleId";
+  static const styleColorName = 'colorName';
+  static const styleColorCode = 'colorCode';
+  static const styleWhf = 'whf';
+  static const styleFbf = 'fbf';
+  static const styleFgf = 'fgf';
+  static const styleFef = 'fef';
+  static const styleYof = 'yof';
+  static const styleFvf = 'fvf';
+  static const styleIyf = 'iyf';
+  static const styleMgf = 'mgf';
+  static const styleIrf = 'irf';
+  static const styleRof = 'rof';
+  static const styleErf = 'erf';
+  static const styleMyf = 'myf';
+  static const styleLbf = 'lbf';
+  static const styleLgf = 'lgf';
+  static const styleEyf = 'eyf';
+  static const styleRuf = 'ruf';
+  static const styleBase = 'base';
+  static const styleBVolume = 'bVolume';
+  static const styleFanDeck = 'fandeck';
+  //This is for StyleDistemper table ends here..............................................................................
 
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
@@ -295,6 +406,118 @@ class DatabaseHelper {
         FOREIGN KEY ($savedColorForeignKey) REFERENCES $table6 ($savedColumnId)
       )
     ''').then((value) => null);
+
+    await db.execute('''
+      CREATE TABLE $table8(
+        $colId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+        $weatherId INTEGER NOT NULL,
+        $weatherColorName TEXT,
+        $weatherColorCode TEXT,
+        $weatherWhf TEXT,
+        $weatherFbf TEXT,
+        $weatherFgf TEXT,
+        $weatherFef TEXT,
+        $weatherYof TEXT,
+        $weatherFvf TEXT,
+        $weatherIyf TEXT,
+        $weatherMgf TEXT,
+        $weatherIrf TEXT,
+        $weatherRof TEXT,
+        $weatherErf TEXT,
+        $weatherMyf TEXT,
+        $weatherLbf TEXT,
+        $weatherLgf TEXT,
+        $weatherEyf TEXT,
+        $weatherRuf TEXT,
+        $weatherBase REAL,
+        $weatherBVolume TEXT,
+        $weatherFanDeck REAL
+      )
+    ''').then((value) => null);
+
+    await db.execute('''
+      CREATE TABLE $table9(
+        $colmId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+        $smartId INTEGER NOT NULL,
+        $smartColorName TEXT,
+        $smartColorCode TEXT,
+        $smartWhf TEXT,
+        $smartFbf TEXT,
+        $smartFgf TEXT,
+        $smartFef TEXT,
+        $smartYof TEXT,
+        $smartFvf TEXT,
+        $smartIyf TEXT,
+        $smartMgf TEXT,
+        $smartIrf TEXT,
+        $smartRof TEXT,
+        $smartErf TEXT,
+        $smartMyf TEXT,
+        $smartLbf TEXT,
+        $smartLgf TEXT,
+        $smartEyf TEXT,
+        $smartRuf TEXT,
+        $smartBase REAL,
+        $smartBVolume TEXT,
+        $smartFanDeck REAL
+      )
+    ''').then((value) => null);
+
+    db.execute('''
+      CREATE TABLE $table10(
+        $colmnId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+        $magneticId INTEGER NOT NULL,
+        $magnetColorName TEXT,
+        $magnetColorCode TEXT,
+        $magnetWhf TEXT,
+        $magnetFbf TEXT,
+        $magnetFgf TEXT,
+        $magnetFef TEXT,
+        $magnetYof TEXT,
+        $magnetFvf TEXT,
+        $magnetIyf TEXT,
+        $magnetMgf TEXT,
+        $magnetIrf TEXT,
+        $magnetRof TEXT,
+        $magnetErf TEXT,
+        $magnetMyf TEXT,
+        $magnetLbf TEXT,
+        $magnetLgf TEXT,
+        $magnetEyf TEXT,
+        $magnetRuf TEXT,
+        $magnetBase REAL,
+        $magnetBVolume TEXT,
+        $magnetFanDeck REAL
+      )
+    ''').then((value) => null);
+
+    db.execute('''
+      CREATE TABLE $table11(
+        $styleColId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+        $styleId INTEGER NOT NULL,
+        $styleColorName TEXT,
+        $styleColorCode TEXT,
+        $styleWhf TEXT,
+        $styleFbf TEXT,
+        $styleFgf TEXT,
+        $styleFef TEXT,
+        $styleYof TEXT,
+        $styleFvf TEXT,
+        $styleIyf TEXT,
+        $styleMgf TEXT,
+        $styleIrf TEXT,
+        $styleRof TEXT,
+        $styleErf TEXT,
+        $styleMyf TEXT,
+        $styleLbf TEXT,
+        $styleLgf TEXT,
+        $styleEyf TEXT,
+        $styleRuf TEXT,
+        $styleBase REAL,
+        $styleBVolume TEXT,
+        $styleFanDeck REAL
+      )
+    ''').then((value) => null);
   }
 
   //double defence ko data add,query,all data get ya bata start ho hai................................................................
@@ -452,5 +675,66 @@ class DatabaseHelper {
         : [];
   }
   //Saved ko data add,get garne ya bata end ho hai.........................................................................................
+
+  //WeatherProofExteriorEmulsion ko data save,get and aaru task start here.....................................................................
+  Future<int?> addWeatherExtData(WeatherProofExtemusion save) async {
+    Database? db = await instance.database;
+    return await db!.insert(table8, save.toMap());
+  }
+
+  Future<List<WeatherProofExtemusion?>?> getWeatherExtData() async {
+    Database? db = await instance.database;
+    var data = await db!.query(table8);
+    List<WeatherProofExtemusion> dataList = data.isNotEmpty
+        ? data.map((e) => WeatherProofExtemusion.fromMap(e)).toList()
+        : [];
+    return dataList;
+  }
+  //WeatherProofExteriorEmulsion ko data save,get and aaru task end here.....................................................................
+
+  //SmartDistemper ko data add,save and aaru task start here....................................................................................
+  Future<int?> addSmartDist(SmartDist saved) async {
+    Database? db = await instance.database;
+    return await db!.insert(table9, saved.toMap());
+  }
+
+  Future<List<SmartDist?>?> getSmartDist() async {
+    Database? db = await instance.database;
+    var data = await db!.query(table9);
+    List<SmartDist> dataList =
+        data.isNotEmpty ? data.map((e) => SmartDist.fromMap(e)).toList() : [];
+    return dataList;
+  }
+  //SmartDistemper ko data add,save and aaru task end here....................................................................................
+
+  //MagnetExteriorEmulsion ko data add,save and aaru task start here............................................................................
+  Future<int?> addMagnetExt(MageneticExtEmulsion saved) async {
+    Database? db = await instance.database;
+    return await db!.insert(table10, saved.toMap());
+  }
+
+  Future<List<MageneticExtEmulsion?>?> getMagnetExt() async {
+    Database? db = await instance.database;
+    var data = await db!.query(table10);
+    List<MageneticExtEmulsion> dataList = data.isNotEmpty
+        ? data.map((e) => MageneticExtEmulsion.fromMap(e)).toList()
+        : [];
+    return dataList;
+  }
+  //MagnetExteriorEmulsion ko data add,save and aaru task end here............................................................................
+
+  //StyleDistemper ko data add, save and aaru task start here...................................................................................
+  Future<int?> addStyleDist(StyleDist saved) async {
+    Database? db = await instance.database;
+    return db?.insert(table11, saved.toMap());
+  }
+
+  Future<List<StyleDist?>?> getStyleDist() async {
+    Database? db = await instance.database;
+    var data = await db?.query(table11);
+    List<StyleDist> dataList =
+        data!.isNotEmpty ? data.map((e) => StyleDist.fromMap(e)).toList() : [];
+  }
+  //StyleDistemper ko data add, save and aaru task end here...................................................................................
 
 }

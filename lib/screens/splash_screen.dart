@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fashion_paints/Utils/contants.dart';
 import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:fashion_paints/controllers/auth_controller.dart';
@@ -7,7 +5,10 @@ import 'package:fashion_paints/models/apis_model/color_base_model.dart';
 import 'package:fashion_paints/models/apis_model/shade_color_model.dart';
 import 'package:fashion_paints/models/database_models/color_base_database_model.dart';
 import 'package:fashion_paints/models/database_models/colorant_database_model.dart';
+import 'package:fashion_paints/models/database_models/magnetic_ext_emulsion_model.dart';
 import 'package:fashion_paints/models/database_models/shade_color_database_model.dart';
+import 'package:fashion_paints/models/database_models/smart_dist_model.dart';
+import 'package:fashion_paints/models/database_models/style_dist_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -15,9 +16,14 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../database/all_data_database.dart';
+import '../models/apis_model/WeatherProofEmulsiton_api_model.dart';
 import '../models/apis_model/colorant_model.dart';
 import '../models/apis_model/cosmetic_int_emulsion_model.dart';
+import '../models/apis_model/magnetic_ext_emulsion_api_model.dart';
+import '../models/apis_model/smart_dist_api_model.dart';
+import '../models/apis_model/style_dist_api_model.dart';
 import '../models/database_models/cosmetic_int_emulsion_database_model.dart';
+import '../models/database_models/weather_proof_extemulsion_model.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -34,20 +40,20 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     value = sharedPreferences.getBool(Constants.DATA_DOWNLOAD);
     if (value == null || value != true) {
-      const token =
-          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvZmFzaGlvbnBhaW50cy5iaWhhbml0ZWNoLmNvbVwvYXBpXC9sb2dpbiIsImlhdCI6MTY1MTk5NDMyNSwibmJmIjoxNjUxOTk0MzI1LCJqdGkiOiJ3Qk5WaHJiT1RKV0xCRlJHIiwic3ViIjoyMjIsInBydiI6IjMyY2IzOTAwNGMyYThlMjc1MWNlOTE2NTg4MmFiMDlmZGE0ZDEzMTcifQ.pDDXh0CqWvfn7l4tgiAE-Hn5j3weYHc-1VMBbUJBWOM";
       final url = Constants.baseUrl + "getdata";
-      final response = await http.get(Uri.parse(url), headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer $token",
-      });
-      print("This is shared preference value $value");
+      final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
-        print("This is response Data ${jsonDecode(response.body)}");
+        print("This is response data ${response.body}");
         CosmeticEmulsion cE = cosmeticEmulsionFromJson(response.body);
+        WeatherProofEmulsion wPE = weatherProofEmulsionFromJson(response.body);
+        StyleDistemper sD = styleDistemperFromJson(response.body);
+        SmartDistemper smartD = smartDistemperFromJson(response.body);
+        MagneticExteriorEmulsion mE =
+            magneticExteriorEmulsionFromJson(response.body);
         ColorBase cB = colorBaseFromJson(response.body);
         ColorColorant cC = colorColorantFromJson(response.body);
         ShadeColor sCE = shadeColorFromJson(response.body);
+
         for (int i = 0; i < cE.cosmeticintemulsion!.length; i++) {
           DatabaseHelper.instance.addCosmeticIntData(CosmeticInt(
               cosmeticId: cE.cosmeticintemulsion![i].id,
@@ -75,8 +81,120 @@ class _SplashScreenState extends State<SplashScreen> {
                   double.parse(cE.cosmeticintemulsion![i].bVolume.toString())
                       .toStringAsFixed(2),
               fandeck: cE.cosmeticintemulsion![i].fandeck!.toDouble(),
-              // fandeck: double.parse(cE.cosmeticintemulsion![i].fandeck.toString()),
               formulation: cE.cosmeticintemulsion![i].formulation));
+        }
+
+        for (int i = 0; i < wPE.weatherproofextemulsion!.length; i++) {
+          DatabaseHelper.instance.addWeatherExtData(WeatherProofExtemusion(
+            weatherId: wPE.weatherproofextemulsion![i].id,
+            colorName: wPE.weatherproofextemulsion![i].colorName,
+            colorCode: wPE.weatherproofextemulsion![i].colorCode,
+            whf: wPE.weatherproofextemulsion![i].whf,
+            fbf: wPE.weatherproofextemulsion![i].fbf,
+            fgf: wPE.weatherproofextemulsion![i].fgf,
+            fef: wPE.weatherproofextemulsion![i].fef,
+            yof: wPE.weatherproofextemulsion![i].yof,
+            fvf: wPE.weatherproofextemulsion![i].fvf,
+            iyf: wPE.weatherproofextemulsion![i].iyf,
+            mgf: wPE.weatherproofextemulsion![i].mgf,
+            irf: wPE.weatherproofextemulsion![i].irf,
+            rof: wPE.weatherproofextemulsion![i].rof,
+            erf: wPE.weatherproofextemulsion![i].erf,
+            myf: wPE.weatherproofextemulsion![i].myf,
+            lbf: wPE.weatherproofextemulsion![i].lbf,
+            lgf: wPE.weatherproofextemulsion![i].lgf,
+            eyf: wPE.weatherproofextemulsion![i].eyf,
+            ruf: wPE.weatherproofextemulsion![i].ruf,
+            base: wPE.weatherproofextemulsion![i].base!.toDouble(),
+            bVolume:
+                double.parse(wPE.weatherproofextemulsion![i].bVolume.toString())
+                    .toStringAsFixed(2),
+            fandeck: wPE.weatherproofextemulsion![i].fandeck!.toDouble(),
+          ));
+        }
+
+        for (int i = 0; i < sD.styledist!.length; i++) {
+          DatabaseHelper.instance.addStyleDist(StyleDist(
+            styleId: sD.styledist![i].id,
+            colorName: sD.styledist![i].colorName,
+            colorCode: sD.styledist![i].colorCode,
+            whf: sD.styledist![i].whf,
+            fbf: sD.styledist![i].fbf,
+            fgf: sD.styledist![i].fgf,
+            fef: sD.styledist![i].fef,
+            yof: sD.styledist![i].yof,
+            fvf: sD.styledist![i].fvf,
+            iyf: sD.styledist![i].iyf,
+            mgf: sD.styledist![i].mgf,
+            irf: sD.styledist![i].irf,
+            rof: sD.styledist![i].rof,
+            erf: sD.styledist![i].erf,
+            myf: sD.styledist![i].myf,
+            lbf: sD.styledist![i].lbf,
+            lgf: sD.styledist![i].lgf,
+            eyf: sD.styledist![i].eyf,
+            ruf: sD.styledist![i].ruf,
+            base: sD.styledist![i].base!.toDouble(),
+            bVolume: double.parse(sD.styledist![i].bVolume.toString())
+                .toStringAsFixed(2),
+            fandeck: sD.styledist![i].fandeck!.toDouble(),
+          ));
+        }
+
+        for (int i = 0; i < smartD.smartdist!.length; i++) {
+          DatabaseHelper.instance.addSmartDist(SmartDist(
+            smartId: smartD.smartdist![i].id,
+            colorName: smartD.smartdist![i].colorName,
+            colorCode: smartD.smartdist![i].colorCode,
+            whf: smartD.smartdist![i].whf,
+            fbf: smartD.smartdist![i].fbf,
+            fgf: smartD.smartdist![i].fgf,
+            fef: smartD.smartdist![i].fef,
+            yof: smartD.smartdist![i].yof,
+            fvf: smartD.smartdist![i].fvf,
+            iyf: smartD.smartdist![i].iyf,
+            mgf: smartD.smartdist![i].mgf,
+            irf: smartD.smartdist![i].irf,
+            rof: smartD.smartdist![i].rof,
+            erf: smartD.smartdist![i].erf,
+            myf: smartD.smartdist![i].myf,
+            lbf: smartD.smartdist![i].lbf,
+            lgf: smartD.smartdist![i].lgf,
+            eyf: smartD.smartdist![i].eyf,
+            ruf: smartD.smartdist![i].ruf,
+            base: smartD.smartdist![i].base!.toDouble(),
+            bVolume: double.parse(smartD.smartdist![i].bVolume.toString())
+                .toStringAsFixed(2),
+            fandeck: smartD.smartdist![i].fandeck!.toDouble(),
+          ));
+        }
+
+        for (int i = 0; i < mE.magnetextemulsion!.length; i++) {
+          DatabaseHelper.instance.addMagnetExt(MageneticExtEmulsion(
+            magneticId: mE.magnetextemulsion![i].id,
+            colorName: mE.magnetextemulsion![i].colorName,
+            colorCode: mE.magnetextemulsion![i].colorCode,
+            whf: mE.magnetextemulsion![i].whf,
+            fbf: mE.magnetextemulsion![i].fbf,
+            fgf: mE.magnetextemulsion![i].fgf,
+            fef: mE.magnetextemulsion![i].fef,
+            yof: mE.magnetextemulsion![i].yof,
+            fvf: mE.magnetextemulsion![i].fvf,
+            iyf: mE.magnetextemulsion![i].iyf,
+            mgf: mE.magnetextemulsion![i].mgf,
+            irf: mE.magnetextemulsion![i].irf,
+            rof: mE.magnetextemulsion![i].rof,
+            erf: mE.magnetextemulsion![i].erf,
+            myf: mE.magnetextemulsion![i].myf,
+            lbf: mE.magnetextemulsion![i].lbf,
+            lgf: mE.magnetextemulsion![i].lgf,
+            eyf: mE.magnetextemulsion![i].eyf,
+            ruf: mE.magnetextemulsion![i].ruf,
+            base: mE.magnetextemulsion![i].base!.toDouble(),
+            bVolume: double.parse(mE.magnetextemulsion![i].bVolume.toString())
+                .toStringAsFixed(2),
+            fandeck: mE.magnetextemulsion![i].fandeck!.toDouble(),
+          ));
         }
         for (int i = 0; i < cB.colorBase!.length; i++) {
           DatabaseHelper.instance.addColorBaseData(DatabaseColorBase(

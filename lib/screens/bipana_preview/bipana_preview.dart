@@ -79,7 +79,6 @@ class _BipanaPreviewScreenState extends State<BipanaPreviewScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("$token"),
               Text(
                 "Try Bipana preview with stock images",
                 style: TextStyle(

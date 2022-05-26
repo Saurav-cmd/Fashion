@@ -18,6 +18,8 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   String? token;
+  TextEditingController searchController = TextEditingController();
+
   getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final userData = prefs.getString("userData");
