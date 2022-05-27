@@ -26,8 +26,10 @@ class _ColorScreenState extends State<ColorScreen> {
   List<String?> allColorCodeList = [];
 
   filterDatabaseData() async {
-    final databaseData = await DatabaseHelper.instance.getCosmeticIntData();
+    print("ya vhitra aayo");
+    final databaseData = await DatabaseHelper.instance.getShadeColorData();
     for (int i = 0; i < databaseData.length; i++) {
+      print("for loop vhitra");
       setState(() {
         allColorCodeList.add(databaseData[i].colorName);
       });
@@ -168,6 +170,7 @@ class _ColorScreenState extends State<ColorScreen> {
                     onSuggestionSelected: (String? val) {
                       setState(() {
                         searchController.text = val!;
+                        searchedDataList.clear();
                         getData();
                       });
                     },

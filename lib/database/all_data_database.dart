@@ -605,6 +605,7 @@ class DatabaseHelper {
     return shadeColorDataList;
   }
 
+  //here
   Future<List<ShadeColorDatabase>> queryShadeColor(String? colorName) async {
     Database? db = await instance.database;
     var data =
@@ -774,6 +775,22 @@ class DatabaseHelper {
     return data!.isNotEmpty
         ? data.map((e) => MageneticExtEmulsion.fromMap(e)).toList()
         : [];
+  }
+
+  Future<List<ShadeColorDatabase>?> queryShade(rValue, gValue, bValue) async {
+    Database? db = await instance.database;
+    var data = await db?.rawQuery(
+        "SELECT * FROM $table4 WHERE $sRValue LIKE '%$rValue%' AND $sGValue LIKE '%$gValue%' AND $sBValue LIKE '%$bValue%'");
+    return data!.isNotEmpty
+        ? data.map((e) => ShadeColorDatabase.fromMap(e)).toList()
+        : [];
+
+    /*   var data = await db?.query(table4,
+        where: '$sRValue LIKE ? AND $sGValue LIKE ? AND $sBValue LIKE ?',
+        whereArgs: [rValue, gValue, bValue]);
+    return data!.isNotEmpty
+        ? data.map((e) => ShadeColorDatabase.fromMap(e)).toList()
+        : [];*/
   }
 
 /*  Future<List<CosmeticInt>?> queryCosmeticInterior(colorName) async {
