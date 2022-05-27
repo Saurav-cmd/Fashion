@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:fashion_paints/Apis/api_Routes.dart';
 import 'package:fashion_paints/models/apis_model/login_model.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/get_cart_data_controller.dart';
@@ -434,6 +436,84 @@ class Services {
               children: const [
                 Text(
                   'Complaint successfully submitted',
+                  maxLines: 2,
+                  style: TextStyle(fontSize: 14),
+                ),
+              ],
+            ),
+          ),
+          duration: const Duration(seconds: 1),
+          backgroundColor: Colors.grey.shade700,
+          behavior: SnackBarBehavior.floating,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        );
+        snackBarKey.currentState?.showSnackBar(snackBar);
+      } else if (response.statusCode == 403) {
+        AlertBox().loginAlertBox1(context);
+      } else if (response.statusCode == 400) {
+        AlertBox().loginAlertBox2(context);
+      } else if (response.statusCode == 401) {
+        AlertBox().loginAlertBox3(context);
+      } else if (response.statusCode == 500) {
+        print("Unexpected error on Server");
+      } else if (response.statusCode == 503) {
+        print("Unexpected error on Server");
+      } else {
+        AlertBox().universalAlertBox(context);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<void> bipanaPreviewGalleryData(
+      String? name,
+      String? email,
+      String? phone,
+      String? address,
+      String? userCode,
+      List<File> imagesData,
+      BuildContext context) async {
+    try {
+      EasyLoading.instance.indicatorType = EasyLoadingIndicatorType.ring;
+      EasyLoading.instance.loadingStyle = EasyLoadingStyle.light;
+      EasyLoading.instance.backgroundColor = Colors.black45;
+      EasyLoading.instance.maskType = EasyLoadingMaskType.black;
+      EasyLoading.instance.maskColor = Colors.blue.withOpacity(0.5);
+      EasyLoading.show(status: "Submitting Data....");
+      final apiData =
+          ApiRoute().BipanPreviewGallery(name, email, phone, address, userCode);
+      http.MultipartRequest request =
+          http.MultipartRequest("POST", Uri.parse(apiData!));
+      Map<String, String> headers = {"Content-Type": "multipart/form-data"};
+
+      for (int i = 0; i < imagesData.length; i++) {
+        FileImage(File(imagesData[i].path.toString())).file.readAsBytesSync();
+        request.files.add(await http.MultipartFile.fromPath(
+            'image[]', imagesData[i].path,
+            contentType: MediaType("image", "jpeg")));
+      }
+      request.headers.addAll(headers);
+      request.fields['full_name'] = name!;
+      request.fields['email'] = email!;
+      request.fields['phone'] = phone!;
+      request.fields['address'] = address!;
+      request.fields['user_code'] = userCode!;
+
+      http.StreamedResponse response = await request.send();
+      response.stream.transform(utf8.decoder).listen((event) {});
+
+      if (response.statusCode == 200) {
+        EasyLoading.dismiss();
+        final SnackBar snackBar = SnackBar(
+          content: Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  'Details successfully submitted',
                   maxLines: 2,
                   style: TextStyle(fontSize: 14),
                 ),

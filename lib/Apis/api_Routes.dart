@@ -36,4 +36,10 @@ class ApiRoute {
     return Constants.baseUrl +
         "v2/complaint?title=$reasonForComplaint&issue=$complaint&user_code=$userCode&full_name=$name&phone=$phoneNumber";
   }
+
+  String? BipanPreviewGallery(String? name, String? email, String? phone,
+      String? address, String? userCode) {
+    return Constants.baseUrl +
+        "v2/bipanapreviewimage?full_name=$name&email=$email&phone=$phone&address=$address&user_code=$userCode";
+  }
 }
