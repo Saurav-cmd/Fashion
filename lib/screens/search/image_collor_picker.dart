@@ -77,7 +77,6 @@ class _ColorPickerState extends State<ColorPicker> {
                           searchPixel(details.globalPosition);
                         },
                         child: SizedBox(
-                          height: 700,
                           width: double.infinity,
                           child: Image.file(
                             passedCameraImage!,

@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
         "Gallery_screen": (ctx) => const GalleryScreen(),
         "Camera_screen": (ctx) => const CameraScreen(),
         "Color_screen": (ctx) => const ColorScreen(),
-        "Color_Personality_screen": (ctx) => const ColorPersonalityScreen(),
+        "Color_Personality_screen": (ctx) => const ColorPersonality(),
         // "Find_Painter_screen": (ctx) => const FindPainter(),
         "Find_Painter_Second_screen": (ctx) => const PainterStatus(),
         "Generate_screen": (ctx) => const GenerateFirstScreen(),

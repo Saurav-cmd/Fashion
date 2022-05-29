@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_web_browser/flutter_web_browser.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -128,11 +127,8 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      FlutterWebBrowser.openWebPage(
-                          url:
-                              "https://fashionpaints.com.np/color-personality/");
-                      // Navigator.of(context)
-                      //     .pushNamed("Color_Personality_screen");
+                      Navigator.of(context)
+                          .pushNamed("Color_Personality_screen");
                     },
                     child: SizedBox(
                       child: Card(

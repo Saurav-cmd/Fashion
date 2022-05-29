@@ -23,4 +23,21 @@ class BipaniPreviewController extends GetxController {
       isLoading(false);
     }
   }
+
+  Future<void> sendBipaniaPreviewCameraData(
+      String? name,
+      String? email,
+      String? phone,
+      String? address,
+      String? userCode,
+      File? imagesData,
+      BuildContext context) async {
+    try {
+      isLoading(true);
+      return await Services.bipanaPreviewCameraData(
+          name, email, phone, address, userCode, imagesData, context);
+    } finally {
+      isLoading(false);
+    }
+  }
 }

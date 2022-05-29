@@ -68,8 +68,9 @@ class _GalleryScreenState extends State<GalleryScreen> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: ChooseColor(0).appBarColor1, // For iOS (dark icons)
-          ),
+              statusBarColor: ChooseColor(0).appBarColor1,
+              statusBarIconBrightness: Brightness.light // For iOS (dark icons)
+              ),
           elevation: 0,
           leading: IconButton(
             onPressed: () {
@@ -90,306 +91,280 @@ class _GalleryScreenState extends State<GalleryScreen> {
                 icon: const Icon(Icons.home))
           ],
         ),
-        body: Column(
-          children: [
-            Container(
-              color: ChooseColor(0).appBarColor1,
-              child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: size.width * 0.040,
-                      vertical: size.height * 0.020),
-                  child: SingleChildScrollView(
-                    child: Form(
-                      key: _form,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Please fill up the form",
-                            style: TextStyle(
-                                fontSize:
-                                    size.height * 0.012 + size.width * 0.012,
-                                color: Colors.white),
-                          ),
-                          SizedBox(height: size.height * 0.020),
-                          Text(
-                            "Name",
-                            style: TextStyle(
-                                fontSize:
-                                    size.height * 0.009 + size.width * 0.009,
-                                color: Colors.white),
-                          ),
-                          SizedBox(height: size.height * 0.005),
-                          TextFormField(
-                            decoration: InputDecoration(
-                              border: const OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: size.height * 0.001,
-                                  horizontal: size.width * 0.030),
-                              errorBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Colors.red, width: 1),
-                                  borderRadius: BorderRadius.circular(5)),
-                              // labelText: 'Phone Number',
-                              fillColor: Colors.white,
-                              filled: true,
-                              hintText: 'Full Name',
-                              hintStyle: TextStyle(
-                                  fontSize:
-                                      size.height * 0.012 + size.width * 0.012,
-                                  color: Colors.black26),
-                            ),
-                            controller: nameController,
-                            validator: (value) {
-                              if (value == null) {
-                                return "Please Enter your Name";
-                              } else {
-                                return null;
-                              }
+        body: Container(
+          color: ChooseColor(0).appBarColor1,
+          child: Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: size.width * 0.040,
+                  vertical: size.height * 0.020),
+              child: Form(
+                key: _form,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Please fill up the form",
+                      style: TextStyle(
+                          fontSize: size.height * 0.012 + size.width * 0.012,
+                          color: Colors.white),
+                    ),
+                    SizedBox(height: size.height * 0.020),
+                    Text(
+                      "Name",
+                      style: TextStyle(
+                          fontSize: size.height * 0.009 + size.width * 0.009,
+                          color: Colors.white),
+                    ),
+                    SizedBox(height: size.height * 0.005),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: size.height * 0.001,
+                            horizontal: size.width * 0.030),
+                        errorBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: Colors.red, width: 1),
+                            borderRadius: BorderRadius.circular(5)),
+                        fillColor: Colors.white,
+                        filled: true,
+                        hintText: 'Full Name',
+                        hintStyle: TextStyle(
+                            fontSize: size.height * 0.012 + size.width * 0.012,
+                            color: Colors.black26),
+                      ),
+                      controller: nameController,
+                      validator: (value) {
+                        if (value == null) {
+                          return "Please enter your name";
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    SizedBox(height: size.height * 0.020),
+                    Text(
+                      "Email Address",
+                      style: TextStyle(
+                          fontSize: size.height * 0.009 + size.width * 0.009,
+                          color: Colors.white),
+                    ),
+                    SizedBox(height: size.height * 0.005),
+                    TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: size.height * 0.001,
+                            horizontal: size.width * 0.030),
+                        errorBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: Colors.red, width: 1),
+                            borderRadius: BorderRadius.circular(5)),
+                        // labelText: 'Phone Number',
+                        fillColor: Colors.white,
+                        filled: true,
+                        hintText: 'Email Address',
+                        hintStyle: TextStyle(
+                            fontSize: size.height * 0.012 + size.width * 0.012,
+                            color: Colors.black26),
+                      ),
+                      controller: emailController,
+                      validator: (value) {
+                        if (value == null) {
+                          return "Please enter your email address";
+                        } else if (!value.contains("@")) {
+                          return "Please enter valid email address";
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    SizedBox(height: size.height * 0.020),
+                    Text(
+                      "Phone Number",
+                      style: TextStyle(
+                          fontSize: size.height * 0.009 + size.width * 0.009,
+                          color: Colors.white),
+                    ),
+                    SizedBox(height: size.height * 0.005),
+                    TextFormField(
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: size.height * 0.001,
+                            horizontal: size.width * 0.030),
+                        errorBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: Colors.red, width: 1),
+                            borderRadius: BorderRadius.circular(5)),
+                        // labelText: 'Phone Number',
+                        fillColor: Colors.white,
+                        filled: true,
+                        hintText: 'Phone Number',
+                        hintStyle: TextStyle(
+                            fontSize: size.height * 0.012 + size.width * 0.012,
+                            color: Colors.black26),
+                      ),
+                      validator: (value) {
+                        if (value == null) {
+                          return "Please enter your phone number";
+                        } else if (value.length > 10) {
+                          return "Number can't be greater than 10 digits";
+                        } else if (value.length < 10) {
+                          return "Please enter a valid phone number";
+                        } else {
+                          return null;
+                        }
+                      },
+                      controller: phoneController,
+                      inputFormatters: [LengthLimitingTextInputFormatter(10)],
+                    ),
+                    SizedBox(height: size.height * 0.020),
+                    Text(
+                      "Address",
+                      style: TextStyle(
+                          fontSize: size.height * 0.009 + size.width * 0.009,
+                          color: Colors.white),
+                    ),
+                    SizedBox(height: size.height * 0.005),
+                    TextFormField(
+                      keyboardType: TextInputType.streetAddress,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: size.height * 0.001,
+                            horizontal: size.width * 0.030),
+                        errorBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: Colors.red, width: 1),
+                            borderRadius: BorderRadius.circular(5)),
+                        // labelText: 'Phone Number',
+                        fillColor: Colors.white,
+                        filled: true,
+                        hintText: 'Address',
+                        hintStyle: TextStyle(
+                            fontSize: size.height * 0.012 + size.width * 0.012,
+                            color: Colors.black26),
+                      ),
+                      controller: addressController,
+                      validator: (value) {
+                        if (value == null) {
+                          return "Please enter your address";
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    SizedBox(height: size.height * 0.020),
+                    Text(
+                      "Images",
+                      style: TextStyle(
+                          fontSize: size.height * 0.009 + size.width * 0.009,
+                          color: Colors.white),
+                    ),
+                    SizedBox(height: size.height * 0.005),
+                    Row(
+                      children: [
+                        Container(
+                          height: size.height * 0.099,
+                          width: size.height * 0.099,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5)),
+                          child: IconButton(
+                            onPressed: () {
+                              selectImagesFromGallery();
                             },
-                          ),
-                          SizedBox(height: size.height * 0.020),
-                          Text(
-                            "Email Address",
-                            style: TextStyle(
-                                fontSize:
-                                    size.height * 0.009 + size.width * 0.009,
-                                color: Colors.white),
-                          ),
-                          SizedBox(height: size.height * 0.005),
-                          TextFormField(
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                              border: const OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: size.height * 0.001,
-                                  horizontal: size.width * 0.030),
-                              errorBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Colors.red, width: 1),
-                                  borderRadius: BorderRadius.circular(5)),
-                              // labelText: 'Phone Number',
-                              fillColor: Colors.white,
-                              filled: true,
-                              hintText: 'Email Address',
-                              hintStyle: TextStyle(
-                                  fontSize:
-                                      size.height * 0.012 + size.width * 0.012,
-                                  color: Colors.black26),
+                            tooltip: 'Pick Image',
+                            icon: Icon(
+                              Icons.add,
+                              color: ChooseColor(0).appBarColor1,
                             ),
-                            controller: emailController,
-                            validator: (value) {
-                              if (value == null) {
-                                return "Please Enter your Email Address";
-                              } else if (!value.contains("@")) {
-                                return "Please Enter Valid Email Address";
-                              } else {
-                                return null;
-                              }
-                            },
                           ),
-                          SizedBox(height: size.height * 0.020),
-                          Text(
-                            "Phone Number",
-                            style: TextStyle(
-                                fontSize:
-                                    size.height * 0.009 + size.width * 0.009,
-                                color: Colors.white),
+                        ),
+                        Expanded(
+                          child: SizedBox(
+                            height: size.height * 0.099,
+                            child: GridView.builder(
+                                itemCount: imageFileList.length,
+                                scrollDirection: Axis.vertical,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 4, crossAxisSpacing: 8),
+                                itemBuilder: (ctx, i) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(left: 5),
+                                    child: Image.file(
+                                      imageFileList[i],
+                                      fit: BoxFit.fill,
+                                    ),
+                                  );
+                                }),
                           ),
-                          SizedBox(height: size.height * 0.005),
-                          TextFormField(
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              border: const OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: size.height * 0.001,
-                                  horizontal: size.width * 0.030),
-                              errorBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Colors.red, width: 1),
-                                  borderRadius: BorderRadius.circular(5)),
-                              // labelText: 'Phone Number',
-                              fillColor: Colors.white,
-                              filled: true,
-                              hintText: 'Phone Number',
-                              hintStyle: TextStyle(
-                                  fontSize:
-                                      size.height * 0.012 + size.width * 0.012,
-                                  color: Colors.black26),
-                            ),
-                            validator: (value) {
-                              if (value == null) {
-                                return "Enter you phone number";
-                              } else if (value.length > 10) {
-                                return "Number can't be greater than 10 digits";
-                              } else if (!value.startsWith("9")) {
-                                return "Enter a valid number";
-                              } else if (value.length < 10) {
-                                return "Enter proper phone number";
-                              } else {
-                                return null;
-                              }
-                            },
-                            controller: phoneController,
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(10),
-                            ],
-                          ),
-                          SizedBox(height: size.height * 0.020),
-                          Text(
-                            "Address",
-                            style: TextStyle(
-                                fontSize:
-                                    size.height * 0.009 + size.width * 0.009,
-                                color: Colors.white),
-                          ),
-                          SizedBox(height: size.height * 0.005),
-                          TextFormField(
-                            keyboardType: TextInputType.streetAddress,
-                            decoration: InputDecoration(
-                              border: const OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: size.height * 0.001,
-                                  horizontal: size.width * 0.030),
-                              errorBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Colors.red, width: 1),
-                                  borderRadius: BorderRadius.circular(5)),
-                              // labelText: 'Phone Number',
-                              fillColor: Colors.white,
-                              filled: true,
-                              hintText: 'Address',
-                              hintStyle: TextStyle(
-                                  fontSize:
-                                      size.height * 0.012 + size.width * 0.012,
-                                  color: Colors.black26),
-                            ),
-                            controller: addressController,
-                            validator: (value) {
-                              if (value == null) {
-                                return "Enter you phone address";
-                              } else {
-                                return null;
-                              }
-                            },
-                          ),
-                          SizedBox(height: size.height * 0.020),
-                          Text(
-                            "Images",
-                            style: TextStyle(
-                                fontSize:
-                                    size.height * 0.009 + size.width * 0.009,
-                                color: Colors.white),
-                          ),
-                          SizedBox(height: size.height * 0.005),
-                          Row(
-                            children: [
-                              Container(
-                                height: size.height * 0.099,
-                                width: size.height * 0.099,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: IconButton(
-                                  onPressed: () {
-                                    selectImagesFromGallery();
-                                  },
-                                  tooltip: 'Pick Image',
-                                  icon: Icon(
-                                    Icons.add,
-                                    color: ChooseColor(0).appBarColor1,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: SizedBox(
-                                  height: size.height * 0.099,
-                                  child: GridView.builder(
-                                      itemCount: imageFileList.length,
-                                      scrollDirection: Axis.vertical,
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 4,
-                                              crossAxisSpacing: 8),
-                                      itemBuilder: (ctx, i) {
-                                        return Container(
-                                          child: Image.file(
-                                            imageFileList[i],
-                                            fit: BoxFit.fill,
-                                          ),
-                                        );
-                                      }),
-                                ),
-                              )
-                            ],
-                          ),
-                          SizedBox(height: size.height * 0.035),
-                          ConstrainedBox(
-                            constraints: BoxConstraints.tightFor(
-                                width: double.infinity,
-                                height: size.height * 0.055),
-                            child: ElevatedButton(
-                              child: Text(
-                                'Submit',
-                                maxLines: 1,
-                                style: TextStyle(
-                                    fontSize: size.height * 0.014 +
-                                        size.width * 0.014),
-                              ),
-                              onPressed: () async {
-                                try {
-                                  final result = await InternetAddress.lookup(
-                                      "example.com");
-                                  if (result.isNotEmpty &&
-                                      result[0].rawAddress.isNotEmpty) {
-                                    print("There is wifi connection");
-                                    if (_form.currentState != null &&
-                                        _form.currentState!.validate()) {
-                                      bPC.sendBipaniaPreviewData(
-                                          nameController.text,
-                                          emailController.text,
-                                          phoneController.text,
-                                          addressController.text,
-                                          userCode ?? "",
-                                          imageFileList,
-                                          context);
-                                      FocusManager.instance.primaryFocus
-                                          ?.unfocus();
+                        )
+                      ],
+                    ),
+                    SizedBox(height: size.height * 0.035),
+                    ConstrainedBox(
+                      constraints: BoxConstraints.tightFor(
+                          width: double.infinity, height: size.height * 0.055),
+                      child: ElevatedButton(
+                        child: Text(
+                          'Submit',
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontSize:
+                                  size.height * 0.014 + size.width * 0.014),
+                        ),
+                        onPressed: () async {
+                          try {
+                            final result =
+                                await InternetAddress.lookup("example.com");
+                            if (result.isNotEmpty &&
+                                result[0].rawAddress.isNotEmpty) {
+                              print("There is wifi connection");
+                              if (_form.currentState != null &&
+                                  _form.currentState!.validate()) {
+                                bPC.sendBipaniaPreviewData(
+                                    nameController.text,
+                                    emailController.text,
+                                    phoneController.text,
+                                    addressController.text,
+                                    userCode ?? "",
+                                    imageFileList,
+                                    context);
+                                FocusManager.instance.primaryFocus?.unfocus();
 
-                                      nameController.text = "";
-                                      emailController.text = "";
-                                      phoneController.text = "";
-                                      addressController.text = "";
-                                    }
-                                  }
-                                } on SocketException catch (_) {
-                                  AlertBox().noWifiConnection(context);
-                                  print('not connected');
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                primary: ChooseColor(0).buttonColor,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: size.height * 0.2111,
-                          )
-                        ],
+                                nameController.text = "";
+                                emailController.text = "";
+                                phoneController.text = "";
+                                addressController.text = "";
+                              }
+                            }
+                          } on SocketException catch (_) {
+                            AlertBox().noWifiConnection(context);
+                            print('not connected');
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          primary: ChooseColor(0).buttonColor,
+                        ),
                       ),
                     ),
-                  )),
-            ),
-          ],
+                  ],
+                ),
+              )),
         ),
       ),
     );
