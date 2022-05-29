@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../controllers/get_cart_data_controller.dart';
 import '../main.dart';
 import '../models/apis_model/add_to_cart_model.dart';
+import '../models/apis_model/bipana_preview_saved_model.dart';
 import '../models/apis_model/confirm_order_model.dart';
 import '../models/apis_model/find_painter_model.dart';
 import '../models/apis_model/get_cart_data_model.dart';
@@ -616,6 +617,21 @@ class Services {
         print("Unexpected error on Server");
       } else {
         AlertBox().universalAlertBox(context);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<BipanaPreviewSaved?> getBipanPreviewSaved(
+      String? emailAddress, String? phone) async {
+    try {
+      final apiData = ApiRoute().BipanPreviewSaved(emailAddress, phone);
+      final response = await http.get(Uri.parse(apiData!));
+      if (response.statusCode == 200) {
+        return bipanaPreviewSavedFromJson(response.body);
+      } else {
+        print("Some error occurred");
       }
     } catch (e) {
       rethrow;

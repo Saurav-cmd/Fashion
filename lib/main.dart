@@ -3,6 +3,7 @@ import 'package:fashion_paints/screens/bipana_preview/camera_screen.dart';
 import 'package:fashion_paints/screens/bipana_preview/exterior_image_paint.dart';
 import 'package:fashion_paints/screens/bipana_preview/exterior_images.dart';
 import 'package:fashion_paints/screens/bipana_preview/gallery_screen.dart';
+import 'package:fashion_paints/screens/bipana_preview/saved_screen.dart';
 import 'package:fashion_paints/screens/book_marked/book_marked_screen.dart';
 import 'package:fashion_paints/screens/button_navigation_bars/home_screen_button_navigation_bar.dart';
 import 'package:fashion_paints/screens/color%20personality/color_personality_screen.dart';
@@ -78,8 +79,9 @@ class MyApp extends StatelessWidget {
         "Book_Marked_screen": (ctx) => const BookMarkedScreen(),
         "Cart_screen": (ctx) => const CartItem(),
         "store_screen": (ctx) => const StoreScreen(),
-        "Exterior_screen": (ctx) => ExteriorImages(),
+        "Exterior_screen": (ctx) => const ExteriorImages(),
         "Exterior_image_paint": (ctx) => ExteriorImagePaint(),
+        "Bipana_Preview_Saved_Screen": (ctx) => const BipanPreviewSavedScreen(),
       },
     );
   }

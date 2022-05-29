@@ -43,12 +43,13 @@ class _GalleryScreenState extends State<GalleryScreen> {
   }
 
   String? userCode;
+  String? token;
   getSharedPreferenceData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final userData = prefs.getString("userData");
     if (userData != null) {
       userCode = jsonDecode(userData)['userCode'];
-      print("this is userCode $userCode");
+      token = jsonDecode(userData)['token'];
     }
   }
 
@@ -85,8 +86,12 @@ class _GalleryScreenState extends State<GalleryScreen> {
           actions: [
             IconButton(
                 onPressed: () {
-                  Navigator.of(context)
-                      .pushNamed("Dealer_button_Navigation_Bar");
+                  if (token != null) {
+                    Navigator.of(context)
+                        .pushNamed("Dealer_button_Navigation_Bar");
+                  } else if (token == null) {
+                    Navigator.of(context).pushNamed("Button_Navigation_Bar");
+                  }
                 },
                 icon: const Icon(Icons.home))
           ],

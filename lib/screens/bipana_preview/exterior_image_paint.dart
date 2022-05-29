@@ -11,6 +11,7 @@ double? gPassedChooseColor;
 double? bPassedChooseColor;
 Color? colorValue;
 List<Color?> recentColorList = [];
+List<ShadeColorDatabase> allColorsData = [];
 TextEditingController searchController = TextEditingController();
 
 class ExteriorImagePaint extends StatefulWidget {
@@ -21,58 +22,80 @@ class ExteriorImagePaint extends StatefulWidget {
 }
 
 class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
-  List<ShadeColorDatabase> allColorsData = [];
   List<ShadeColorDatabase> searchColor = [];
-
-  getAllShadeColor() async {
-    final shadeData = await DatabaseHelper.instance.getShadeColorData();
-    for (int i = 0; i < shadeData.length; i++) {
-      setState(() {
-        allColorsData.add(shadeData[i]);
-      });
-    }
+  @override
+  Widget build(BuildContext context) {
+    final notifier = ValueNotifier(Offset.zero);
+    final size = MediaQuery.of(context).size;
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: ChooseColor(0).bodyBackgroundColor,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: ChooseColor(0).appBarColor1,
+          title: const Text("Visualize Color"),
+        ),
+        body: Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: size.width * 0.010, vertical: size.height * 0.020),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.010),
+                  child: Text(
+                    "Select on image and tap on color to paint it",
+                    style: TextStyle(color: ChooseColor(0).appBarColor1),
+                  ),
+                ),
+                SizedBox(height: size.height * 0.020),
+                Listener(
+                  onPointerDown: (e) => notifier.value = e.localPosition,
+                  onPointerMove: (e) => notifier.value = e.localPosition,
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: 410,
+                        color: Colors.transparent,
+                        child: Image.asset(
+                          "images/1.png",
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 400,
+                        width: 340,
+                        child: CustomPaint(
+                          isComplex: true,
+                          painter: HouseFillerPainter1(notifier),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: size.height * 0.020),
+                const ShowShadeColors()
+              ],
+            ),
+          ),
+        ));
   }
+
+  Offset toLocal(BuildContext context, Offset position) {
+    RenderBox renderBox = context.findRenderObject() as RenderBox;
+    return renderBox.globalToLocal(position);
+  }
+}
+
+class ShowShadeColors extends StatefulWidget {
+  const ShowShadeColors({Key? key}) : super(key: key);
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getAllShadeColor();
-    /*  setState(() {
-      searchController.addListener(() {
-        _runFilter(searchController.value.text);
-      });
-    });*/
+  State<ShowShadeColors> createState() => _ShowShadeColorsState();
+}
 
-    /* if (recentColorList.isNotEmpty) {
-      recentColorList = [];
-    }*/
-
-    // if (colorValue != null) {
-    //   colorValue = Colors.transparent;
-    // }
-  }
-
-/*  void _runFilter(String enterKeyword) {
-    List<ShadeColorDatabase> results = [];
-    if (enterKeyword.isEmpty) {
-      results = allColorsData;
-    } else {
-      results = allColorsData
-          .where(
-            (e) => (e.colorCode!.contains(
-              enterKeyword.toLowerCase(),
-            )),
-          )
-          .toList();
-    }
-    setState(() {
-      searchColor = results;
-    });
-
-    print("This is search color ${searchColor[0].colorCode}");
-  }*/
-
+class _ShowShadeColorsState extends State<ShowShadeColors> {
   Widget setupShadeColorContainer(BuildContext context) {
     return
         /*searchController.text.isEmpty
@@ -88,91 +111,61 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
           itemBuilder: (ctx, i) {
             return GestureDetector(
               onTap: () {
-                rPassedChooseColor = allColorsData[i].rValue;
-                gPassedChooseColor = allColorsData[i].gValue;
-                bPassedChooseColor = allColorsData[i].bValue;
-                recentColorList.add(colorValue);
-                colorValue = Color.fromRGBO(
-                    rPassedChooseColor!.toInt(),
-                    gPassedChooseColor!.toInt(),
-                    bPassedChooseColor!.toInt(),
-                    1);
-                Navigator.pop(context, [
-                  rPassedChooseColor,
-                  gPassedChooseColor,
-                  bPassedChooseColor,
-                  colorValue,
-                  recentColorList
-                ]);
+                setState(() {
+                  rPassedChooseColor = allColorsData[i].rValue;
+                  gPassedChooseColor = allColorsData[i].gValue;
+                  bPassedChooseColor = allColorsData[i].bValue;
+                  recentColorList.add(colorValue);
+                  colorValue = Color.fromRGBO(
+                      rPassedChooseColor!.toInt(),
+                      gPassedChooseColor!.toInt(),
+                      bPassedChooseColor!.toInt(),
+                      1);
+                  Navigator.pop(context, [
+                    rPassedChooseColor,
+                    gPassedChooseColor,
+                    bPassedChooseColor,
+                    colorValue,
+                    recentColorList
+                  ]);
+                });
               },
-              child: Container(
-                child: Stack(
-                  children: [
-                    Container(
-                      color: Color.fromRGBO(
-                          allColorsData[i].rValue!.toInt(),
-                          allColorsData[i].gValue!.toInt(),
-                          allColorsData[i].bValue!.toInt(),
-                          1),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 45, left: 5),
-                      child: Text("${allColorsData[i].colorCode}"),
-                    )
-                  ],
-                ),
+              child: Stack(
+                children: [
+                  Container(
+                    color: Color.fromRGBO(
+                        allColorsData[i].rValue!.toInt(),
+                        allColorsData[i].gValue!.toInt(),
+                        allColorsData[i].bValue!.toInt(),
+                        1),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 45, left: 5),
+                    child: Text("${allColorsData[i].colorCode}"),
+                  )
+                ],
               ),
             );
           }),
     );
-    /*  : SizedBox(
-            height: 300.0, // Change as per your requirement
-            width: 300.0, // Change as per your requirement
-            child: GridView.builder(
-                shrinkWrap: true,
-                itemCount: searchColor.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10),
-                itemBuilder: (ctx, i) {
-                  return GestureDetector(
-                    onTap: () {
-                      rPassedChooseColor = searchColor[i].rValue;
-                      gPassedChooseColor = searchColor[i].gValue;
-                      bPassedChooseColor = searchColor[i].bValue;
-                      colorValue = Color.fromRGBO(
-                          rPassedChooseColor!.toInt(),
-                          gPassedChooseColor!.toInt(),
-                          bPassedChooseColor!.toInt(),
-                          1);
-                      Navigator.pop(context, [
-                        rPassedChooseColor,
-                        gPassedChooseColor,
-                        bPassedChooseColor,
-                        colorValue
-                      ]);
-                    },
-                    child: Container(
-                      child: Stack(
-                        children: [
-                          Container(
-                            color: Color.fromRGBO(
-                                searchColor[i].rValue!.toInt(),
-                                searchColor[i].gValue!.toInt(),
-                                searchColor[i].bValue!.toInt(),
-                                1),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 45, left: 5),
-                            child: Text("${searchColor[i].colorCode}"),
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                }),
-          );*/
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getAllShadeColor();
+    recentColorList.clear();
+    colorValue = Colors.transparent;
+  }
+
+  getAllShadeColor() async {
+    final shadeData = await DatabaseHelper.instance.getShadeColorData();
+    for (int i = 0; i < shadeData.length; i++) {
+      setState(() {
+        allColorsData.add(shadeData[i]);
+      });
+    }
   }
 
   showAllColors(BuildContext context) async {
@@ -202,37 +195,6 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
                             icon: const Icon(Icons.clear))
                       ],
                     ),
-                    /*                Form(
-                        key: _form,
-                        child: Column(
-                          children: [
-                            TextFormField(
-                              decoration: InputDecoration(
-                                border: const OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                ),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: size.height * 0.001,
-                                    horizontal: size.width * 0.030),
-                                errorBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Colors.red, width: 1),
-                                    borderRadius: BorderRadius.circular(5)),
-                                // labelText: 'Phone Number',
-                                fillColor: const Color(0xffF6F9FA),
-                                filled: true,
-                                hintText: 'Search Color',
-                                prefixIcon: const Icon(Icons.search),
-                                hintStyle: TextStyle(
-                                    fontSize: size.height * 0.012 +
-                                        size.width * 0.012,
-                                    color: Colors.black26),
-                              ),
-                              controller: searchController,
-                            ),
-                            SizedBox(height: size.height * 0.035),
-                          ],
-                        )),*/
                   ],
                 ),
               ),
@@ -244,157 +206,101 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = ValueNotifier(Offset.zero);
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: ChooseColor(0).bodyBackgroundColor,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: ChooseColor(0).appBarColor1,
-          title: const Text("Visualize Color"),
-        ),
-        body: Padding(
+    return Column(
+      children: [
+        Padding(
           padding: EdgeInsets.symmetric(
-              horizontal: size.width * 0.010, vertical: size.height * 0.020),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: size.width * 0.010),
-                child: Text(
-                  "Select on image and tap on color to paint it",
-                  style: TextStyle(color: ChooseColor(0).appBarColor1),
-                ),
+              vertical: size.height * 0.010, horizontal: size.width * 0.015),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom:
+                    BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
               ),
-              SizedBox(height: size.height * 0.020),
-              Listener(
-                onPointerDown: (e) => notifier.value = e.localPosition,
-                onPointerMove: (e) => notifier.value = e.localPosition,
-                child: Stack(
+            ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      height: 410,
-                      color: Colors.transparent,
-                      child: Image.asset(
-                        "images/1.png",
-                        fit: BoxFit.contain,
-                      ),
+                    Text(
+                      "Shade",
+                      style: TextStyle(color: ChooseColor(0).appBarColor1),
                     ),
-                    Container(
-                      height: 400,
-                      width: 340,
-                      child: CustomPaint(
-                        isComplex: true,
-                        painter: HouseFillerPainter1(notifier),
-                      ),
-                    ),
+                    Text(
+                      "Original",
+                      style: TextStyle(color: ChooseColor(0).appBarColor1),
+                    )
                   ],
                 ),
-              ),
-              SizedBox(height: size.height * 0.020),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    vertical: size.height * 0.010,
-                    horizontal: size.width * 0.015),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                          width: 1.0, color: Colors.lightBlue.shade900),
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                SizedBox(height: size.height * 0.010),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        showAllColors(context);
+                      },
+                      child: Stack(
                         children: [
-                          Text(
-                            "Shade",
-                            style:
-                                TextStyle(color: ChooseColor(0).appBarColor1),
-                          ),
-                          Text(
-                            "Original",
-                            style:
-                                TextStyle(color: ChooseColor(0).appBarColor1),
-                          )
-                        ],
-                      ),
-                      SizedBox(height: size.height * 0.010),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              showAllColors(context);
-                            },
-                            child: Stack(
-                              children: [
-                                Container(
-                                  height: 40,
-                                  width: 50,
-                                  decoration: BoxDecoration(
-                                    color: colorValue ?? Colors.transparent,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        spreadRadius: 5,
-                                        blurRadius: 7,
-                                        offset: const Offset(
-                                            0, 3), // changes position of shadow
-                                      ),
-                                    ],
-                                  ),
+                          Container(
+                            height: 40,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              color: colorValue ?? Colors.transparent,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 5,
+                                  blurRadius: 7,
+                                  offset: const Offset(
+                                      0, 3), // changes position of shadow
                                 ),
-                                const Padding(
-                                  padding: EdgeInsets.only(top: 20, left: 10),
-                                  child: Text("N/A"),
-                                )
                               ],
                             ),
                           ),
-                          Container(
-                            height: 50,
-                            width: 50,
-                            child: Image.asset("images/1.png"),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 20, left: 10),
+                            child: Text("N/A"),
                           )
                         ],
                       ),
-                      SizedBox(height: size.height * 0.010),
-                    ],
-                  ),
-                ),
-              ),
-              if (recentColorList.isNotEmpty)
-                Container(
-                  height: 50,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                          width: 1.0, color: Colors.lightBlue.shade900),
                     ),
-                  ),
-                  child: GridView.builder(
-                      itemCount: recentColorList.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 10, crossAxisSpacing: 5),
-                      itemBuilder: (ctx, i) {
-                        return Container(
-                          color: recentColorList[i],
-                        );
-                      }),
+                    SizedBox(
+                      height: 50,
+                      width: 50,
+                      child: Image.asset("images/1.png"),
+                    )
+                  ],
                 ),
-            ],
+                SizedBox(height: size.height * 0.010),
+              ],
+            ),
           ),
-        ));
-  }
-
-  Offset toLocal(BuildContext context, Offset position) {
-    RenderBox renderBox = context.findRenderObject() as RenderBox;
-    return renderBox.globalToLocal(position);
+        ),
+        if (recentColorList.isNotEmpty)
+          Container(
+            height: 50,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              border: Border(
+                bottom:
+                    BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
+              ),
+            ),
+            child: GridView.builder(
+                itemCount: recentColorList.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 10, crossAxisSpacing: 5),
+                itemBuilder: (ctx, i) {
+                  return Container(
+                    color: recentColorList[i],
+                  );
+                }),
+          ),
+      ],
+    );
   }
 }
 
@@ -460,14 +366,14 @@ m153 404.73 20.5-12.47 54.62-8.06q-.37 7.41-.74 14.82l-74.78 11.41z,m154 414.12-
   final _shapes = [
     Shape(_data[0], '', const Color(0xffacd266), false, null, null),
     Shape(_data[1], '', const Color(0xffacd266), false, null, null),
-    Shape(_data[2], '', const Color(0xfffff), false, null, null),
+    Shape(_data[2], '', const Color(0x000fffff), false, null, null),
     Shape(_data[3], '', const Color(0xffed1e29), false, null, null),
     Shape(_data[4], '', const Color(0xffacd266), false, null, null),
-    Shape(_data[5], '', const Color(0xfffff), false, null, null),
-    Shape(_data[6], '', const Color(0xfffff), false, null, null),
+    Shape(_data[5], '', const Color(0x000fffff), false, null, null),
+    Shape(_data[6], '', const Color(0x000fffff), false, null, null),
     Shape(_data[7], "", const Color(0xffacd266), false, null, null),
-    Shape(_data[8], "", const Color(0xfffff), false, null, null),
-    Shape(_data[9], "", const Color(0xfffff), false, null, null),
+    Shape(_data[8], "", const Color(0x000fffff), false, null, null),
+    Shape(_data[9], "", const Color(0x000fffff), false, null, null),
     Shape(_data[10], "", const Color(0xff0c8c44), false, null, null),
     Shape(_data[11], "", const Color(0xffacd266), false, null, null),
     Shape(_data[12], "", const Color(0xffacd266), false, null, null),
@@ -476,20 +382,20 @@ m153 404.73 20.5-12.47 54.62-8.06q-.37 7.41-.74 14.82l-74.78 11.41z,m154 414.12-
     Shape(_data[15], "", const Color(0xff0c8c44), false, null, null),
     Shape(_data[16], "", const Color(0xffacd266), false, null, null),
     Shape(_data[17], "", const Color(0xff0c8c44), false, null, null),
-    Shape(_data[18], "", const Color(0xfffff), false, null, null),
+    Shape(_data[18], "", const Color(0x000fffff), false, null, null),
     Shape(_data[19], "", const Color(0xff0c8c44), false, null, null),
-    Shape(_data[20], "", const Color(0xfffff), false, null, null),
+    Shape(_data[20], "", const Color(0x000fffff), false, null, null),
     Shape(_data[21], "", const Color(0xff0c8c44), false, null, null),
     Shape(_data[22], "", const Color(0xffacd266), false, null, null),
-    Shape(_data[23], "", const Color(0xfffff), false, null, null),
+    Shape(_data[23], "", const Color(0x000fffff), false, null, null),
     Shape(_data[24], "", const Color(0xffacd266), false, null, null),
-    Shape(_data[25], "", const Color(0xfffff), false, null, null),
+    Shape(_data[25], "", const Color(0x000fffff), false, null, null),
     Shape(_data[26], "", const Color(0xffacd266), false, null, null),
     Shape(_data[27], "", const Color(0xffacd266), false, null, null),
-    Shape(_data[28], "", const Color(0xfffff), false, null, null),
+    Shape(_data[28], "", const Color(0x000fffff), false, null, null),
     Shape(_data[29], "", const Color(0xffed1e29), false, null, null),
     Shape(_data[30], "", const Color(0xffacd266), false, null, null),
-    Shape(_data[31], "", const Color(0xfffff), false, null, null),
+    Shape(_data[31], "", const Color(0x000fffff), false, null, null),
     Shape(_data[32], "", const Color(0xffacd266), false, null, null),
     Shape(_data[33], "", const Color(0xffed1e29), false, null, null),
     Shape(_data[34], "", const Color(0xff0c8c44), false, null, null),
@@ -501,17 +407,17 @@ m153 404.73 20.5-12.47 54.62-8.06q-.37 7.41-.74 14.82l-74.78 11.41z,m154 414.12-
     Shape(_data[40], "", const Color(0xffed1e29), false, null, null),
     Shape(_data[41], "", const Color(0xffacd266), false, null, null),
     Shape(_data[42], "", const Color(0xffed1e29), false, null, null),
-    Shape(_data[43], "", const Color(0xfffff), false, null, null),
+    Shape(_data[43], "", const Color(0x000fffff), false, null, null),
     Shape(_data[44], "", const Color(0xffacd266), false, null, null),
     Shape(_data[45], "", const Color(0xffed1e29), false, null, null),
     Shape(_data[46], "", const Color(0xffacd266), false, null, null),
     Shape(_data[47], "", const Color(0xff0c8c44), false, null, null),
     Shape(_data[48], "", const Color(0xff0c8c44), false, null, null),
-    Shape(_data[49], "", const Color(0xfffff), false, null, null),
-    Shape(_data[50], "", const Color(0xfffff), false, null, null),
-    Shape(_data[51], "", const Color(0xfffff), false, null, null),
-    Shape(_data[52], "", const Color(0xfffff), false, null, null),
-    Shape(_data[53], "", const Color(0xfffff), false, null, null),
+    Shape(_data[49], "", const Color(0x000fffff), false, null, null),
+    Shape(_data[50], "", const Color(0x000fffff), false, null, null),
+    Shape(_data[51], "", const Color(0x000fffff), false, null, null),
+    Shape(_data[52], "", const Color(0x000fffff), false, null, null),
+    Shape(_data[53], "", const Color(0x000fffff), false, null, null),
     Shape(_data[54], "", const Color(0xffacd266), false, null, null),
     Shape(_data[55], "", const Color(0xffacd266), false, null, null),
     Shape(_data[56], "", const Color(0xffed1e29), false, null, null),
@@ -520,8 +426,8 @@ m153 404.73 20.5-12.47 54.62-8.06q-.37 7.41-.74 14.82l-74.78 11.41z,m154 414.12-
     Shape(_data[59], "", const Color(0xffed1e29), false, null, null),
     Shape(_data[60], "", const Color(0xff0c8c44), false, null, null),
     Shape(_data[61], "", const Color(0xff0c8c44), false, null, null),
-    Shape(_data[62], "", const Color(0xfffff), false, null, null),
-    Shape(_data[63], "", const Color(0xfffff), false, null, null),
+    Shape(_data[62], "", const Color(0x000fffff), false, null, null),
+    Shape(_data[63], "", const Color(0x000fffff), false, null, null),
     Shape(_data[64], "", const Color(0xffed1e29), false, null, null),
     Shape(_data[65], "", const Color(0xffed1e29), false, null, null),
     Shape(_data[66], "", const Color(0xffed1e29), false, null, null),
@@ -529,13 +435,13 @@ m153 404.73 20.5-12.47 54.62-8.06q-.37 7.41-.74 14.82l-74.78 11.41z,m154 414.12-
     Shape(_data[68], "", const Color(0xffed1e29), false, null, null),
     Shape(_data[69], "", const Color(0xffacd266), false, null, null),
     Shape(_data[70], "", const Color(0xffacd266), false, null, null),
-    Shape(_data[71], "", const Color(0xfffff), false, null, null),
+    Shape(_data[71], "", const Color(0x000fffff), false, null, null),
     Shape(_data[72], "", const Color(0xffed1e29), false, null, null),
     Shape(_data[73], "", const Color(0xffed1e29), false, null, null),
     Shape(_data[74], "", const Color(0xffacd266), false, null, null),
     Shape(_data[75], "", const Color(0xffed1e29), false, null, null),
     Shape(_data[76], "", const Color(0xffacd266), false, null, null),
-    Shape(_data[77], "", const Color(0xfffff), false, null, null),
+    Shape(_data[77], "", const Color(0x000fffff), false, null, null),
     Shape(_data[78], "", const Color(0xffed1e29), false, null, null),
     Shape(_data[79], "", const Color(0xffacd266), false, null, null),
     Shape(_data[80], "", const Color(0xffed1e29), false, null, null),
@@ -543,35 +449,35 @@ m153 404.73 20.5-12.47 54.62-8.06q-.37 7.41-.74 14.82l-74.78 11.41z,m154 414.12-
     Shape(_data[82], "", const Color(0xffacd266), false, null, null),
     Shape(_data[83], "", const Color(0xffacd266), false, null, null),
     Shape(_data[84], "", const Color(0xffacd266), false, null, null),
-    Shape(_data[85], "", const Color(0xfffff), false, null, null),
+    Shape(_data[85], "", const Color(0x000fffff), false, null, null),
     Shape(_data[86], "", const Color(0xffacd266), false, null, null),
     Shape(_data[87], "", const Color(0xffacd266), false, null, null),
     Shape(_data[88], "", const Color(0xffacd266), false, null, null),
     Shape(_data[89], "", const Color(0xffacd266), false, null, null),
-    Shape(_data[90], "", const Color(0xfffff), false, null, null),
-    Shape(_data[91], "", const Color(0xfffff), false, null, null),
+    Shape(_data[90], "", const Color(0x000fffff), false, null, null),
+    Shape(_data[91], "", const Color(0x000fffff), false, null, null),
     Shape(_data[92], "", const Color(0xffacd266), false, null, null),
-    Shape(_data[93], "", const Color(0xfffff), false, null, null),
-    Shape(_data[94], "", const Color(0xfffff), false, null, null),
-    Shape(_data[95], "", const Color(0xfffff), false, null, null),
-    Shape(_data[96], "", const Color(0xfffff), false, null, null),
+    Shape(_data[93], "", const Color(0x000fffff), false, null, null),
+    Shape(_data[94], "", const Color(0x000fffff), false, null, null),
+    Shape(_data[95], "", const Color(0x000fffff), false, null, null),
+    Shape(_data[96], "", const Color(0x000fffff), false, null, null),
     Shape(_data[97], "", const Color(0xffed1e29), false, null, null),
     Shape(_data[98], "", const Color(0xffacd266), false, null, null),
-    Shape(_data[99], "", const Color(0xfffff), false, null, null),
+    Shape(_data[99], "", const Color(0x000fffff), false, null, null),
     Shape(_data[100], "", const Color(0xffacd266), false, null, null),
     Shape(_data[101], "", const Color(0xffacd266), false, null, null),
-    Shape(_data[102], "", const Color(0xfffff), false, null, null),
+    Shape(_data[102], "", const Color(0x000fffff), false, null, null),
     Shape(_data[103], "", const Color(0xffacd266), false, null, null),
     Shape(_data[104], "", const Color(0xffacd266), false, null, null),
     Shape(_data[105], "", const Color(0xffacd266), false, null, null),
-    Shape(_data[106], "", const Color(0xfffff), false, null, null),
+    Shape(_data[106], "", const Color(0x000fffff), false, null, null),
     Shape(_data[107], "", const Color(0xffacd266), false, null, null),
     Shape(_data[108], "", const Color(0xffacd266), false, null, null),
     Shape(_data[109], "", const Color(0xffacd266), false, null, null),
-    Shape(_data[110], "", const Color(0xfffff), false, null, null),
+    Shape(_data[110], "", const Color(0x000fffff), false, null, null),
     Shape(_data[111], "", const Color(0xffacd266), false, null, null),
     Shape(_data[112], "", const Color(0xffacd266), false, null, null),
-    Shape(_data[113], "", const Color(0xfffff), false, null, null),
+    Shape(_data[113], "", const Color(0x000fffff), false, null, null),
     Shape(_data[114], "", const Color(0xffacd266), false, null, null),
     Shape(_data[115], "", const Color(0xff0c8c44), false, null, null),
     Shape(_data[116], "", const Color(0xffed1e29), false, null, null),
@@ -584,10 +490,10 @@ m153 404.73 20.5-12.47 54.62-8.06q-.37 7.41-.74 14.82l-74.78 11.41z,m154 414.12-
     Shape(_data[123], "", const Color(0xffed1e29), false, null, null),
     Shape(_data[124], "", const Color(0xff0c8c44), false, null, null),
     Shape(_data[125], "", const Color(0xffacd266), false, null, null),
-    Shape(_data[126], "", const Color(0xfffff), false, null, null),
-    Shape(_data[127], "", const Color(0xfffff), false, null, null),
+    Shape(_data[126], "", const Color(0x000fffff), false, null, null),
+    Shape(_data[127], "", const Color(0x000fffff), false, null, null),
     Shape(_data[128], "", const Color(0xffed1e29), false, null, null),
-    Shape(_data[129], "", const Color(0xfffff), false, null, null),
+    Shape(_data[129], "", const Color(0x000fffff), false, null, null),
     Shape(_data[130], "", const Color(0xffacd266), false, null, null),
     Shape(_data[131], "", const Color(0xffed1e29), false, null, null),
     Shape(_data[132], "", const Color(0xffed1e29), false, null, null),
@@ -598,12 +504,12 @@ m153 404.73 20.5-12.47 54.62-8.06q-.37 7.41-.74 14.82l-74.78 11.41z,m154 414.12-
     Shape(_data[137], "", const Color(0xffed1e29), false, null, null),
     Shape(_data[138], "", const Color(0xffed1e29), false, null, null),
     Shape(_data[139], "", const Color(0xffed1e29), false, null, null),
-    Shape(_data[140], "", const Color(0xfffff), false, null, null),
+    Shape(_data[140], "", const Color(0x000fffff), false, null, null),
     Shape(_data[141], "", const Color(0xffacd266), false, null, null),
     Shape(_data[142], "", const Color(0xffed1e29), false, null, null),
     Shape(_data[143], "", const Color(0xffacd266), false, null, null),
     Shape(_data[144], "", const Color(0xffed1e29), false, null, null),
-    Shape(_data[145], "", const Color(0xfffff), false, null, null),
+    Shape(_data[145], "", const Color(0x000fffff), false, null, null),
     Shape(_data[146], "", const Color(0xffacd266), false, null, null),
     Shape(_data[147], "", const Color(0xffed1e29), false, null, null),
     Shape(_data[148], "", const Color(0xffed1e29), false, null, null),
@@ -614,7 +520,7 @@ m153 404.73 20.5-12.47 54.62-8.06q-.37 7.41-.74 14.82l-74.78 11.41z,m154 414.12-
     Shape(_data[153], "", const Color(0xffed1e29), false, null, null),
     Shape(_data[154], "", const Color(0xffacd266), false, null, null),
     Shape(_data[155], "", const Color(0xffacd266), false, null, null),
-    Shape(_data[156], "", const Color(0xfffff), false, null, null),
+    Shape(_data[156], "", const Color(0x000fffff), false, null, null),
     Shape(_data[157], "", const Color(0xffacd266), false, null, null),
     Shape(_data[158], "", const Color(0xffed1e29), false, null, null),
     Shape(_data[159], "", const Color(0xffacd266), false, null, null),

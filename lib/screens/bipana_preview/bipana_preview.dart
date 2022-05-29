@@ -261,30 +261,36 @@ class _BipanaPreviewScreenState extends State<BipanaPreviewScreen> {
                     color: ChooseColor(0).appBarColor1),
               ),
               SizedBox(height: size.height * 0.020),
-              Padding(
-                padding: EdgeInsets.only(left: size.width * 0.075),
-                child: SizedBox(
-                  height: 120,
-                  width: 120,
-                  child: Card(
-                    elevation: 0,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: size.width * 0.010,
-                          vertical: size.height * 0.010),
-                      child: Column(
-                        children: [
-                          Image.asset("icons/saved1.png"),
-                          SizedBox(height: size.height * 0.020),
-                          Center(
-                              child: Text(
-                            "Saved",
-                            style: TextStyle(
-                                color: ChooseColor(0).appBarColor1,
-                                fontSize:
-                                    size.height * 0.009 + size.width * 0.009),
-                          ))
-                        ],
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context)
+                      .pushNamed("Bipana_Preview_Saved_Screen");
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(left: size.width * 0.075),
+                  child: SizedBox(
+                    height: 120,
+                    width: 120,
+                    child: Card(
+                      elevation: 0,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: size.width * 0.010,
+                            vertical: size.height * 0.010),
+                        child: Column(
+                          children: [
+                            Image.asset("icons/saved1.png"),
+                            SizedBox(height: size.height * 0.020),
+                            Center(
+                                child: Text(
+                              "Saved",
+                              style: TextStyle(
+                                  color: ChooseColor(0).appBarColor1,
+                                  fontSize:
+                                      size.height * 0.009 + size.width * 0.009),
+                            ))
+                          ],
+                        ),
                       ),
                     ),
                   ),

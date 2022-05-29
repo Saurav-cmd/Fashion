@@ -42,4 +42,9 @@ class ApiRoute {
     return Constants.baseUrl +
         "v2/bipanapreviewimage?full_name=$name&email=$email&phone=$phone&address=$address&user_code=$userCode";
   }
+
+  String? BipanPreviewSaved(String? emailAddress, String? phone) {
+    return Constants.baseUrl +
+        "v2/bipanapreviewimage?email=$emailAddress&phone=$phone";
+  }
 }

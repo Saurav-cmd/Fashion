@@ -29,11 +29,13 @@ class _CameraScreenState extends State<CameraScreen> {
   BipaniPreviewController bPC = Get.put(BipaniPreviewController());
 
   String? userCode;
+  String? token;
   getSharedPreferenceData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final userData = prefs.getString('userData');
     if (userData != null) {
       userCode = jsonDecode(userData)['userCode'];
+      token = jsonDecode(userData)['token'];
     }
   }
 
@@ -75,8 +77,12 @@ class _CameraScreenState extends State<CameraScreen> {
           actions: [
             IconButton(
                 onPressed: () {
-                  Navigator.of(context)
-                      .pushNamed("Dealer_button_Navigation_Bar");
+                  if (token != null) {
+                    Navigator.of(context)
+                        .pushNamed("Dealer_button_Navigation_Bar");
+                  } else if (token == null) {
+                    Navigator.of(context).pushNamed("Button_Navigation_Bar");
+                  }
                 },
                 icon: const Icon(Icons.home))
           ],
