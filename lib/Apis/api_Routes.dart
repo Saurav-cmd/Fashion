@@ -47,4 +47,8 @@ class ApiRoute {
     return Constants.baseUrl +
         "v2/bipanapreviewimage?email=$emailAddress&phone=$phone";
   }
+
+  String? userNotification() {
+    return Constants.baseUrl + "notice";
+  }
 }

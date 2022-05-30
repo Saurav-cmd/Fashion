@@ -169,7 +169,7 @@ class _HomePageState extends State<HomePage> {
                             children: [
                               Image.asset(
                                   "icons/undraw_house_searching_re_stk8 (1) 1.png"),
-                              SizedBox(height: size.height * 0.030),
+                              SizedBox(height: size.height * 0.045),
                               Center(
                                   child: Text(
                                 "Bipana preview",
@@ -199,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                             children: [
                               Image.asset(
                                   "icons/undraw_searching_re_3ra9 1.png"),
-                              SizedBox(height: size.height * 0.020),
+                              SizedBox(height: size.height * 0.045),
                               Center(
                                   child: Text(
                                 "Search",

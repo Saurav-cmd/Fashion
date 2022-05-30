@@ -159,6 +159,13 @@ class _ShowShadeColorsState extends State<ShowShadeColors> {
     colorValue = Colors.transparent;
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    getAllShadeColor();
+  }
+
   getAllShadeColor() async {
     final shadeData = await DatabaseHelper.instance.getShadeColorData();
     for (int i = 0; i < shadeData.length; i++) {

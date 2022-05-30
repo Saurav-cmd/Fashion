@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:fashion_paints/colors/colors_file.dart';
-import 'package:fashion_paints/controllers/bipana_preview_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../controllers/bipana_preview_controller_1.dart';
 import '../../widgets/dilogue_box.dart';
 
 class BipanPreviewSavedScreen extends StatefulWidget {
@@ -20,7 +20,7 @@ class BipanPreviewSavedScreen extends StatefulWidget {
 }
 
 class _BipanPreviewSavedScreenState extends State<BipanPreviewSavedScreen> {
-  BipaniPreviewController bPC = Get.put(BipaniPreviewController());
+  BipanPreviewController1 bPC = Get.put(BipanPreviewController1());
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -41,6 +41,13 @@ class _BipanPreviewSavedScreenState extends State<BipanPreviewSavedScreen> {
         bPC.savedDataList;
       });
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    bPC.savedDataList = [];
   }
 
   @override
@@ -190,7 +197,6 @@ class _BipanPreviewSavedScreenState extends State<BipanPreviewSavedScreen> {
                                   await InternetAddress.lookup("example.com");
                               if (result.isNotEmpty &&
                                   result[0].rawAddress.isNotEmpty) {
-                                print("There is wifi connection");
                                 if (_formKey.currentState != null &&
                                     _formKey.currentState!.validate()) {
                                   getSavedData(emailController.text,
@@ -200,7 +206,6 @@ class _BipanPreviewSavedScreenState extends State<BipanPreviewSavedScreen> {
                               }
                             } on SocketException catch (_) {
                               AlertBox().noWifiConnection(context);
-                              print('not connected');
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -210,6 +215,9 @@ class _BipanPreviewSavedScreenState extends State<BipanPreviewSavedScreen> {
                       ),
                     ],
                   )),
+              SizedBox(height: size.height*0.015),
+              const Text(
+                  "Note: Enter your email address and phone number to get your related data"),
               Obx(() {
                 if (bPC.isLoading.value) {
                   return Padding(
@@ -248,6 +256,20 @@ class _BipanPreviewSavedScreenState extends State<BipanPreviewSavedScreen> {
                       ],
                     ))),
                   );
+                } else if (bPC.savedDataList == null ||
+                    bPC.savedDataList!.isEmpty) {
+                  return Expanded(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "No Data to Show",
+                        style: TextStyle(
+                            color: ChooseColor(0).appBarColor1,
+                            fontSize: size.height * 0.014 + size.width * 0.014,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  );
                 } else {
                   return Expanded(
                     child: Padding(
@@ -257,7 +279,66 @@ class _BipanPreviewSavedScreenState extends State<BipanPreviewSavedScreen> {
                           itemCount: bPC.savedDataList!.length,
                           itemBuilder: (ctx, i) {
                             return Container(
-                              child: Text("${bPC.savedDataList![i].types}"),
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                bottom: BorderSide(
+                                    width: 1.0,
+                                    color: Colors.lightBlue.shade900),
+                              )),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    height: 80,
+                                    width: 80,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      child: Image.network(
+                                        "${bPC.savedDataList![i].image}",
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: size.height * 0.010,
+                                        ),
+                                        Text(
+                                            "Name: ${bPC.savedDataList![i].user!.fullName}"),
+                                        SizedBox(
+                                          height: size.height * 0.010,
+                                        ),
+                                        Text(
+                                            "Address: ${bPC.savedDataList![i].user!.address}"),
+                                        SizedBox(
+                                          height: size.height * 0.010,
+                                        ),
+                                        Text(
+                                            "Phone: ${bPC.savedDataList![i].user!.phone}"),
+                                        SizedBox(
+                                          height: size.height * 0.010,
+                                        ),
+                                        Text(
+                                            "Email: ${bPC.savedDataList![i].user!.email}"),
+                                        SizedBox(
+                                          height: size.height * 0.010,
+                                        ),
+                                        Text(
+                                            "Type: ${bPC.savedDataList![i].types}"),
+                                        SizedBox(
+                                          height: size.height * 0.010,
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
                             );
                           }),
                     ),

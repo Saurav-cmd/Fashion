@@ -22,6 +22,7 @@ import '../models/apis_model/get_cart_data_model.dart';
 import '../models/apis_model/notice_model.dart';
 import '../models/apis_model/order_history_model.dart';
 import '../models/apis_model/product_model.dart';
+import '../models/apis_model/user_notification_model.dart';
 
 class Services {
   static Future<LoginModel?> loginData(String userCode, String password,
@@ -632,6 +633,26 @@ class Services {
         return bipanaPreviewSavedFromJson(response.body);
       } else {
         print("Some error occurred");
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<UserNotification?> getUserNotification() async {
+    String? token =
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTY0NTE4MzM2MiwiZXhwIjoxNjQ1MTg2OTYyLCJuYmYiOjE2NDUxODMzNjIsImp0aSI6InpDd01PMkc4Vnc4ZXFGM3kiLCJzdWIiOjcsInBydiI6ImMxZTE0ZWE3OTk2MDgwN2Q2YTJiMTdkYTJhZjBjMzkzNDVmY2NhN2EifQ.cTs_uW_Xj7Bf3DOkN7xQHqfbVgu74UNf7lc3qRavsz0";
+    try {
+      final apiData = ApiRoute().userNotification();
+      final response = await http.get(Uri.parse(apiData!), headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token"
+      });
+      if (response.statusCode == 200) {
+        print("${response.body}");
+        return userNotificationFromJson(response.body);
+      } else {
+        print("Error occurred");
       }
     } catch (e) {
       rethrow;

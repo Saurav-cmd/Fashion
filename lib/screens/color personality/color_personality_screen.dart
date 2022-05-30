@@ -17,6 +17,7 @@ class _ColorPersonalityState extends State<ColorPersonality> {
   late WebViewController controller;
   @override
   Widget build(BuildContext context) {
+    var isLoading = true;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ChooseColor(0).appBarColor1,

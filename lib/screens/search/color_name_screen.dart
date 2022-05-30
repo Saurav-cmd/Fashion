@@ -296,13 +296,23 @@ class _ColorScreenState extends State<ColorScreen> {
                           ),
                         );
                       })
-                  : Text(
-                      "Type color name or code to search",
-                      style: TextStyle(
-                          color: ChooseColor(0).appBarColor1,
-                          fontSize: size.height * 0.014 + size.width * 0.014,
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
+                  : Flex(
+                      direction: Axis.horizontal,
+                      children: [
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Type color name or color code to search",
+                              style: TextStyle(
+                                  color: ChooseColor(0).appBarColor1,
+                                  fontSize:
+                                      size.height * 0.014 + size.width * 0.014,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
             ),
           )
