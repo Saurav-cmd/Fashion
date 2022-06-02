@@ -781,7 +781,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                   passedProductName == "magnetextemulsion" ||
                   passedProductName == "weatherproofextemulsion")
                 Text(
-                  '$baseName  $passedCanSize Ltr',
+                  '$baseName  ${selectedCanSize == 0.0 ? passedCanSize : selectedCanSize} Ltr',
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: size.height * 0.012 + size.width * 0.012,
@@ -804,17 +804,18 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                     fontSize: size.height * 0.010 + size.width * 0.010,
                     fontWeight: FontWeight.w500),
               ),
-              SizedBox(height: size.height * 0.020),
+              SizedBox(height: size.height * 0.010),
               SizedBox(
-                height: 200,
+                height: 130,
                 child: GridView.builder(
                     itemCount: calculatedCylinderVolume.length,
                     scrollDirection: Axis.horizontal,
                     shrinkWrap: true,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 1,
-                    ),
+                            crossAxisCount: 1,
+                            crossAxisSpacing: 5,
+                            mainAxisSpacing: 5),
                     itemBuilder: (ctx, i) {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -823,7 +824,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                             alignment: Alignment.bottomLeft,
                             children: [
                               Container(
-                                height: 100,
+                                height: 80,
                                 width: 70,
                                 color: Colors.grey.shade300,
                               ),
@@ -871,6 +872,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                       );
                     }),
               ),
+              SizedBox(height: size.height * 0.020),
 
               SizedBox(height: size.height * 0.020),
               Text(
