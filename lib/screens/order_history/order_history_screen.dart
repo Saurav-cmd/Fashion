@@ -13,19 +13,25 @@ class OrderHistory extends StatefulWidget {
 }
 
 class _OrderHistoryState extends State<OrderHistory> {
-  final OrderHistoryController _orderHistoryController = Get.put(OrderHistoryController());
+  OrderHistoryController oHC = Get.put(OrderHistoryController());
+
+  fetchApiData() async {
+    oHC.getOrderHistory(context).whenComplete(() {
+      setState(() {
+        oHC.orderHistory;
+      });
+    });
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _orderHistoryController.getOrderHistory(context);
+    fetchApiData();
   }
 
   @override
   Widget build(BuildContext context) {
-    print(
-        'order history lenth ${_orderHistoryController.oderHistory!.map((e) => e.status).toList()}');
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: ChooseColor(0).bodyBackgroundColor,
@@ -73,455 +79,274 @@ class _OrderHistoryState extends State<OrderHistory> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Obx(() {
-          if (_orderHistoryController.isLoading.value) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 180.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+      body: Obx(() {
+        if (oHC.isLoading.value) {
+          return Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    top: size.height * 0.3,
+                    left: size.width * 0.1,
+                    right: size.width * 0.1),
+                child: Card(
+                    child: Center(
+                        child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    CircularProgressIndicator(
-                      color: ChooseColor(0).appBarColor1,
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: size.height * 0.008 + size.width * 0.008,
+                          top: size.height * 0.008 + size.width * 0.008,
+                          bottom: size.height * 0.008 + size.width * 0.008),
+                      child: CircularProgressIndicator(
+                        color: ChooseColor(0).appBarColor1,
+                      ),
                     ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: size.width * 0.030,
+                      ),
+                      child: SizedBox(
+                          width: size.width * 0.5,
+                          child: const Text(
+                            "Fetching order list please wait...",
+                            overflow: TextOverflow.clip,
+                          )),
+                    ),
+                    SizedBox(
+                      height: size.height * 0.1,
+                    )
                   ],
-                ),
+                ))),
               ),
-            );
-          }
-          if(_orderHistoryController.oderHistory?.isEmpty ?? true){
-            return Padding(
-              padding: const EdgeInsets.only(top: 180.0),
-              child: Column(
-                children: [
-                  Center(
-                      child: Text(
-                        'Your Order History is Empty',
-                        style: TextStyle(
-                            fontSize: 20, color: ChooseColor(0).appBarColor1),
-                      )),
-                ],
-              ),
-            );
-
-          }
-          else {
-            return Column(
+            ],
+          );
+        }
+        if (oHC.orderHistory!.isEmpty) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 180.0),
+            child: Column(
               children: [
-                ..._orderHistoryController.canceledOrder
-                    .map((e) => Padding(
-                  padding: const EdgeInsets.only(
-                      left: 15.0, right: 15, top: 10),
-                  child: Container(
-                    height: 160,
-                    width: double.infinity,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Card(
-                        elevation: 0,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10, right: 30, top: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    'Order id',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.black54),
-                                  ),
-                                  Text(
-                                    "${NepaliDateFormat("d MMMM, y").format(e!.date.toNepaliDateTime())}",
-                                    style: const TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black45),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10.0, top: 5),
-                              child: Text(
-                                e.id.toString(),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black54,
-                                    fontSize: 20),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10.0, right: 35, top: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.start,
-                                children: const [
-                                  Text(
-                                    'item',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.black54),
-                                  ),
-                                  SizedBox(
-                                    width: 175,
-                                  ),
-                                  Text(
-                                    'Price',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black45),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 0, right: 12, top: 5),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 12.0),
-                                    child: Text(
-                                      e.numOfOrder.toString(),
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black54,
-                                          fontSize: 18),
-                                    ),
-                                  ),
-                                  Container(
-                                    width: 100,
-                                    child: Text(
-                                      'Rs.${e.totalPrice}',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black54,
-                                          fontSize: 18),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10.0, top: 10),
-                              child: Row(
-                                children: const [
-                                  Icon(
-                                    Icons.radio_button_checked,
-                                    color: Colors.red,
-                                    size: 15,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    'Canceled by customer',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.red),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ))
-                    .toList(),
-                ..._orderHistoryController.yetRevApprove
-                    .map((e) => Padding(
-                  padding: const EdgeInsets.only(
-                      left: 15.0, right: 15, top: 10),
-                  child: Container(
-                    height: 160,
-                    width: double.infinity,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Card(
-                        elevation: 0,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10, right: 30, top: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    'Order id',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.black54),
-                                  ),
-                                  Text(
-                                    "${NepaliDateFormat("d MMMM, y").format(e!.date.toNepaliDateTime())}",
-                                    style: const TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black45),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10.0, top: 5),
-                              child: Text(
-                                e.id.toString(),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black54,
-                                    fontSize: 20),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10.0, right: 35, top: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.start,
-                                children: const [
-                                  Text(
-                                    'item',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.black54),
-                                  ),
-                                  SizedBox(
-                                    width: 175,
-                                  ),
-                                  Text(
-                                    'Price',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black45),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 0, right: 12, top: 5),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 12.0),
-                                    child: Text(
-                                      e.numOfOrder.toString(),
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black54,
-                                          fontSize: 18),
-                                    ),
-                                  ),
-                                  Container(
-                                    width: 100,
-                                    child: Text(
-                                      'Rs.${e.totalPrice}',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black54,
-                                          fontSize: 18),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10.0, top: 10),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.radio_button_checked,
-                                    color: Colors.orange.shade400,
-                                    size: 15,
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    'This order is yet to be reviewed',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.orange.shade400),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ))
-                    .toList(),
-                ..._orderHistoryController.underProcess
-                    .map((e) => Padding(
-                  padding: const EdgeInsets.only(
-                      left: 15.0, right: 15, top: 10),
-                  child: Container(
-                    height: 160,
-                    width: double.infinity,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Card(
-                        elevation: 0,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10, right: 30, top: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    'Order id',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.black54),
-                                  ),
-                                  Text(
-                                    "${NepaliDateFormat("d MMMM, y").format(e!.date.toNepaliDateTime())}",
-                                    style: const TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black45),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10.0, top: 5),
-                              child: Text(
-                                e.id.toString(),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black54,
-                                    fontSize: 20),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10.0, right: 35, top: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.start,
-                                children: const [
-                                  Text(
-                                    'item',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.black54),
-                                  ),
-                                  SizedBox(
-                                    width: 175,
-                                  ),
-                                  Text(
-                                    'Price',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black45),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 0, right: 12, top: 5),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 12.0),
-                                    child: Text(
-                                      e.numOfOrder.toString(),
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black54,
-                                          fontSize: 18),
-                                    ),
-                                  ),
-                                  Container(
-                                    width: 100,
-                                    child: Text(
-                                      'Rs.${e.totalPrice}',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black54,
-                                          fontSize: 18),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10.0, top: 10),
-                              child: Row(
-                                children: const [
-                                  Icon(
-                                    Icons.radio_button_checked,
-                                    color: Color(0xff046C98),
-                                    size: 15,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    'Under process',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: Color(0xff046C98)),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ))
-                    .toList()
+                Center(
+                    child: Text(
+                  'Your Order History is Empty',
+                  style: TextStyle(
+                      fontSize: 20, color: ChooseColor(0).appBarColor1),
+                )),
               ],
-            );
-          }
-        }),
-      ),
+            ),
+          );
+        } else {
+          return RefreshIndicator(
+            onRefresh: () => fetchApiData(),
+            child: ListView.builder(
+                physics: BouncingScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: oHC.orderHistory!.length,
+                itemBuilder: (ctx, i) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: size.height * 0.010,
+                        horizontal: size.width * 0.020),
+                    child: Container(
+                      child: InkWell(
+                        onTap: () {},
+                        child: Card(
+                          elevation: 0,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 30, top: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      'Order id',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.black54),
+                                    ),
+                                    Text(
+                                      "${NepaliDateFormat("d MMMM, y").format(oHC.orderHistory![i].date!.toNepaliDateTime())}",
+                                      style: const TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black45),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 10.0, top: 5),
+                                child: Text(
+                                  oHC.orderHistory![i].id.toString(),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black54,
+                                      fontSize: 20),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10.0, right: 35, top: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: const [
+                                    Text(
+                                      'item',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.black54),
+                                    ),
+                                    Text(
+                                      'Price',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black45),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10.0, right: 35, top: 5),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      oHC.orderHistory![i].numOfOrder
+                                          .toString(),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black54,
+                                          fontSize: 18),
+                                    ),
+                                    Text(
+                                      'Rs.${oHC.orderHistory![i].totalPrice}',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black54,
+                                          fontSize: 18),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: 10.0, top: 10, bottom: 10),
+                                child: Row(
+                                  children: [
+                                    if (oHC.orderHistory![i].status ==
+                                        "Approved")
+                                      Icon(
+                                        Icons.radio_button_checked,
+                                        color: Colors.green,
+                                        size: 15,
+                                      ),
+                                    if (oHC.orderHistory![i].status ==
+                                        "Sent to Dispatch")
+                                      Icon(
+                                        Icons.radio_button_checked,
+                                        color: Colors.lightBlue,
+                                        size: 15,
+                                      ),
+                                    if (oHC.orderHistory![i].status ==
+                                        "Dispatched")
+                                      Icon(
+                                        Icons.radio_button_checked,
+                                        color: Colors.blue,
+                                        size: 15,
+                                      ),
+                                    if (oHC.orderHistory![i].status ==
+                                        "Pending")
+                                      Icon(
+                                        Icons.radio_button_checked,
+                                        color: Colors.yellow,
+                                        size: 15,
+                                      ),
+                                    if (oHC.orderHistory![i].status ==
+                                        "Declined")
+                                      Icon(
+                                        Icons.radio_button_checked,
+                                        color: Colors.red,
+                                        size: 15,
+                                      ),
+                                    if (oHC.orderHistory![i].status ==
+                                        "Cancelled")
+                                      Icon(
+                                        Icons.radio_button_checked,
+                                        color: Colors.red,
+                                        size: 15,
+                                      ),
+                                    SizedBox(
+                                      width: 10,
+                                      height: size.height * 0.010,
+                                    ),
+                                    if (oHC.orderHistory![i].status ==
+                                        "Approved")
+                                      Text(
+                                        'Approved',
+                                        style: TextStyle(
+                                            fontSize: 12, color: Colors.green),
+                                      ),
+                                    if (oHC.orderHistory![i].status ==
+                                        "Sent to Dispatch")
+                                      Text(
+                                        'Sent to Dispatch',
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.lightBlue),
+                                      ),
+                                    if (oHC.orderHistory![i].status ==
+                                        "Dispatched")
+                                      Text(
+                                        'Order Dispatched',
+                                        style: TextStyle(
+                                            fontSize: 12, color: Colors.blue),
+                                      ),
+                                    if (oHC.orderHistory![i].status ==
+                                        "Pending")
+                                      Text(
+                                        'Order Pending',
+                                        style: TextStyle(
+                                            fontSize: 12, color: Colors.yellow),
+                                      ),
+                                    if (oHC.orderHistory![i].status ==
+                                        "Declined")
+                                      Text(
+                                        'Declined',
+                                        style: TextStyle(
+                                            fontSize: 12, color: Colors.red),
+                                      ),
+                                    if (oHC.orderHistory![i].status ==
+                                        "Cancelled")
+                                      Text(
+                                        'Order Cancelled',
+                                        style: TextStyle(
+                                            fontSize: 12, color: Colors.red),
+                                      ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+          );
+        }
+      }),
     );
   }
 }

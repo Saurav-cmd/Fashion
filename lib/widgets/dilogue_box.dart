@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:fashion_paints/colors/colors_file.dart';
+import 'package:fashion_paints/controllers/auth_controller.dart';
 import 'package:fashion_paints/database/all_data_database.dart';
 import 'package:fashion_paints/models/database_models/saved_customer_detail_model.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +50,35 @@ class AlertBox {
               child: AlertDialog(
                 title: const Text(
                   "Bad request",
+                  style: TextStyle(fontWeight: FontWeight.w400),
+                ),
+                actions: [
+                  SizedBox(
+                    height: 40.0,
+                    width: 80.0,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary: ChooseColor(0).appBarColor1),
+                      onPressed: () {
+                        Navigator.of(context).pop(true);
+                      },
+                      child: const Text("OK"),
+                    ),
+                  )
+                ],
+              ),
+            ));
+  }
+
+  userAlreadyLoggedIn(BuildContext context) {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (ctx) => WillPopScope(
+              onWillPop: () async => false,
+              child: AlertDialog(
+                title: const Text(
+                  "User with this id is already logged in to another device",
                   style: TextStyle(fontWeight: FontWeight.w400),
                 ),
                 actions: [
@@ -117,6 +147,7 @@ class AlertBox {
                       style: ElevatedButton.styleFrom(
                           primary: ChooseColor(0).appBarColor1),
                       onPressed: () {
+                        Navigator.of(context).pop(true);
                         Navigator.of(context).pop(true);
                       },
                       child: const Text("OK"),
@@ -702,6 +733,185 @@ class AlertBox {
       ],
     );
     showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  AlertBox403(BuildContext context) {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (ctx) => WillPopScope(
+              onWillPop: () async => false,
+              child: AlertDialog(
+                title: const Text(
+                    ' access to the requested resource is forbidden'),
+                actions: [
+                  SizedBox(
+                    height: 40.0,
+                    width: 80.0,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(ctx).pop(true);
+                        },
+                        child: const Text('Ok')),
+                  ),
+                ],
+              ),
+            ));
+  }
+
+  AlertBox400(BuildContext context) {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (ctx) => WillPopScope(
+              onWillPop: () async => false,
+              child: AlertDialog(
+                title: const Text('Bad Request'),
+                actions: [
+                  SizedBox(
+                    height: 40.0,
+                    width: 80.0,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(ctx).pop(true);
+                        },
+                        child: const Text('Ok')),
+                  ),
+                ],
+              ),
+            ));
+  }
+
+  AuthController aC = Get.put(AuthController());
+  AlertBox401(BuildContext context) {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (ctx) => SizedBox(
+              width: 80,
+              child: WillPopScope(
+                onWillPop: () async => false,
+                child: AlertDialog(
+                  title: const Text(
+                    'UnAuthorized User',
+                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
+                  ),
+                  actions: [
+                    SizedBox(
+                      height: 40.0,
+                      width: 90.0,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          aC.logout(context);
+                        },
+                        child: const Text(
+                          'Ok',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 14),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: ChooseColor(0).appBarColor1,
+                          shape: RoundedRectangleBorder(
+                              //to set border radius to button
+                              borderRadius: BorderRadius.circular(1)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ));
+  }
+
+  servererror(BuildContext context) {
+    Widget AbortButton = TextButton(
+        onPressed: () async {
+          SystemNavigator.pop();
+        },
+        child: Container(
+          height: 40,
+          width: MediaQuery.of(context).size.width * 0.31,
+          color: ChooseColor(0).appBarColor1,
+          child: Center(
+            child: Text(
+              'Abort'.toUpperCase(),
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ));
+
+    Widget RetryButton = TextButton(
+        onPressed: () {},
+        child: Container(
+          height: 40,
+          width: MediaQuery.of(context).size.width * 0.31,
+          color: ChooseColor(0).appBarColor1,
+          child: Center(
+            child: Text(
+              'Retry'.toUpperCase(),
+              style: const TextStyle(
+                  color: Colors.white, fontWeight: FontWeight.w500),
+            ),
+          ),
+        ));
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      contentPadding: EdgeInsets.zero,
+      title: WillPopScope(
+        onWillPop: () async => false,
+        child: Column(
+          children: const [
+            Text(
+              'Unexpected error on Server',
+              style: TextStyle(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Image(
+              image: AssetImage(
+                'assets/images/server.png',
+              ),
+              height: 60,
+              width: 60,
+            ),
+          ],
+        ),
+      ),
+      content: const Padding(
+        padding: EdgeInsets.only(left: 40.0, right: 30, top: 10),
+        child: Text(
+          "Please contact your service provider",
+          style: TextStyle(color: Colors.black54, fontSize: 16),
+        ),
+      ),
+      //Text("Are you sure to Place your Order ?"),
+      actions: [
+        AbortButton,
+        RetryButton,
+      ],
+    );
+    showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return alert;

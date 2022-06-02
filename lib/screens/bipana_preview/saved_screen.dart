@@ -35,7 +35,7 @@ class _BipanPreviewSavedScreenState extends State<BipanPreviewSavedScreen> {
 
   getSavedData(String? emailAddress, String? phoneNumber) async {
     await bPC
-        .bipanaPreviewGetSavedData(emailAddress, phoneNumber)
+        .bipanaPreviewGetSavedData(emailAddress, phoneNumber, context)
         .whenComplete(() {
       setState(() {
         bPC.savedDataList;
@@ -168,6 +168,7 @@ class _BipanPreviewSavedScreenState extends State<BipanPreviewSavedScreen> {
                         ),
                         controller: phoneController,
                         inputFormatters: [LengthLimitingTextInputFormatter(10)],
+                        keyboardType: TextInputType.phone,
                         validator: (value) {
                           if (value == null) {
                             return "Please enter your phone number";
@@ -215,7 +216,7 @@ class _BipanPreviewSavedScreenState extends State<BipanPreviewSavedScreen> {
                       ),
                     ],
                   )),
-              SizedBox(height: size.height*0.015),
+              SizedBox(height: size.height * 0.015),
               const Text(
                   "Note: Enter your email address and phone number to get your related data"),
               Obx(() {

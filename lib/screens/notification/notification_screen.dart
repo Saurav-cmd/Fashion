@@ -18,7 +18,12 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+  int currentPage = 1;
   UserNotificationController uNC = Get.put(UserNotificationController());
+  ScrollController scrollController = ScrollController();
+  int total = 5;
+  var isLoading = false;
+  int page = 1;
 
   fetchNotificationData() async {
     try {
@@ -35,10 +40,23 @@ class _NotificationScreenState extends State<NotificationScreen> {
     }
   }
 
+  void pagination() {
+    if ((scrollController.position.pixels ==
+            scrollController.position.maxScrollExtent) &&
+        (uNC.notificationData.length < total)) {
+      setState(() {
+        isLoading = true;
+        page += 1;
+        fetchNotificationData();
+      });
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    scrollController.addListener(pagination);
     fetchNotificationData();
   }
 
@@ -160,7 +178,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       SizedBox(
                                           width: 210,
                                           child: Text(
-                                            '${uNC.notificationData[i]!.title!.length > 20 ? uNC.notificationData[i]!.title!.substring(0, 20) + '...' : uNC.notificationData[i]!.title}',
+                                            '${uNC.notificationData[i]!.title}',
                                             style: const TextStyle(
                                                 color: Colors.black87,
                                                 fontSize: 16,
@@ -180,7 +198,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     height: 10,
                                   ),
                                   Text(
-                                    '${uNC.notificationData[i]!.notice!.length > 20 ? uNC.notificationData[i]!.notice!.substring(0, 40) + '...' : uNC.notificationData[i]!.notice}',
+                                    '${uNC.notificationData[i]!.notice}',
                                     style: TextStyle(
                                         color: Colors.grey.shade600,
                                         fontSize: 14),

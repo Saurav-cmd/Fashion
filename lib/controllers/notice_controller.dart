@@ -7,20 +7,15 @@ import '../remote services/services.dart';
 class NoticeController extends GetxController {
   var isLoading = false.obs;
   //List<Notices>? noticeList = [];
-  var noticeList =<Datum>[];
-  var pdfLink =<Link>[];
-
+  var noticeList = <Datum>[];
+  var pdfLink = <Link>[];
 
   Future<List<Notices>?>? getAllNotices(BuildContext context) async {
     try {
       isLoading(true);
-      Notices?  dataList = await Services.getNotice(context);
-      noticeList =dataList!.data!;
-      pdfLink =dataList.links!;
-      print('testing notic');
-
-
-
+      Notices? dataList = await Services.getNotice(context);
+      noticeList = dataList!.data!;
+      pdfLink = dataList.links!;
     } finally {
       isLoading(false);
     }

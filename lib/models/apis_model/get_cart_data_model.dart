@@ -12,66 +12,44 @@ String getCartDataToJson(List<GetCartData> data) =>
 
 class GetCartData {
   GetCartData({
-    required this.id,
-    required this.productId,
-    required this.price,
-    required this.size,
-    required this.categoryName,
-    required this.productName,
-    required this.quantity,
-    required this.images,
+    this.id,
+    this.productId,
+    this.pid,
+    this.price,
+    this.size,
+    this.categoryName,
+    this.productName,
+    this.quantity,
   });
 
-  final int id;
-  final int productId;
-  final int price;
-  final String size;
-  final CategoryName categoryName;
-  final String productName;
-  final int quantity;
-  final List<dynamic> images;
+  int? id;
+  int? productId;
+  int? pid;
+  int? price;
+  String? size;
+  String? categoryName;
+  String? productName;
+  int? quantity;
 
   factory GetCartData.fromJson(Map<String, dynamic> json) => GetCartData(
-    id: json["id"],
-    productId: json["product_id"],
-    price: json["price"],
-    size: json["size"],
-    categoryName: categoryNameValues.map[json["category_name"]]!,
-    productName: json["product_name"],
-    quantity: json["quantity"],
-    images: List<dynamic>.from(json["images"].map((x) => x)),
-  );
+        id: json["id"],
+        productId: json["product_id"],
+        pid: json["pid"],
+        price: json["price"],
+        size: json["size"],
+        categoryName: json["category_name"],
+        productName: json["product_name"],
+        quantity: json["quantity"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "product_id": productId,
-    "price": price,
-    "size": size,
-    "category_name": categoryNameValues.reverse![categoryName],
-    "product_name": productName,
-    "quantity": quantity,
-    "images": List<dynamic>.from(images.map((x) => x)),
-  };
-}
-
-enum CategoryName { ACRYLIC_WALL_PUTTY, BARPIMO_INT_EMULSION, OTHERS }
-
-final categoryNameValues = EnumValues({
-  "ACRYLIC WALL PUTTY": CategoryName.ACRYLIC_WALL_PUTTY,
-  "BARPIMO INT EMULSION": CategoryName.BARPIMO_INT_EMULSION,
-  "OTHERS": CategoryName.OTHERS
-});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  Map<T, String>? reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String>? get reverse {
-    if (reverseMap == null) {
-      reverseMap = map.map((k, v) => new MapEntry(v, k));
-    }
-    return reverseMap;
-  }
+        "id": id,
+        "product_id": productId,
+        "pid": pid,
+        "price": price,
+        "size": size,
+        "category_name": categoryName,
+        "product_name": productName,
+        "quantity": quantity,
+      };
 }

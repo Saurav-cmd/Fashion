@@ -1,7 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fashion_paints/colors/colors_file.dart';
+import 'package:fashion_paints/controllers/statement_controller.dart';
+import 'package:fashion_paints/screens/statement/statement_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class DealerHomePage extends StatefulWidget {
   const DealerHomePage({Key? key}) : super(key: key);
@@ -11,10 +15,19 @@ class DealerHomePage extends StatefulWidget {
 }
 
 class _DealerHomePageState extends State<DealerHomePage> {
+  StatementController sC = Get.put(StatementController());
+
   final List<String> imageList = [
     'https://static9.depositphotos.com/1167801/1083/i/600/depositphotos_10837356-stock-photo-paint-dripping.jpg',
     'https://www.californiapaints.com/wp-content/uploads/Painting-Basics.jpg',
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -394,26 +407,32 @@ class _DealerHomePageState extends State<DealerHomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    child: Card(
-                      elevation: 0,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: size.width * 0.045,
-                            vertical: size.height * 0.010),
-                        child: Column(
-                          children: [
-                            Image.asset("icons/statment.png"),
-                            SizedBox(height: size.height * 0.020),
-                            Center(
-                                child: Text(
-                              "Statement",
-                              style: TextStyle(
-                                  color: ChooseColor(0).appBarColor1,
-                                  fontSize:
-                                      size.height * 0.009 + size.width * 0.009),
-                            ))
-                          ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (ctx) => StatementPdf()));
+                    },
+                    child: SizedBox(
+                      child: Card(
+                        elevation: 0,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.045,
+                              vertical: size.height * 0.010),
+                          child: Column(
+                            children: [
+                              Image.asset("icons/statment.png"),
+                              SizedBox(height: size.height * 0.020),
+                              Center(
+                                  child: Text(
+                                "Statement",
+                                style: TextStyle(
+                                    color: ChooseColor(0).appBarColor1,
+                                    fontSize: size.height * 0.009 +
+                                        size.width * 0.009),
+                              ))
+                            ],
+                          ),
                         ),
                       ),
                     ),

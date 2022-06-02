@@ -12,6 +12,7 @@ double? bPassedChooseColor;
 Color? colorValue;
 List<Color?> recentColorList = [];
 List<ShadeColorDatabase> allColorsData = [];
+
 TextEditingController searchController = TextEditingController();
 
 class ExteriorImagePaint extends StatefulWidget {
@@ -23,6 +24,22 @@ class ExteriorImagePaint extends StatefulWidget {
 
 class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
   List<ShadeColorDatabase> searchColor = [];
+
+  getAllShadeColor() async {
+    final shadeData = await DatabaseHelper.instance.getShadeColorData();
+    for (int i = 0; i < shadeData.length; i++) {
+      print("Vhitra aayo");
+      allColorsData.add(shadeData[i]);
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getAllShadeColor();
+  }
+
   @override
   Widget build(BuildContext context) {
     final notifier = ValueNotifier(Offset.zero);
@@ -75,7 +92,7 @@ class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
                   ),
                 ),
                 SizedBox(height: size.height * 0.020),
-                const ShowShadeColors()
+                const ShowShadeColors(),
               ],
             ),
           ),
@@ -97,10 +114,7 @@ class ShowShadeColors extends StatefulWidget {
 
 class _ShowShadeColorsState extends State<ShowShadeColors> {
   Widget setupShadeColorContainer(BuildContext context) {
-    return
-        /*searchController.text.isEmpty
-        ? */
-        SizedBox(
+    return SizedBox(
       height: 300.0, // Change as per your requirement
       width: 300.0, // Change as per your requirement
       child: GridView.builder(
@@ -154,25 +168,8 @@ class _ShowShadeColorsState extends State<ShowShadeColors> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getAllShadeColor();
     recentColorList.clear();
     colorValue = Colors.transparent;
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    getAllShadeColor();
-  }
-
-  getAllShadeColor() async {
-    final shadeData = await DatabaseHelper.instance.getShadeColorData();
-    for (int i = 0; i < shadeData.length; i++) {
-      setState(() {
-        allColorsData.add(shadeData[i]);
-      });
-    }
   }
 
   showAllColors(BuildContext context) async {

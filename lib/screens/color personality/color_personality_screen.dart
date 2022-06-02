@@ -14,10 +14,11 @@ class ColorPersonality extends StatefulWidget {
 }
 
 class _ColorPersonalityState extends State<ColorPersonality> {
-  late WebViewController controller;
+  bool isLoading = true;
+  final _key = UniqueKey();
+  late WebViewController webViewController;
   @override
   Widget build(BuildContext context) {
-    var isLoading = true;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ChooseColor(0).appBarColor1,
@@ -28,23 +29,35 @@ class _ColorPersonalityState extends State<ColorPersonality> {
             statusBarIconBrightness: Brightness.light),
         actions: [
           IconButton(
-              onPressed: () async {
-                print("tapped");
-                await controller
-                    .loadUrl("https://fashionpaints.com.np/color-personality/");
+              onPressed: () {
+                setState(() {
+                  isLoading = true;
+                  webViewController.loadUrl(
+                      "https://fashionpaints.com.np/color-personality/");
+                });
               },
               icon: const Icon(Icons.refresh))
         ],
       ),
-      body: WebView(
-        javascriptMode: JavascriptMode.unrestricted,
-        initialUrl: 'https://fashionpaints.com.np/color-personality/',
-        onWebViewCreated: (controller) {
-          this.controller = controller;
-        },
-        onPageStarted: (url) {
-          print('this is our url $url');
-        },
+      body: Stack(
+        children: [
+          WebView(
+            key: _key,
+            javascriptMode: JavascriptMode.unrestricted,
+            initialUrl: 'https://fashionpaints.com.np/color-personality/',
+            onWebViewCreated: (controller) {
+              webViewController = controller;
+            },
+            onPageFinished: (finish) {
+              setState(() {
+                isLoading = false;
+              });
+            },
+          ),
+          isLoading
+              ? LinearProgressIndicator(color: ChooseColor(0).appBarColor1)
+              : Stack()
+        ],
       ),
     );
   }

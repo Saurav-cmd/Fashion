@@ -96,7 +96,9 @@ class _PainterStatusState extends State<PainterStatus> {
       final result = await InternetAddress.lookup("example.com");
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         print("There is wifi connection");
-        await pC.findNearbyPainter(latitude, longitude).whenComplete(() {
+        await pC
+            .findNearbyPainter(latitude, longitude, context)
+            .whenComplete(() {
           setState(() {
             pC.painterData;
           });

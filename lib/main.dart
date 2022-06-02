@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
         "Dealer_button_Navigation_Bar": (ctx) => const DealerBottomNavigation(),
         "Search_Screen": (ctx) => const SearchScreen(),
         "Bipana_Preview_screen": (ctx) => const BipanaPreviewScreen(),
-        "Price_List_screen": (ctx) => const PriceList(),
+        "Price_List_screen": (ctx) => PriceList(),
         "Scheme_List_screen": (ctx) => const SchemeList(),
         "Notification_List_screen": (ctx) => const NotificationScreen(),
         "Dealer_Notification_List_screen": (ctx) =>

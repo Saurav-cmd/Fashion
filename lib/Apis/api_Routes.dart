@@ -2,10 +2,6 @@ import 'package:fashion_paints/Utils/contants.dart';
 
 class ApiRoute {
   String? getLoginUrl(userCode, password, deviceId, fcmId) {
-    print("This is device Id ${deviceId}");
-    print("This is fcm Id ${fcmId}");
-    print("This is userCode ${userCode}");
-    print("This is password ${password}");
     return Constants.baseUrl +
         "login?user_code=$userCode&password=$password&device_id=$deviceId&fcm_id=$fcmId";
   }
@@ -50,5 +46,45 @@ class ApiRoute {
 
   String? userNotification() {
     return Constants.baseUrl + "notice";
+  }
+
+  String? priceList() {
+    return Constants.baseUrl + "image?type=3";
+  }
+
+  String? schemeList() {
+    return Constants.baseUrl + "image?type=2";
+  }
+
+  String? statementList(String? userId) {
+    return Constants.baseUrl + "ledger?id=$userId";
+  }
+
+  String? orderHistory() {
+    return Constants.baseUrl + "orderHistory";
+  }
+
+  String? cartList() {
+    return Constants.baseUrl + "getCart";
+  }
+
+  String? deleteCart(int? cartId) {
+    return Constants.baseUrl + "cartDelete/$cartId";
+  }
+
+  String? addToCart(String? dealerId, int? itemId, int? quantity) {
+    return Constants.baseUrl +
+        "cart?dealer_id=$dealerId&items_id=$itemId&quantity=$quantity";
+  }
+
+  String? confirmOrder(
+    int? userId,
+    String? dealerId,
+    int? items_id,
+    int? quantity,
+    int? cartId,
+    String? date,
+  ) {
+    return Constants.baseUrl + "order";
   }
 }

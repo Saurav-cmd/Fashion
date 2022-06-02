@@ -164,7 +164,7 @@ class _HomePageState extends State<HomePage> {
                         child: Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: size.width * 0.010,
-                              vertical: size.height * 0.010),
+                              vertical: size.height * 0.005),
                           child: Column(
                             children: [
                               Image.asset(
@@ -194,7 +194,7 @@ class _HomePageState extends State<HomePage> {
                         child: Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: size.width * 0.050,
-                              vertical: size.height * 0.010),
+                              vertical: size.height * 0.005),
                           child: Column(
                             children: [
                               Image.asset(

@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Utils/contants.dart';
 import '../controllers/get_cart_data_controller.dart';
 import '../main.dart';
 import '../models/apis_model/add_to_cart_model.dart';
@@ -21,13 +22,14 @@ import '../models/apis_model/find_painter_model.dart';
 import '../models/apis_model/get_cart_data_model.dart';
 import '../models/apis_model/notice_model.dart';
 import '../models/apis_model/order_history_model.dart';
+import '../models/apis_model/price_list_model.dart';
 import '../models/apis_model/product_model.dart';
+import '../models/apis_model/stetement_model.dart';
 import '../models/apis_model/user_notification_model.dart';
 
 class Services {
   static Future<LoginModel?> loginData(String userCode, String password,
       String deviceId, String fcmId, BuildContext context) async {
-    String? token;
     try {
       String? apiRoute =
           ApiRoute().getLoginUrl(userCode, password, deviceId, fcmId);
@@ -37,14 +39,33 @@ class Services {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         final userData = jsonEncode({
           'message': responseData['message'],
+          'status': responseData['status'],
           'token': responseData['token'],
           'userName': responseData['Dealer_user']['full_name'],
           'phone': responseData['Dealer_user']['phone'],
           'userCode': responseData['Dealer_user']['user_code'],
+          'user_id': responseData['Dealer_user']['id'],
+          'dealer_code': responseData['dealer_info']['code'],
+          "due_amount": responseData['dealer_info']['due_amount'],
         });
         prefs.setString('userData', userData);
-        Navigator.of(context)
-            .pushReplacementNamed("Dealer_button_Navigation_Bar");
+
+        SharedPreferences prefs1 = await SharedPreferences.getInstance();
+        final userData1 = prefs1.getString("userData");
+        String? message;
+        String? status;
+        if (userData1 != null) {
+          message = jsonDecode(userData1)['message'];
+          status = jsonDecode(userData1)['status'];
+          if (message == "User already logged in on another device" &&
+              status == "error") {
+            print("User Already logged in");
+            AlertBox().userAlreadyLoggedIn(context);
+          } else if (message == "Welcome" && status == "success") {
+            Navigator.of(context)
+                .pushReplacementNamed("Dealer_button_Navigation_Bar");
+          }
+        }
       } else if (response.statusCode == 403) {
         AlertBox().loginAlertBox1(context);
       } else if (response.statusCode == 400) {
@@ -65,28 +86,33 @@ class Services {
   }
 
   static Future<List<GetCartData>?>? getCartData(BuildContext context) async {
-    const url = "http://reliancetint.bihanitech.com/api/getCart";
+    String? token;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString("userData");
+    if (userData != null) {
+      token = jsonDecode(userData)['token'];
+    }
+    final apiUrl = ApiRoute().cartList();
     try {
-      final response = await http.get(Uri.parse(url), headers: {
-        "Authorization":
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9yZWxpYW5jZXRpbnQuYmloYW5pdGVjaC5jb21cL2FwaVwvbG9naW4iLCJpYXQiOjE2NTE1NjEyODgsIm5iZiI6MTY1MTU2MTI4OCwianRpIjoiQWF2T0tVR2F4dkZjSnppeSIsInN1YiI6MjA5LCJwcnYiOiJjMWUxNGVhNzk5NjA4MDdkNmEyYjE3ZGEyYWYwYzM5MzQ1ZmNjYTdhIn0.w-ZKQGkW2lgfm_tpFwWBXUXpPzYikC-Hg89n9sKttgM",
+      final response = await http.get(Uri.parse(apiUrl!), headers: {
+        "Authorization": "Bearer $token",
         'Content-Type': 'application/json'
       });
       final responseData = json.decode(response.body);
       if (response.statusCode == 200) {
-        print('all product data 99 ${response.body}');
         return getCartDataFromJson(jsonEncode(responseData));
       } else if (response.statusCode == 403) {
-        print('error');
+        AlertBox().AlertBox403(context);
       } else if (response.statusCode == 400) {
-        print('error');
+        AlertBox().AlertBox400(context);
       } else if (response.statusCode == 401) {
-        print('error');
+        AlertBox().AlertBox401(context);
       } else if (response.statusCode == 500) {
-        print('error');
+        AlertBox().servererror(context);
       } else if (response.statusCode == 503) {
+        AlertBox().servererror(context);
       } else {
-        print('error');
+        AlertBox().universalAlertBox(context);
       }
     } catch (e) {
       print('error');
@@ -95,28 +121,35 @@ class Services {
 
   static Future<List<OrderHistory>?>? getOrderHistory(
       BuildContext context) async {
-    const url = "http://reliancetint.bihanitech.com/api/orderHistory";
+    String? token;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString("userData");
+    if (userData != null) {
+      token = jsonDecode(userData)['token'];
+    } else {
+      return null;
+    }
+
+    final apiUrl = ApiRoute().orderHistory();
     try {
-      final response = await http.get(Uri.parse(url), headers: {
-        "Authorization":
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9yZWxpYW5jZXRpbnQuYmloYW5pdGVjaC5jb21cL2FwaVwvbG9naW4iLCJpYXQiOjE2NTE1NjEyODgsIm5iZiI6MTY1MTU2MTI4OCwianRpIjoiQWF2T0tVR2F4dkZjSnppeSIsInN1YiI6MjA5LCJwcnYiOiJjMWUxNGVhNzk5NjA4MDdkNmEyYjE3ZGEyYWYwYzM5MzQ1ZmNjYTdhIn0.w-ZKQGkW2lgfm_tpFwWBXUXpPzYikC-Hg89n9sKttgM",
+      final response = await http.get(Uri.parse(apiUrl!), headers: {
+        "Authorization": "Bearer $token",
         'Content-Type': 'application/json'
       });
-      final responseData = json.decode(response.body);
       if (response.statusCode == 200) {
-        print('order history services ${response.body}');
-        return orderHistoryFromJson(jsonEncode(responseData));
+        return orderHistoryFromJson(response.body);
       } else if (response.statusCode == 403) {
-        print('error');
+        AlertBox().AlertBox403(context);
       } else if (response.statusCode == 400) {
-        print('error');
+        AlertBox().AlertBox400(context);
       } else if (response.statusCode == 401) {
-        print('error');
+        AlertBox().AlertBox401(context);
       } else if (response.statusCode == 500) {
-        print('error');
+        AlertBox().servererror(context);
       } else if (response.statusCode == 503) {
+        AlertBox().servererror(context);
       } else {
-        print('error');
+        AlertBox().universalAlertBox(context);
       }
     } catch (e) {
       print('error');
@@ -157,16 +190,17 @@ class Services {
 
         return addCartFromJson(jsonEncode(responseData));
       } else if (response.statusCode == 403) {
-        print('error403');
+        AlertBox().AlertBox403(context);
       } else if (response.statusCode == 400) {
-        print('error400');
+        AlertBox().AlertBox400(context);
       } else if (response.statusCode == 401) {
-        print('error401');
+        AlertBox().AlertBox401(context);
       } else if (response.statusCode == 500) {
-        print('error500');
+        AlertBox().servererror(context);
       } else if (response.statusCode == 503) {
+        AlertBox().servererror(context);
       } else {
-        print('error503');
+        AlertBox().universalAlertBox(context);
       }
     } catch (e) {
       print('errorcatche');
@@ -174,28 +208,33 @@ class Services {
   }
 
   static Future<ProductList?> getProduct(BuildContext context) async {
-    const url = "http://reliancetint.bihanitech.com/api/products";
+    String? token;
+    final url = "${Constants.baseUrl}products";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString('userData');
+    if (userData != null) {
+      token = jsonDecode(userData)['token'];
+    }
     try {
       final response = await http.get(Uri.parse(url), headers: {
-        "Authorization":
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9yZWxpYW5jZXRpbnQuYmloYW5pdGVjaC5jb21cL2FwaVwvbG9naW4iLCJpYXQiOjE2NTE1NjEyODgsIm5iZiI6MTY1MTU2MTI4OCwianRpIjoiQWF2T0tVR2F4dkZjSnppeSIsInN1YiI6MjA5LCJwcnYiOiJjMWUxNGVhNzk5NjA4MDdkNmEyYjE3ZGEyYWYwYzM5MzQ1ZmNjYTdhIn0.w-ZKQGkW2lgfm_tpFwWBXUXpPzYikC-Hg89n9sKttgM",
+        "Authorization": "Bearer $token",
         'Content-Type': 'application/json'
       });
       final responseData = json.decode(response.body);
       if (response.statusCode == 200) {
-        print('all product data 99 ${response.body}');
         return productListFromJson(jsonEncode(responseData));
       } else if (response.statusCode == 403) {
-        print('error');
+        AlertBox().AlertBox403(context);
       } else if (response.statusCode == 400) {
-        print('error');
+        AlertBox().AlertBox400(context);
       } else if (response.statusCode == 401) {
-        print('error');
+        AlertBox().AlertBox401(context);
       } else if (response.statusCode == 500) {
-        print('error');
+        AlertBox().servererror(context);
       } else if (response.statusCode == 503) {
+        AlertBox().servererror(context);
       } else {
-        print('error');
+        AlertBox().universalAlertBox(context);
       }
     } catch (e) {
       print('error');
@@ -221,16 +260,17 @@ class Services {
 
         return addCartFromJson(jsonEncode(responseData));
       } else if (response.statusCode == 403) {
-        print('error403');
+        AlertBox().AlertBox403(context);
       } else if (response.statusCode == 400) {
-        print('error400');
+        AlertBox().AlertBox400(context);
       } else if (response.statusCode == 401) {
-        print('error401');
+        AlertBox().AlertBox401(context);
       } else if (response.statusCode == 500) {
-        print('error500');
+        AlertBox().servererror(context);
       } else if (response.statusCode == 503) {
+        AlertBox().servererror(context);
       } else {
-        print('error503');
+        AlertBox().universalAlertBox(context);
       }
     } catch (e) {
       print('errorcatche');
@@ -267,16 +307,17 @@ class Services {
         print('confirm order 99 all  ${response.body}');
         return orderIdFromJson(jsonEncode(responseData));
       } else if (response.statusCode == 403) {
-        print('error403');
+        AlertBox().AlertBox403(context);
       } else if (response.statusCode == 400) {
-        print('error400');
+        AlertBox().AlertBox400(context);
       } else if (response.statusCode == 401) {
-        print('error401');
+        AlertBox().AlertBox401(context);
       } else if (response.statusCode == 500) {
-        print('error500');
+        AlertBox().servererror(context);
       } else if (response.statusCode == 503) {
+        AlertBox().servererror(context);
       } else {
-        print('error503');
+        AlertBox().universalAlertBox(context);
       }
     } catch (e) {
       print('errorcatche');
@@ -323,7 +364,8 @@ class Services {
       double? serviceRating,
       double? teamRating,
       String? updatedAt,
-      String? createdAt) async {
+      String? createdAt,
+      BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userData = prefs.getString("userData");
     String? token = json.decode(userData!)["token"];
@@ -377,8 +419,18 @@ class Services {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         );
         snackBarKey.currentState?.showSnackBar(snackBar);
+      } else if (response.statusCode == 403) {
+        AlertBox().AlertBox403(context);
+      } else if (response.statusCode == 400) {
+        AlertBox().AlertBox400(context);
+      } else if (response.statusCode == 401) {
+        AlertBox().AlertBox401(context);
+      } else if (response.statusCode == 500) {
+        AlertBox().servererror(context);
+      } else if (response.statusCode == 503) {
+        AlertBox().servererror(context);
       } else {
-        print("error");
+        AlertBox().universalAlertBox(context);
       }
     } catch (e) {
       rethrow;
@@ -386,7 +438,7 @@ class Services {
   }
 
   static Future<List<Painter>?> findPainter(
-      double? latitude, double? longitude) async {
+      double? latitude, double? longitude, BuildContext context) async {
     try {
       final api = ApiRoute().findPainter(latitude, longitude);
       final response = await http.get(Uri.parse(api!), headers: {
@@ -394,8 +446,18 @@ class Services {
       });
       if (response.statusCode == 200) {
         return painterFromJson(response.body);
+      } else if (response.statusCode == 403) {
+        AlertBox().AlertBox403(context);
+      } else if (response.statusCode == 400) {
+        AlertBox().AlertBox400(context);
+      } else if (response.statusCode == 401) {
+        AlertBox().AlertBox401(context);
+      } else if (response.statusCode == 500) {
+        AlertBox().servererror(context);
+      } else if (response.statusCode == 503) {
+        AlertBox().servererror(context);
       } else {
-        print("error aayo");
+        AlertBox().universalAlertBox(context);
       }
     } catch (e) {
       rethrow;
@@ -452,15 +514,15 @@ class Services {
         );
         snackBarKey.currentState?.showSnackBar(snackBar);
       } else if (response.statusCode == 403) {
-        AlertBox().loginAlertBox1(context);
+        AlertBox().AlertBox403(context);
       } else if (response.statusCode == 400) {
-        AlertBox().loginAlertBox2(context);
+        AlertBox().AlertBox400(context);
       } else if (response.statusCode == 401) {
-        AlertBox().loginAlertBox3(context);
+        AlertBox().AlertBox401(context);
       } else if (response.statusCode == 500) {
-        print("Unexpected error on Server");
+        AlertBox().servererror(context);
       } else if (response.statusCode == 503) {
-        print("Unexpected error on Server");
+        AlertBox().servererror(context);
       } else {
         AlertBox().universalAlertBox(context);
       }
@@ -530,15 +592,15 @@ class Services {
         );
         snackBarKey.currentState?.showSnackBar(snackBar);
       } else if (response.statusCode == 403) {
-        AlertBox().loginAlertBox1(context);
+        AlertBox().AlertBox403(context);
       } else if (response.statusCode == 400) {
-        AlertBox().loginAlertBox2(context);
+        AlertBox().AlertBox400(context);
       } else if (response.statusCode == 401) {
-        AlertBox().loginAlertBox3(context);
+        AlertBox().AlertBox401(context);
       } else if (response.statusCode == 500) {
-        print("Unexpected error on Server");
+        AlertBox().servererror(context);
       } else if (response.statusCode == 503) {
-        print("Unexpected error on Server");
+        AlertBox().servererror(context);
       } else {
         AlertBox().universalAlertBox(context);
       }
@@ -607,15 +669,15 @@ class Services {
         );
         snackBarKey.currentState?.showSnackBar(snackBar);
       } else if (response.statusCode == 403) {
-        AlertBox().loginAlertBox1(context);
+        AlertBox().AlertBox403(context);
       } else if (response.statusCode == 400) {
-        AlertBox().loginAlertBox2(context);
+        AlertBox().AlertBox400(context);
       } else if (response.statusCode == 401) {
-        AlertBox().loginAlertBox3(context);
+        AlertBox().AlertBox401(context);
       } else if (response.statusCode == 500) {
-        print("Unexpected error on Server");
+        AlertBox().servererror(context);
       } else if (response.statusCode == 503) {
-        print("Unexpected error on Server");
+        AlertBox().servererror(context);
       } else {
         AlertBox().universalAlertBox(context);
       }
@@ -625,14 +687,24 @@ class Services {
   }
 
   static Future<BipanaPreviewSaved?> getBipanPreviewSaved(
-      String? emailAddress, String? phone) async {
+      String? emailAddress, String? phone, BuildContext context) async {
     try {
       final apiData = ApiRoute().BipanPreviewSaved(emailAddress, phone);
       final response = await http.get(Uri.parse(apiData!));
       if (response.statusCode == 200) {
         return bipanaPreviewSavedFromJson(response.body);
+      } else if (response.statusCode == 403) {
+        AlertBox().AlertBox403(context);
+      } else if (response.statusCode == 400) {
+        AlertBox().AlertBox400(context);
+      } else if (response.statusCode == 401) {
+        AlertBox().AlertBox401(context);
+      } else if (response.statusCode == 500) {
+        AlertBox().servererror(context);
+      } else if (response.statusCode == 503) {
+        AlertBox().servererror(context);
       } else {
-        print("Some error occurred");
+        AlertBox().universalAlertBox(context);
       }
     } catch (e) {
       rethrow;
@@ -653,6 +725,305 @@ class Services {
         return userNotificationFromJson(response.body);
       } else {
         print("Error occurred");
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<PriceList?> getPriceList(BuildContext context) async {
+    String? token;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString("userData");
+    if (userData != null) {
+      token = jsonDecode(userData)['token'];
+    } else {
+      return null;
+    }
+    try {
+      final apiData = ApiRoute().priceList();
+      final response = await http.get(Uri.parse(apiData!), headers: {
+        "Content-Type": "application/json",
+        "Authorization": "bearer $token"
+      });
+      if (response.statusCode == 200) {
+        return priceListFromJson(response.body);
+      } else if (response.statusCode == 403) {
+        AlertBox().AlertBox403(context);
+      } else if (response.statusCode == 400) {
+        AlertBox().AlertBox400(context);
+      } else if (response.statusCode == 401) {
+        AlertBox().AlertBox401(context);
+      } else if (response.statusCode == 500) {
+        AlertBox().servererror(context);
+      } else if (response.statusCode == 503) {
+        AlertBox().servererror(context);
+      } else {
+        AlertBox().universalAlertBox(context);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  //schemeList and price list ko data module same xa tai vhaya ra price list kai model use garaya ko scheme list ko lagi ne and scheme list ko controller price list controller mai xa
+  static Future<PriceList?> getSchemeList(BuildContext context) async {
+    String? token;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString("userData");
+    if (userData != null) {
+      token = jsonDecode(userData)['token'];
+    } else {
+      return null;
+    }
+    try {
+      final apiData = ApiRoute().schemeList();
+      final response = await http.get(Uri.parse(apiData!), headers: {
+        "Content-Type": "application/json",
+        "Authorization": "bearer $token"
+      });
+      if (response.statusCode == 200) {
+        return priceListFromJson(response.body);
+      } else if (response.statusCode == 403) {
+        AlertBox().AlertBox403(context);
+      } else if (response.statusCode == 400) {
+        AlertBox().AlertBox400(context);
+      } else if (response.statusCode == 401) {
+        AlertBox().AlertBox401(context);
+      } else if (response.statusCode == 500) {
+        AlertBox().servererror(context);
+      } else if (response.statusCode == 503) {
+        AlertBox().servererror(context);
+      } else {
+        AlertBox().universalAlertBox(context);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<StatementList?> getStatementList(BuildContext context) async {
+    String? token;
+    String? userId;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString("userData");
+    if (userData != null) {
+      token = jsonDecode(userData)['token'];
+      userId = jsonDecode(userData)['user_id'];
+    } else {
+      return null;
+    }
+
+    try {
+      final apiData = ApiRoute().statementList(userId);
+      final response = await http.get(Uri.parse(apiData!), headers: {
+        "content-Type": "application/json",
+        "Authorization": "Bearer $token"
+      });
+      if (response.statusCode == 200) {
+        return statementListFromJson(response.body);
+      } else if (response.statusCode == 403) {
+        AlertBox().AlertBox403(context);
+      } else if (response.statusCode == 400) {
+        AlertBox().AlertBox400(context);
+      } else if (response.statusCode == 401) {
+        AlertBox().AlertBox401(context);
+      } else if (response.statusCode == 500) {
+        AlertBox().servererror(context);
+      } else if (response.statusCode == 503) {
+        AlertBox().servererror(context);
+      } else {
+        AlertBox().universalAlertBox(context);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<String?> deleteCartItem(
+      int? cartId, BuildContext context) async {
+    String? token;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString("userData");
+    if (userData != null) {
+      token = jsonDecode(userData)['token'];
+    }
+    try {
+      final apiUrl = ApiRoute().deleteCart(cartId);
+      final response = await http.delete(Uri.parse(apiUrl!), headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token"
+      });
+      if (response.statusCode == 200) {
+        final SnackBar snackBar = SnackBar(
+          content: Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  'cart Item deleted successfully',
+                  maxLines: 2,
+                  style: TextStyle(fontSize: 14),
+                ),
+              ],
+            ),
+          ),
+          duration: const Duration(seconds: 1),
+          backgroundColor: Colors.grey.shade700,
+          behavior: SnackBarBehavior.floating,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        );
+        snackBarKey.currentState?.showSnackBar(snackBar);
+      } else if (response.statusCode == 403) {
+        AlertBox().AlertBox403(context);
+      } else if (response.statusCode == 400) {
+        AlertBox().AlertBox400(context);
+      } else if (response.statusCode == 401) {
+        AlertBox().AlertBox401(context);
+      } else if (response.statusCode == 500) {
+        AlertBox().servererror(context);
+      } else if (response.statusCode == 503) {
+        AlertBox().servererror(context);
+      } else {
+        AlertBox().universalAlertBox(context);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<String?> addToCart(
+      int? itemId, int? quantity, BuildContext context) async {
+    String? dealerId;
+    String? token;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString("userData");
+    if (userData != null) {
+      dealerId = jsonDecode(userData)['dealer_code'];
+      token = jsonDecode(userData)['token'];
+    }
+    try {
+      final apiUrl = ApiRoute().addToCart(dealerId, itemId, quantity);
+      final response = await http.post(Uri.parse(apiUrl!), headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token"
+      });
+      if (response.statusCode == 200) {
+        final SnackBar snackBar = SnackBar(
+          content: Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  'Item added to cart successfully',
+                  maxLines: 2,
+                  style: TextStyle(fontSize: 14),
+                ),
+              ],
+            ),
+          ),
+          duration: const Duration(seconds: 1),
+          backgroundColor: Colors.grey.shade700,
+          behavior: SnackBarBehavior.floating,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        );
+        snackBarKey.currentState?.showSnackBar(snackBar);
+      } else if (response.statusCode == 403) {
+        AlertBox().AlertBox403(context);
+      } else if (response.statusCode == 400) {
+        AlertBox().AlertBox400(context);
+      } else if (response.statusCode == 401) {
+        AlertBox().AlertBox401(context);
+      } else if (response.statusCode == 500) {
+        AlertBox().servererror(context);
+      } else if (response.statusCode == 503) {
+        AlertBox().servererror(context);
+      } else {
+        AlertBox().universalAlertBox(context);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<void> confirmOrder(int? itemId, int? quantity, int? cartId,
+      String? date, BuildContext context) async {
+    String? token;
+    int? userId;
+    String? dealerCode;
+    int? due;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString("userData");
+    if (userData != null) {
+      token = jsonDecode(userData)['token'];
+      userId = jsonDecode(userData)['user_id'];
+      dealerCode = jsonDecode(userData)['dealer_code'];
+      due = jsonDecode(userData)['due_amount'];
+    } else {
+      return null;
+    }
+    print("This is token $token");
+    print("userId $userId");
+    print("dealer code $dealerCode");
+    print("due $due");
+    print("${date}");
+    try {
+      final apiUrl = ApiRoute()
+          .confirmOrder(userId!, dealerCode, itemId, quantity, cartId, date);
+      final response = await http.post(Uri.parse(apiUrl!),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $token"
+          },
+          body: jsonEncode({
+            "purpose_id": 1,
+            'dealer_code': dealerCode,
+            'user_id': userId,
+            'date': date,
+            'due': due,
+            'orders': [
+              {'cart_id': cartId, 'items_id': itemId, 'quantity': quantity}
+            ]
+          }));
+
+      if (response.statusCode == 200) {
+        final SnackBar snackBar = SnackBar(
+          content: Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  'Order Confirmed',
+                  maxLines: 2,
+                  style: TextStyle(fontSize: 14),
+                ),
+              ],
+            ),
+          ),
+          duration: const Duration(seconds: 1),
+          backgroundColor: Colors.grey.shade700,
+          behavior: SnackBarBehavior.floating,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        );
+        snackBarKey.currentState?.showSnackBar(snackBar);
+      } else if (response.statusCode == 403) {
+        AlertBox().AlertBox403(context);
+      } else if (response.statusCode == 400) {
+        AlertBox().AlertBox400(context);
+      } else if (response.statusCode == 401) {
+        AlertBox().AlertBox401(context);
+      } else if (response.statusCode == 500) {
+        AlertBox().servererror(context);
+      } else if (response.statusCode == 503) {
+        AlertBox().servererror(context);
+      } else {
+        AlertBox().universalAlertBox(context);
       }
     } catch (e) {
       rethrow;
