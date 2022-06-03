@@ -675,473 +675,481 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
               icon: const Icon(Icons.home)),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: size.width * 0.030, vertical: size.height * 0.020),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(5),
-                      bottomLeft: Radius.circular(5)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 5.0, left: 20, right: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                          width: 210,
-                          child: Text(
-                            'Colour Code/Name',
-                            style: TextStyle(
-                                color: Colors.black87,
-                                fontSize:
-                                    size.height * 0.010 + size.width * 0.010,
-                                fontWeight: FontWeight.w500),
-                          )),
-                      SizedBox(height: size.height * 0.010),
-                      Text(
-                        '$passedColorName',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: size.height * 0.012 + size.width * 0.012,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Product : $passedProductName',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize:
-                                    size.height * 0.012 + size.width * 0.012,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          Stack(
-                            alignment: Alignment.bottomLeft,
-                            children: [
-                              Container(
-                                height: 100,
-                                width: 70,
-                                color: Colors.grey.shade300,
-                              ),
-                              SizedBox(
-                                child: AnimatedContainer(
-                                  height: 80,
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: size.width * 0.030, vertical: size.height * 0.020),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(5),
+                        bottomLeft: Radius.circular(5)),
+                  ),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(top: 5.0, left: 20, right: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                            width: 210,
+                            child: Text(
+                              'Colour Code/Name',
+                              style: TextStyle(
+                                  color: Colors.black87,
+                                  fontSize:
+                                      size.height * 0.010 + size.width * 0.010,
+                                  fontWeight: FontWeight.w500),
+                            )),
+                        SizedBox(height: size.height * 0.010),
+                        Text(
+                          '$passedColorName',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize:
+                                  size.height * 0.012 + size.width * 0.012,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Product : $passedProductName',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize:
+                                      size.height * 0.012 + size.width * 0.012,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            Stack(
+                              alignment: Alignment.bottomLeft,
+                              children: [
+                                Container(
+                                  height: 100,
                                   width: 70,
-                                  color: Color.fromRGBO(singleRValue,
-                                      singleGValue, singleBValue, 1),
-                                  duration: const Duration(seconds: 1),
+                                  color: Colors.grey.shade300,
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: size.height * 0.015),
-                      Text(
-                        'Fandeck',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: size.height * 0.010 + size.width * 0.010,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      Text(
-                        '$passedFanDeckName',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: size.height * 0.012 + size.width * 0.012,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                    ],
+                                SizedBox(
+                                  child: AnimatedContainer(
+                                    height: 80,
+                                    width: 70,
+                                    color: Color.fromRGBO(singleRValue,
+                                        singleGValue, singleBValue, 1),
+                                    duration: const Duration(seconds: 1),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: size.height * 0.015),
+                        Text(
+                          'Fandeck',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize:
+                                  size.height * 0.010 + size.width * 0.010,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        Text(
+                          '$passedFanDeckName',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize:
+                                  size.height * 0.012 + size.width * 0.012,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
-              SizedBox(height: size.height * 0.020),
-              Text(
-                'Base:',
-                style: TextStyle(
-                    color: ChooseColor(0).appBarColor1,
-                    fontSize: size.height * 0.010 + size.width * 0.010,
-                    fontWeight: FontWeight.w500),
-              ),
-              SizedBox(height: size.height * 0.010),
-              //here
-              if (passedProductName == "cosmeticintemulsion" ||
-                  passedProductName == "magnetextemulsion" ||
-                  passedProductName == "weatherproofextemulsion")
+                SizedBox(height: size.height * 0.020),
                 Text(
-                  '$baseName  ${selectedCanSize == 0.0 ? passedCanSize : selectedCanSize} Ltr',
+                  'Base:',
                   style: TextStyle(
-                      color: Colors.black,
-                      fontSize: size.height * 0.012 + size.width * 0.012,
+                      color: ChooseColor(0).appBarColor1,
+                      fontSize: size.height * 0.010 + size.width * 0.010,
                       fontWeight: FontWeight.w500),
                 ),
-              if (passedProductName == "smartdist" ||
-                  passedProductName == "styledist")
+                SizedBox(height: size.height * 0.010),
+                //here
+                if (passedProductName == "cosmeticintemulsion" ||
+                    passedProductName == "magnetextemulsion" ||
+                    passedProductName == "weatherproofextemulsion")
+                  Text(
+                    '$baseName  ${selectedCanSize == 0.0 ? passedCanSize : selectedCanSize} Ltr',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: size.height * 0.012 + size.width * 0.012,
+                        fontWeight: FontWeight.w500),
+                  ),
+                if (passedProductName == "smartdist" ||
+                    passedProductName == "styledist")
+                  Text(
+                    '$baseName  $passedCanSize Kg',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: size.height * 0.012 + size.width * 0.012,
+                        fontWeight: FontWeight.w500),
+                  ),
+                SizedBox(height: size.height * 0.020),
                 Text(
-                  '$baseName  $passedCanSize Kg',
+                  'Colourants:',
                   style: TextStyle(
-                      color: Colors.black,
-                      fontSize: size.height * 0.012 + size.width * 0.012,
+                      color: ChooseColor(0).appBarColor1,
+                      fontSize: size.height * 0.010 + size.width * 0.010,
                       fontWeight: FontWeight.w500),
                 ),
-              SizedBox(height: size.height * 0.020),
-              Text(
-                'Colourants:',
-                style: TextStyle(
-                    color: ChooseColor(0).appBarColor1,
-                    fontSize: size.height * 0.010 + size.width * 0.010,
-                    fontWeight: FontWeight.w500),
-              ),
-              SizedBox(height: size.height * 0.010),
-              SizedBox(
-                height: 130,
-                child: GridView.builder(
-                    itemCount: calculatedCylinderVolume.length,
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 1,
-                            crossAxisSpacing: 5,
-                            mainAxisSpacing: 5),
-                    itemBuilder: (ctx, i) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Stack(
-                            alignment: Alignment.bottomLeft,
+                SizedBox(height: size.height * 0.010),
+                SizedBox(
+                  height: 130,
+                  // width: 500,
+                  child: ListView.builder(
+                      itemCount: calculatedCylinderVolume.length,
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      itemBuilder: (ctx, i) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.015),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Container(
-                                height: 80,
-                                width: 70,
-                                color: Colors.grey.shade300,
-                              ),
-                              // if(selectedCanSize.toString().isEmpty || selectedCanSize==0.0)
-                              SizedBox(
-                                child: Container(
-                                  height: calculatedCylinderVolume[i]
-                                              .truncateToDouble() >
-                                          500
-                                      ? 90
-                                      : calculatedCylinderVolume[i]
+                              Stack(
+                                alignment: Alignment.bottomLeft,
+                                children: [
+                                  Container(
+                                    height: 80,
+                                    width: 70,
+                                    color: Colors.grey.shade300,
+                                  ),
+                                  // if(selectedCanSize.toString().isEmpty || selectedCanSize==0.0)
+                                  SizedBox(
+                                    child: Container(
+                                      height: calculatedCylinderVolume[i]
                                                   .truncateToDouble() >
-                                              400
-                                          ? 80
+                                              500
+                                          ? 90
                                           : calculatedCylinderVolume[i]
                                                       .truncateToDouble() >
-                                                  300
-                                              ? 70
+                                                  400
+                                              ? 80
                                               : calculatedCylinderVolume[i]
                                                           .truncateToDouble() >
-                                                      200
-                                                  ? 60
+                                                      300
+                                                  ? 70
                                                   : calculatedCylinderVolume[i]
                                                               .truncateToDouble() >
-                                                          107
-                                                      ? 50
+                                                          200
+                                                      ? 60
                                                       : calculatedCylinderVolume[
-                                                          i],
-                                  width: 70,
-                                  color: Color.fromRGBO(
-                                      rValue[i], gValue[i], bValue[i], 3),
-                                ),
+                                                                      i]
+                                                                  .truncateToDouble() >
+                                                              107
+                                                          ? 50
+                                                          : calculatedCylinderVolume[
+                                                              i],
+                                      width: 70,
+                                      color: Color.fromRGBO(
+                                          rValue[i], gValue[i], bValue[i], 3),
+                                    ),
+                                  ),
+                                ],
                               ),
+                              Text(cylinder[i]!),
+                              if (passedProductName == "cosmeticintemulsion" ||
+                                  passedProductName == "magnetextemulsion" ||
+                                  passedProductName ==
+                                      "weatherproofextemulsion")
+                                Text("${calculatedCylinderVolume[i]} ML"),
+                              if (passedProductName == "smartdist" ||
+                                  passedProductName == "styledist")
+                                Text("${calculatedCylinderVolume[i]} KG"),
                             ],
                           ),
-                          Text(cylinder[i]!),
-                          if (passedProductName == "cosmeticintemulsion" ||
-                              passedProductName == "magnetextemulsion" ||
-                              passedProductName == "weatherproofextemulsion")
-                            Text("${calculatedCylinderVolume[i]} ML"),
-                          if (passedProductName == "smartdist" ||
-                              passedProductName == "styledist")
-                            Text("${calculatedCylinderVolume[i]} KG"),
-                        ],
-                      );
-                    }),
-              ),
-              SizedBox(height: size.height * 0.020),
-
-              SizedBox(height: size.height * 0.020),
-              Text(
-                "Can Size:",
-                style: TextStyle(
-                    fontSize: size.height * 0.010 + size.width * 0.010,
-                    color: ChooseColor(0).appBarColor1,
-                    fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: size.height * 0.010),
-              if (passedProductName == "cosmeticintemulsion" ||
-                  passedProductName == "magnetextemulsion" ||
-                  passedProductName == "weatherproofextemulsion")
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedContainer = "first";
-                          selectedCanSize = 1;
-                          getCylinderVolume();
-                        });
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: selectedContainer == "first"
-                                ? ChooseColor(0).appBarColor1
-                                : Colors.grey,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10))),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: size.height * 0.010,
-                              horizontal: size.width * 0.030),
-                          child: const Text(
-                            "1 Ltr.",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedContainer = "second";
-                          selectedCanSize = 4;
-                          getCylinderVolume();
-                        });
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: selectedContainer == "second"
-                                ? ChooseColor(0).appBarColor1
-                                : Colors.grey,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10))),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: size.height * 0.010,
-                              horizontal: size.width * 0.030),
-                          child: const Text(
-                            "4 Ltr",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedContainer = "third";
-                          selectedCanSize = 10;
-                          getCylinderVolume();
-                        });
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: selectedContainer == "third"
-                                ? ChooseColor(0).appBarColor1
-                                : Colors.grey,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10))),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: size.height * 0.010,
-                              horizontal: size.width * 0.030),
-                          child: const Text(
-                            "10 Ltr",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedContainer = "fourth";
-                          selectedCanSize = 20;
-                          getCylinderVolume();
-                        });
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: selectedContainer == "fourth"
-                                ? ChooseColor(0).appBarColor1
-                                : Colors.grey,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10))),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: size.height * 0.010,
-                              horizontal: size.width * 0.030),
-                          child: const Text(
-                            "20 Ltr.",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
+                        );
+                      }),
                 ),
+                SizedBox(height: size.height * 0.020),
 
-              if (passedProductName == "smartdist" ||
-                  passedProductName == "styledist")
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedContainer = "first";
-                          selectedCanSize = 1;
-                          getCylinderVolume();
-                        });
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: selectedContainer == "first"
-                                ? ChooseColor(0).appBarColor1
-                                : Colors.grey,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10))),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: size.height * 0.010,
-                              horizontal: size.width * 0.030),
-                          child: const Text(
-                            "1 Kg",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedContainer = "second";
-                          selectedCanSize = 5;
-                          getCylinderVolume();
-                        });
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: selectedContainer == "second"
-                                ? ChooseColor(0).appBarColor1
-                                : Colors.grey,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10))),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: size.height * 0.010,
-                              horizontal: size.width * 0.030),
-                          child: const Text(
-                            "5 Kg",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedContainer = "third";
-                          selectedCanSize = 10;
-                          getCylinderVolume();
-                        });
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: selectedContainer == "third"
-                                ? ChooseColor(0).appBarColor1
-                                : Colors.grey,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10))),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: size.height * 0.010,
-                              horizontal: size.width * 0.030),
-                          child: const Text(
-                            "10 Kg",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedContainer = "fourth";
-                          selectedCanSize = 20;
-                          getCylinderVolume();
-                        });
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: selectedContainer == "fourth"
-                                ? ChooseColor(0).appBarColor1
-                                : Colors.grey,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10))),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: size.height * 0.010,
-                              horizontal: size.width * 0.030),
-                          child: const Text(
-                            "20 Kg",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
+                SizedBox(height: size.height * 0.020),
+                Text(
+                  "Can Size:",
+                  style: TextStyle(
+                      fontSize: size.height * 0.010 + size.width * 0.010,
+                      color: ChooseColor(0).appBarColor1,
+                      fontWeight: FontWeight.bold),
                 ),
-
-              SizedBox(height: size.height * 0.030),
-              ConstrainedBox(
-                constraints: BoxConstraints.tightFor(
-                    width: double.infinity, height: size.height * 0.055),
-                child: ElevatedButton(
-                  child: Text(
-                    'Price',
-                    maxLines: 1,
-                    style: TextStyle(
-                        fontSize: size.height * 0.014 + size.width * 0.014),
+                SizedBox(height: size.height * 0.010),
+                if (passedProductName == "cosmeticintemulsion" ||
+                    passedProductName == "magnetextemulsion" ||
+                    passedProductName == "weatherproofextemulsion")
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedContainer = "first";
+                            selectedCanSize = 1;
+                            getCylinderVolume();
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: selectedContainer == "first"
+                                  ? ChooseColor(0).appBarColor1
+                                  : Colors.grey,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10))),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: size.height * 0.010,
+                                horizontal: size.width * 0.030),
+                            child: const Text(
+                              "1 Ltr.",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedContainer = "second";
+                            selectedCanSize = 4;
+                            getCylinderVolume();
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: selectedContainer == "second"
+                                  ? ChooseColor(0).appBarColor1
+                                  : Colors.grey,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10))),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: size.height * 0.010,
+                                horizontal: size.width * 0.030),
+                            child: const Text(
+                              "4 Ltr",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedContainer = "third";
+                            selectedCanSize = 10;
+                            getCylinderVolume();
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: selectedContainer == "third"
+                                  ? ChooseColor(0).appBarColor1
+                                  : Colors.grey,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10))),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: size.height * 0.010,
+                                horizontal: size.width * 0.030),
+                            child: const Text(
+                              "10 Ltr",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedContainer = "fourth";
+                            selectedCanSize = 20;
+                            getCylinderVolume();
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: selectedContainer == "fourth"
+                                  ? ChooseColor(0).appBarColor1
+                                  : Colors.grey,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10))),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: size.height * 0.010,
+                                horizontal: size.width * 0.030),
+                            child: const Text(
+                              "20 Ltr.",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                  onPressed: () async {
-                    AlertBox().priceDialogueBox(
-                        baseName[0],
-                        selectedCanSize.toString().isEmpty ||
-                                selectedCanSize == 0.0
-                            ? passedCanSize
-                            : selectedCanSize,
-                        rValue,
-                        gValue,
-                        bValue,
-                        cylinder,
-                        calculatedCylinderVolume,
-                        unitPrice,
-                        context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: ChooseColor(0).buttonColor,
+
+                if (passedProductName == "smartdist" ||
+                    passedProductName == "styledist")
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedContainer = "first";
+                            selectedCanSize = 1;
+                            getCylinderVolume();
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: selectedContainer == "first"
+                                  ? ChooseColor(0).appBarColor1
+                                  : Colors.grey,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10))),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: size.height * 0.010,
+                                horizontal: size.width * 0.030),
+                            child: const Text(
+                              "1 Kg",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedContainer = "second";
+                            selectedCanSize = 5;
+                            getCylinderVolume();
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: selectedContainer == "second"
+                                  ? ChooseColor(0).appBarColor1
+                                  : Colors.grey,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10))),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: size.height * 0.010,
+                                horizontal: size.width * 0.030),
+                            child: const Text(
+                              "5 Kg",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedContainer = "third";
+                            selectedCanSize = 10;
+                            getCylinderVolume();
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: selectedContainer == "third"
+                                  ? ChooseColor(0).appBarColor1
+                                  : Colors.grey,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10))),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: size.height * 0.010,
+                                horizontal: size.width * 0.030),
+                            child: const Text(
+                              "10 Kg",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedContainer = "fourth";
+                            selectedCanSize = 20;
+                            getCylinderVolume();
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: selectedContainer == "fourth"
+                                  ? ChooseColor(0).appBarColor1
+                                  : Colors.grey,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10))),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: size.height * 0.010,
+                                horizontal: size.width * 0.030),
+                            child: const Text(
+                              "20 Kg",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+
+                SizedBox(height: size.height * 0.030),
+                ConstrainedBox(
+                  constraints: BoxConstraints.tightFor(
+                      width: double.infinity, height: size.height * 0.055),
+                  child: ElevatedButton(
+                    child: Text(
+                      'Price',
+                      maxLines: 1,
+                      style: TextStyle(
+                          fontSize: size.height * 0.014 + size.width * 0.014),
+                    ),
+                    onPressed: () async {
+                      AlertBox().priceDialogueBox(
+                          baseName[0],
+                          selectedCanSize.toString().isEmpty ||
+                                  selectedCanSize == 0.0
+                              ? passedCanSize
+                              : selectedCanSize,
+                          rValue,
+                          gValue,
+                          bValue,
+                          cylinder,
+                          calculatedCylinderVolume,
+                          unitPrice,
+                          context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: ChooseColor(0).buttonColor,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

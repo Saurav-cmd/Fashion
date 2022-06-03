@@ -29,7 +29,7 @@ class _ColorScreenState extends State<ColorScreen> {
     print("ya vhitra aayo");
     final databaseData = await DatabaseHelper.instance.getShadeColorData();
     for (int i = 0; i < databaseData.length; i++) {
-      print("for loop vhitra");
+      print("${databaseData[i].colorName}");
       setState(() {
         allColorCodeList.add(databaseData[i].colorName);
       });

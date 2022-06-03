@@ -35,6 +35,13 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   AuthController aC = Get.put(AuthController());
   bool? value;
+  final cosmeticData = DatabaseHelper.instance.getCosmeticIntData();
+  final weatherProofDaa = DatabaseHelper.instance.getWeatherExtData();
+  final styleDistData = DatabaseHelper.instance.getStyleDist();
+  final smartDistData = DatabaseHelper.instance.getSmartDist();
+  final magneticData = DatabaseHelper.instance.getMagnetExt();
+  final colorBaseData = DatabaseHelper.instance.getColorBaseData();
+  final colorantData = DatabaseHelper.instance.getColorColorantData();
 
   addApiDataToDatabase() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -43,7 +50,6 @@ class _SplashScreenState extends State<SplashScreen> {
       final url = Constants.baseUrl + "getdata";
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
-        print("This is response data ${response.body}");
         CosmeticEmulsion cE = cosmeticEmulsionFromJson(response.body);
         WeatherProofEmulsion wPE = weatherProofEmulsionFromJson(response.body);
         StyleDistemper sD = styleDistemperFromJson(response.body);
@@ -55,6 +61,7 @@ class _SplashScreenState extends State<SplashScreen> {
         ShadeColor sCE = shadeColorFromJson(response.body);
 
         for (int i = 0; i < cE.cosmeticintemulsion!.length; i++) {
+          print("second ma yo vhitra aayo");
           DatabaseHelper.instance.addCosmeticIntData(CosmeticInt(
               cosmeticId: cE.cosmeticintemulsion![i].id,
               colorName: cE.cosmeticintemulsion![i].colorName,
@@ -76,7 +83,6 @@ class _SplashScreenState extends State<SplashScreen> {
               eyf: cE.cosmeticintemulsion![i].EYF,
               ruf: cE.cosmeticintemulsion![i].RUF,
               base: cE.cosmeticintemulsion![i].base!.toDouble(),
-              // base: double.parse(cE.cosmeticintemulsion![i].base.toString()),
               bVolume:
                   double.parse(cE.cosmeticintemulsion![i].bVolume.toString())
                       .toStringAsFixed(2),

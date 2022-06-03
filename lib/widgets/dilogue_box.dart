@@ -295,6 +295,7 @@ class AlertBox {
       BuildContext context) {
     final size = MediaQuery.of(context).size;
     var f = NumberFormat("###.0#", "en_US");
+
     return SizedBox(
       height: 150.0, // Change as per your requirement
       width: 300.0, // Change as per your requirement

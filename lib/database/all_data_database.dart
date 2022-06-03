@@ -285,6 +285,22 @@ class DatabaseHelper {
     if (table7.isNotEmpty) {
       db?.delete(table7);
     }
+
+    if (table8.isNotEmpty) {
+      db?.delete(table8);
+    }
+
+    if (table9.isNotEmpty) {
+      db?.delete(table9);
+    }
+
+    if (table10.isNotEmpty) {
+      db?.delete(table10);
+    }
+
+    if (table11.isNotEmpty) {
+      db?.delete(table11);
+    }
   }
 
   Future _onCreate(Database db, int version) async {
