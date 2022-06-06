@@ -1,13 +1,14 @@
-import 'package:connectivity/connectivity.dart';
-import 'package:fashion_paints/colors/colors_file.dart';
-import 'package:fashion_paints/controllers/notice_controller.dart';
-import 'package:fashion_paints/static_testing_list/tab_bar_notice.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:nepali_date_picker/nepali_date_picker.dart';
+import 'dart:io';
 
+import 'package:fashion_paints/colors/colors_file.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:intl/intl.dart';
+
+import '../../controllers/user_notification_controller.dart';
 import '../../widgets/dilogue_box.dart';
-import 'notice_detail_screen.dart';
 
 class NoticeHomeScreen extends StatefulWidget {
   const NoticeHomeScreen({Key? key}) : super(key: key);
@@ -17,129 +18,175 @@ class NoticeHomeScreen extends StatefulWidget {
 }
 
 class _NoticeHomeScreenState extends State<NoticeHomeScreen> {
-  final NoticeController _noticeController = Get.put(NoticeController());
+  int currentPage = 1;
+  UserNotificationController uNC = Get.put(UserNotificationController());
+  ScrollController scrollController = ScrollController();
+  int total = 5;
+  var isLoading = false;
+  int page = 1;
+
+  fetchNotificationData() async {
+    try {
+      final result = await InternetAddress.lookup("example.com");
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        return await uNC.getUserNotificationData().whenComplete(() {
+          uNC.notificationData;
+        });
+      }
+    } on SocketException catch (_) {
+      AlertBox().noWifiConnection(context);
+    }
+  }
+
+  void pagination() {
+    if ((scrollController.position.pixels ==
+            scrollController.position.maxScrollExtent) &&
+        (uNC.notificationData.length < total)) {
+      setState(() {
+        isLoading = true;
+        page += 1;
+        fetchNotificationData();
+      });
+    }
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Connectivity().checkConnectivity().then((internetconnection) {
-      if (internetconnection == ConnectivityResult.none) {
-        AlertBox().forAddToCart(context);
-      }
-    });
-    _noticeController.getAllNotices(context);
+    scrollController.addListener(pagination);
+    fetchNotificationData();
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return SafeArea(
-        child: Scaffold(
-          backgroundColor: ChooseColor(0).bodyBackgroundColor,
-          body: Obx(() {
-            if (_noticeController.isLoading.value) {
-              return Padding(
-                padding: const EdgeInsets.only(top: 180.0),
-                child: Column(
-                  children: [
-                    Center(
-                      child: CircularProgressIndicator(
-                        color: ChooseColor(0).appBarColor1,
+    return Scaffold(
+        backgroundColor: ChooseColor(0).bodyBackgroundColor,
+        appBar: AppBar(
+          systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor:
+                  ChooseColor(0).appBarColor1, // For iOS (dark icons)
+              statusBarIconBrightness: Brightness.light),
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                  size: 15,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamed("Dealer_button_Navigation_Bar");
+                },
+              );
+            },
+          ),
+          elevation: 0,
+          backgroundColor: ChooseColor(0).appBarColor1,
+          title: const Text(
+            'Notification',
+            style: TextStyle(color: Colors.white),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Row(
+                children: [
+                  IconButton(
+                      icon: const Icon(
+                        Icons.home_filled,
+                        color: Colors.white,
                       ),
-                    ),
-                  ],
-                ),
-              );
-            }
-            if (_noticeController.noticeList.isEmpty) {
-              return Padding(
-                padding: const EdgeInsets.only(top: 180.0),
-                child: Column(
-                  children: [
-                    Center(
-                        child: Text(
-                          'No Notice',
-                          style: TextStyle(
-                              fontSize: 20, color: ChooseColor(0).appBarColor1),
-                        )),
-                  ],
-                ),
-              );
-            }
-
-
-            else {
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: size.width * 0.030,
-                      vertical: size.height * 0.020),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed("Button_Navigation_Bar");
+                      }),
+                ],
+              ),
+            ),
+          ],
+        ),
+        body: Column(
+          children: [
+            Obx(() {
+              if (uNC.isLoading.value) {
+                return Padding(
+                  padding: EdgeInsets.only(
+                      top: size.height * 0.3,
+                      left: size.width * 0.1,
+                      right: size.width * 0.1),
+                  child: Card(
+                      child: Center(
+                          child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Notices',
-                        style: TextStyle(
-                            color: Color(0xff4C488C),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: size.height * 0.008 + size.width * 0.008,
+                            top: size.height * 0.008 + size.width * 0.008,
+                            bottom: size.height * 0.008 + size.width * 0.008),
+                        child: CircularProgressIndicator(
+                          color: ChooseColor(0).appBarColor1,
+                        ),
                       ),
-                      const SizedBox(
-                        height: 10,
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: size.width * 0.030,
+                        ),
+                        child: SizedBox(
+                            width: size.width * 0.5,
+                            child: const Text(
+                              "Fetching Notifications.....",
+                              overflow: TextOverflow.clip,
+                            )),
                       ),
-                      const Text('Recent notices from Fashion color studio.'),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      ..._noticeController.noticeList.map((e) => Padding(
-                        padding: const EdgeInsets.only(bottom: 15),
-                        child: GestureDetector(
-                          onTap: () {
-                            print('pdf links ${_noticeController.pdfLink.map((e) => e.active).toList()}');
-                            print('image${e.noticeimage!.map((e) => e.file).toList()}');
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => NoticeDetails(
-                                  title: e.title,
-                                  date: NepaliDateFormat("d MMMM")
-                                      .format(
-                                      e.date!.toNepaliDateTime()),
-                                  details: e.notice,
-                                  image:e.noticeimage!.map((e) => e.file).toList()
-                                  ,
-                                )));
-                          },
+                      SizedBox(
+                        height: size.height * 0.1,
+                      )
+                    ],
+                  ))),
+                );
+              } else {
+                return Expanded(
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: uNC.notificationData.length,
+                      itemBuilder: (ctx, i) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: size.height * 0.020,
+                              horizontal: size.width * 0.020),
                           child: Container(
-                            height: 90,
                             decoration: const BoxDecoration(
                               color: Colors.white,
                               borderRadius:
-                              BorderRadius.all(Radius.circular(10.0)),
+                                  BorderRadius.all(Radius.circular(10.0)),
                             ),
                             child: Padding(
                               padding: const EdgeInsets.only(
                                   top: 10.0, left: 20, right: 10),
                               child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       SizedBox(
-                                          width:200,
+                                          width: 210,
                                           child: Text(
-                                            e.title!,
+                                            '${uNC.notificationData[i]!.title}',
                                             style: const TextStyle(
                                                 color: Colors.black87,
                                                 fontSize: 16,
-                                                fontWeight:
-                                                FontWeight.w500),
+                                                fontWeight: FontWeight.w500),
                                           )),
                                       Text(
-                                        NepaliDateFormat("d MMMM").format(
-                                            e.date!.toNepaliDateTime()),
+                                        DateFormat.yMd().format(uNC
+                                            .notificationData[i]!.date!
+                                            .toLocal()),
                                         style: TextStyle(
                                             fontSize: 12,
                                             color: Colors.grey.shade500),
@@ -147,33 +194,27 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen> {
                                     ],
                                   ),
                                   const SizedBox(
-                                    height: 25,
+                                    height: 10,
                                   ),
                                   Text(
-                                    "${e.notice!.length>60?e.notice!.substring(0,60)+'...':e.notice}",
-                                    maxLines: 2,
+                                    '${uNC.notificationData[i]!.notice}',
                                     style: TextStyle(
                                         color: Colors.grey.shade600,
                                         fontSize: 14),
                                   ),
-                                  const SizedBox(
-                                    height: 10,
+                                  SizedBox(
+                                    height: size.height * 0.020,
                                   ),
                                 ],
                               ),
                             ),
                           ),
-                        ),
-                      ))
-                          .toList()
-                    ],
-                  ),
-                ),
-              );
-            }
-          }),
+                        );
+                      }),
+                );
+              }
+            }),
+          ],
         ));
   }
 }
-//notice testing
-//for commit

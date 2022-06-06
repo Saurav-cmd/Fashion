@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:fashion_paints/controllers/statement_controller.dart';
@@ -6,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DealerHomePage extends StatefulWidget {
   const DealerHomePage({Key? key}) : super(key: key);
@@ -16,16 +19,30 @@ class DealerHomePage extends StatefulWidget {
 
 class _DealerHomePageState extends State<DealerHomePage> {
   StatementController sC = Get.put(StatementController());
+  int? dueAmount;
+  int? chequeInHand;
 
   final List<String> imageList = [
     'https://static9.depositphotos.com/1167801/1083/i/600/depositphotos_10837356-stock-photo-paint-dripping.jpg',
     'https://www.californiapaints.com/wp-content/uploads/Painting-Basics.jpg',
   ];
 
+  getSharedPreferenceData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString("userData");
+    if (userData != null) {
+      setState(() {
+        dueAmount = jsonDecode(userData)['due_amount'];
+        chequeInHand = jsonDecode(userData)['cheque_in_hand'];
+      });
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getSharedPreferenceData();
   }
 
   @override
@@ -120,7 +137,7 @@ class _DealerHomePageState extends State<DealerHomePage> {
                           ),
                           SizedBox(height: size.height * 0.005),
                           Text(
-                            "Rs -33,471.00",
+                            "Rs $dueAmount",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
@@ -187,7 +204,7 @@ class _DealerHomePageState extends State<DealerHomePage> {
                           ),
                           SizedBox(height: size.height * 0.005),
                           Text(
-                            "Cheque In Hand",
+                            "$chequeInHand",
                             style: TextStyle(
                                 color: ChooseColor(0).appBarColor1,
                                 fontWeight: FontWeight.w700,

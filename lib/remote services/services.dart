@@ -20,6 +20,7 @@ import '../models/apis_model/bipana_preview_saved_model.dart';
 import '../models/apis_model/confirm_order_model.dart';
 import '../models/apis_model/find_painter_model.dart';
 import '../models/apis_model/get_cart_data_model.dart';
+import '../models/apis_model/message_model.dart';
 import '../models/apis_model/notice_model.dart';
 import '../models/apis_model/order_history_model.dart';
 import '../models/apis_model/price_list_model.dart';
@@ -47,6 +48,11 @@ class Services {
           'user_id': responseData['Dealer_user']['id'],
           'dealer_code': responseData['dealer_info']['code'],
           "due_amount": responseData['dealer_info']['due_amount'],
+          "cheque_in_hand": responseData['dealer_info']['cheque_in_hand'],
+          "order_limit": responseData['dealer_info']['order_limit'],
+          "name": responseData['dealer_info']['name'],
+          "address": responseData['dealer_info']['address'],
+          "dealer_id": responseData['Dealer_user']['dealer_id'],
         });
         prefs.setString('userData', userData);
 
@@ -626,6 +632,7 @@ class Services {
       EasyLoading.show(status: "Submitting Data....");
       final apiData =
           ApiRoute().BipanPreviewGallery(name, email, phone, address, userCode);
+      //here multipart
       http.MultipartRequest request =
           http.MultipartRequest("POST", Uri.parse(apiData!));
       Map<String, String> headers = {"Content-Type": "multipart/form-data"};
@@ -712,8 +719,12 @@ class Services {
   }
 
   static Future<UserNotification?> getUserNotification() async {
-    String? token =
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTY0NTE4MzM2MiwiZXhwIjoxNjQ1MTg2OTYyLCJuYmYiOjE2NDUxODMzNjIsImp0aSI6InpDd01PMkc4Vnc4ZXFGM3kiLCJzdWIiOjcsInBydiI6ImMxZTE0ZWE3OTk2MDgwN2Q2YTJiMTdkYTJhZjBjMzkzNDVmY2NhN2EifQ.cTs_uW_Xj7Bf3DOkN7xQHqfbVgu74UNf7lc3qRavsz0";
+    String? token;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString("userData");
+    if (userData != null) {
+      token = jsonDecode(userData)['token'];
+    }
     try {
       final apiData = ApiRoute().userNotification();
       final response = await http.get(Uri.parse(apiData!), headers: {
@@ -721,7 +732,6 @@ class Services {
         "Authorization": "Bearer $token"
       });
       if (response.statusCode == 200) {
-        print("${response.body}");
         return userNotificationFromJson(response.body);
       } else {
         print("Error occurred");
@@ -802,25 +812,16 @@ class Services {
     }
   }
 
-  static Future<StatementList?> getStatementList(BuildContext context) async {
-    String? token;
-    String? userId;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userData = prefs.getString("userData");
-    if (userData != null) {
-      token = jsonDecode(userData)['token'];
-      userId = jsonDecode(userData)['user_id'];
-    } else {
-      return null;
-    }
-
+  static Future<StatementList?> getStatementList(
+      String? dealerId, String? token, BuildContext context) async {
     try {
-      final apiData = ApiRoute().statementList(userId);
+      final apiData = ApiRoute().statementList(dealerId);
       final response = await http.get(Uri.parse(apiData!), headers: {
-        "content-Type": "application/json",
+        "Accept": "application/json",
         "Authorization": "Bearer $token"
       });
       if (response.statusCode == 200) {
+        print("This is data ${response.body}");
         return statementListFromJson(response.body);
       } else if (response.statusCode == 403) {
         AlertBox().AlertBox403(context);
@@ -1012,6 +1013,94 @@ class Services {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         );
         snackBarKey.currentState?.showSnackBar(snackBar);
+      } else if (response.statusCode == 403) {
+        AlertBox().AlertBox403(context);
+      } else if (response.statusCode == 400) {
+        AlertBox().AlertBox400(context);
+      } else if (response.statusCode == 401) {
+        AlertBox().AlertBox401(context);
+      } else if (response.statusCode == 500) {
+        AlertBox().servererror(context);
+      } else if (response.statusCode == 503) {
+        AlertBox().servererror(context);
+      } else {
+        AlertBox().universalAlertBox(context);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<String?> sendMessage(
+      String? message, List<File> galleryImages, BuildContext context) async {
+    int? userId;
+    String? token;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString("userData");
+    if (userData != null) {
+      userId = jsonDecode(userData)['user_id'];
+      token = jsonDecode(userData)['token'];
+    }
+    try {
+      final apiUrl = ApiRoute().chat(userId, message);
+      http.MultipartRequest request =
+          http.MultipartRequest("POST", Uri.parse(apiUrl!));
+      Map<String, String> jsonData = {
+        "Content-Type": "multipart/form-data",
+        "Authorization": "Bearer $token"
+      };
+
+      for (int i = 0; i < galleryImages.length; i++) {
+        FileImage(File(galleryImages[i].path.toString()))
+            .file
+            .readAsBytesSync();
+        request.files.add(await http.MultipartFile.fromPath(
+            'files[]', galleryImages[i].path,
+            contentType: MediaType("image", "jpeg")));
+      }
+      request.headers.addAll(jsonData);
+      request.fields['message'] = message!;
+      request.fields['user_id'] = userId.toString();
+
+      http.StreamedResponse response = await request.send();
+      response.stream.transform(utf8.decoder).listen((event) {});
+
+      if (response.statusCode == 200) {
+        print("Success");
+      } else if (response.statusCode == 403) {
+        AlertBox().AlertBox403(context);
+      } else if (response.statusCode == 400) {
+        AlertBox().AlertBox400(context);
+      } else if (response.statusCode == 401) {
+        AlertBox().AlertBox401(context);
+      } else if (response.statusCode == 500) {
+        AlertBox().servererror(context);
+      } else if (response.statusCode == 503) {
+        AlertBox().servererror(context);
+      } else {
+        AlertBox().universalAlertBox(context);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<Message?> getMessage(BuildContext context) async {
+    String? token;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString("userData");
+    if (userData != null) {
+      token = jsonDecode(userData)['token'];
+    }
+    try {
+      final apiUrl = ApiRoute().getChat();
+      final response = await http.get(Uri.parse(apiUrl!), headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token"
+      });
+      if (response.statusCode == 200) {
+        print("This is response ${response.body}");
+        return messageFromJson(response.body);
       } else if (response.statusCode == 403) {
         AlertBox().AlertBox403(context);
       } else if (response.statusCode == 400) {

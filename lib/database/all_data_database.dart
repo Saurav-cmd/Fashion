@@ -568,7 +568,8 @@ class DatabaseHelper {
   //color Base ko data add,all data get ya bata start ho hai........................................................................
   Future<int?> addColorBaseData(DatabaseColorBase colorBase) async {
     Database? db = await instance.database;
-    return await db?.insert(table2, colorBase.toMap());
+    var batch = db!.batch();
+    return await db.insert(table2, colorBase.toMap());
   }
 
   Future<List<DatabaseColorBase>> getColorBaseData() async {

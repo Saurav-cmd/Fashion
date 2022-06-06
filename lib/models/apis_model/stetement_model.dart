@@ -1,3 +1,7 @@
+// To parse this JSON data, do
+//
+//     final statementList = statementListFromJson(jsonString);
+
 import 'dart:convert';
 
 StatementList statementListFromJson(String str) =>

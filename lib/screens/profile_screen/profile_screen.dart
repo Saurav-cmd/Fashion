@@ -1,11 +1,13 @@
+import 'dart:convert';
+
 import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:fashion_paints/controllers/auth_controller.dart';
-import 'package:fashion_paints/database/all_data_database.dart';
 import 'package:fashion_paints/screens/profile_screen/app_info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -16,6 +18,32 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   AuthController aC = Get.put(AuthController());
+  int? dueAmount;
+  int? chequeInHand;
+  int? orderLimit;
+  String? name;
+  String? address;
+  getSharedPreferenceData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString("userData");
+    if (userData != null) {
+      setState(() {
+        dueAmount = jsonDecode(userData)['due_amount'];
+        chequeInHand = jsonDecode(userData)['cheque_in_hand'];
+        orderLimit = jsonDecode(userData)['order_limit'];
+        name = jsonDecode(userData)['name'];
+        address = jsonDecode(userData)['address'];
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getSharedPreferenceData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -53,11 +81,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 height: 25,
               ),
               Text(
-                'Prashant Subedi',
+                '$name',
                 style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
               ),
               Text(
-                '(Bharatpur)',
+                '($address)',
                 style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
               ),
               const SizedBox(
@@ -121,18 +149,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: const [
+                        children: [
                           SizedBox(
                               width: 145,
                               child: Text(
-                                'Rs -33455.00',
+                                'Rs $dueAmount',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500),
                               )),
                           Text(
-                            'n/a',
+                            '$chequeInHand',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,
@@ -158,8 +186,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const SizedBox(
                         height: 2,
                       ),
-                      const Text(
-                        'Rs -65487.00',
+                      Text(
+                        'Rs $orderLimit',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,

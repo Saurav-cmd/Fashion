@@ -30,9 +30,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       final result = await InternetAddress.lookup("example.com");
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         return await uNC.getUserNotificationData().whenComplete(() {
-          setState(() {
-            uNC.notificationData;
-          });
+          uNC.notificationData;
         });
       }
     } on SocketException catch (_) {
@@ -57,7 +55,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     // TODO: implement initState
     super.initState();
     scrollController.addListener(pagination);
-    fetchNotificationData();
+    // fetchNotificationData();
   }
 
   @override

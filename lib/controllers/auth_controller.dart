@@ -50,6 +50,6 @@ class AuthController extends GetxController {
   Future<void> logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
-    Navigator.of(context).pushNamed("Button_Navigation_Bar");
+    Navigator.of(context).pushReplacementNamed("Button_Navigation_Bar");
   }
 }

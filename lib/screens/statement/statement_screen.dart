@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../controllers/statement_controller.dart';
+import '../../widgets/dilogue_box.dart';
 
 class StatementPdf extends StatefulWidget {
   StatementPdf({Key, key}) : super(key: key);
@@ -20,37 +22,52 @@ class _StatementPdfState extends State<StatementPdf> {
   StatementController sC = Get.put(StatementController());
   String? pdfUrl;
   String? token;
-  String? userId;
+  int? userId;
+  String? dealerId;
 
   getData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final userData = prefs.getString("userData");
     if (userData != null) {
-      token = jsonDecode(userData)['token'];
-      userId = jsonDecode(userData)['user_id'];
+      setState(() {
+        token = jsonDecode(userData)['token'];
+        userId = jsonDecode(userData)['user_id'];
+        dealerId = jsonDecode(userData)['dealer_id'];
+        getApiData();
+      });
     } else {
       return null;
     }
   }
 
   getApiData() async {
-    return await sC.getStatementData(context).whenComplete(() {
-      setState(() {
-        sC.data;
-      });
-    });
+    try {
+      final result = await InternetAddress.lookup("example.com");
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        return await sC
+            .getStatementData(dealerId, token, context)
+            .whenComplete(() {
+          setState(() {
+            sC.data;
+          });
+        });
+      }
+    } on SocketException catch (_) {
+      AlertBox().noWifiConnection(context);
+    }
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getApiData();
     getData();
   }
 
   @override
   Widget build(BuildContext context) {
+    print("This is dealerId $dealerId");
+    print("This is token id $token");
     return Scaffold(
       backgroundColor: ChooseColor(0).bodyBackgroundColor,
       appBar: AppBar(

@@ -293,9 +293,6 @@ class _StoreScreenState extends State<StoreScreen> {
                     ...storeSearch
                         .map(
                           (e) => GestureDetector(
-                            // onPanDown: (detils){
-                            //   print(detils.localPosition);
-                            // },
                             onTap: () {
                               _storeController.storeNumber.value = 1;
 
