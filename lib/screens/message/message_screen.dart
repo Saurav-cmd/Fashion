@@ -48,7 +48,9 @@ class _FashionChatState extends State<FashionChat> {
 
   fetchApiData() async {
     await mC.getMessageData(context).whenComplete(() {
-      mC.messageData!.message;
+      setState(() {
+        mC.messageData!.message;
+      });
     });
   }
 
@@ -141,188 +143,184 @@ class _FashionChatState extends State<FashionChat> {
       body: Column(children: [
         Obx(() {
           if (mC.isLoading.value) {
-            return Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: size.height * 0.3,
-                      left: size.width * 0.1,
-                      right: size.width * 0.1),
-                  child: Card(
-                      child: Center(
-                          child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: size.height * 0.008 + size.width * 0.008,
-                            top: size.height * 0.008 + size.width * 0.008,
-                            bottom: size.height * 0.008 + size.width * 0.008),
-                        child: CircularProgressIndicator(
-                          color: ChooseColor(0).appBarColor1,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: size.width * 0.030,
-                        ),
-                        child: SizedBox(
-                            width: size.width * 0.5,
-                            child: const Text(
-                              "Loading chat please wait....",
-                              overflow: TextOverflow.clip,
-                            )),
-                      ),
-                      SizedBox(
-                        height: size.height * 0.1,
-                      )
-                    ],
-                  ))),
-                ),
-              ],
-            );
+            return Expanded(child: LinearProgressIndicator());
           } else {
             return Expanded(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: mC.messageData!.message!.length,
-                  itemBuilder: (ctx, i) {
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15.0, left: 15),
-                          child: Row(
-                            children: [
-                              Container(
-                                height: 45,
-                                width: 45,
-                                decoration: const BoxDecoration(
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: AssetImage(
-                                      'icons/chatImage.png',
-                                    ),
-                                  ),
-                                  shape: BoxShape.rectangle,
+              child: SingleChildScrollView(
+                reverse: true,
+                child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: mC.messageData!.message!.length,
+                    itemBuilder: (ctx, i) {
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15.0, left: 15),
+                            child: Row(
+                              children: [
+                                mC.messageData!.message![i].admin != null
+                                    ? Container(
+                                        height: 45,
+                                        width: 45,
+                                        decoration: const BoxDecoration(
+                                          image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: AssetImage(
+                                              'icons/chatImage.png',
+                                            ),
+                                          ),
+                                          shape: BoxShape.rectangle,
+                                        ),
+                                      )
+                                    : Container(),
+                                const SizedBox(
+                                  width: 10,
                                 ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              if (mC.messageData!.message![i].to == 0)
-                                Container(
-                                  alignment: Alignment.topLeft,
-                                  child: Container(
-                                    constraints: BoxConstraints(
-                                        maxWidth:
-                                            MediaQuery.of(context).size.width *
-                                                0.60),
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey.shade400,
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(5))),
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                          top: 8.0,
-                                          left: 8,
-                                          right: 8,
-                                          bottom: 5),
-                                      child: Text(
-                                        '${mC.messageData!.message![i].admin}',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 18),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        if (mC.messageData!.message![i].from == userId)
-                          Container(
-                            margin: const EdgeInsets.symmetric(vertical: 10),
-                            alignment: Alignment.topRight,
-                            child: Container(
-                              constraints: BoxConstraints(
-                                  maxWidth:
-                                      MediaQuery.of(context).size.width * 0.60),
-
-                              //width: 240,
-                              padding: const EdgeInsets.all(10),
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                              ),
-                              decoration: const BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5)),
-                                color: Color(0xff0694C0),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '${mC.messageData!.message![i].message}',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 18),
-                                  ),
-                                ],
-                              ),
+                                if (mC.messageData!.message![i].to == 0)
+                                  mC.messageData!.message![i].admin != null
+                                      ? Container(
+                                          alignment: Alignment.topLeft,
+                                          child: Container(
+                                            constraints: BoxConstraints(
+                                                maxWidth: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.60),
+                                            decoration: BoxDecoration(
+                                                color: Colors.grey.shade400,
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(5))),
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: 8.0,
+                                                  left: 8,
+                                                  right: 8,
+                                                  bottom: 5),
+                                              child: Text(
+                                                '${mC.messageData!.message![i].admin}',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 18),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      : Text(""),
+                              ],
                             ),
                           ),
-                      ],
-                    );
-                  }),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          if (mC.messageData!.message![i].from == userId)
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              alignment: Alignment.topRight,
+                              child: Container(
+                                constraints: BoxConstraints(
+                                    maxWidth:
+                                        MediaQuery.of(context).size.width *
+                                            0.60),
+
+                                //width: 240,
+                                padding: const EdgeInsets.all(10),
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                                decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
+                                  color: Color(0xff0694C0),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${mC.messageData!.message![i].message}',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 18),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                      "${mC.messageData!.message![i].createdAt.toString().split(" ")[0]} "),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: size.width * 0.015),
+                                    child: Text(
+                                        " - ${mC.messageData!.message![i].createdAt.toString().split(" ")[1].split(".")[0]}"),
+                                  )
+                                ],
+                              ))
+                        ],
+                      );
+                    }),
+              ),
             );
           }
         }),
-        Padding(
-          padding: const EdgeInsets.only(right: 10.0, left: 5),
-          child: Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-            ),
-            height: 45,
-            child: TextFormField(
-              decoration: InputDecoration(
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: GestureDetector(
-                      onTap: () {
-                        openBottomSheet(context);
-                      },
-                      child: Container(
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color(0xff8F3F97),
-                          ),
-                          child: const Icon(
-                            Icons.add,
-                            color: Colors.white,
-                          )),
+        BottomAppBar(
+          child: Padding(
+            padding: const EdgeInsets.only(right: 10.0, left: 5),
+            child: Container(
+              alignment: Alignment.bottomCenter,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
+              height: 45,
+              child: TextFormField(
+                decoration: InputDecoration(
+                    prefixIcon: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: GestureDetector(
+                        onTap: () {
+                          openBottomSheet(context);
+                        },
+                        child: Container(
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color(0xff8F3F97),
+                            ),
+                            child: const Icon(
+                              Icons.add,
+                              color: Colors.white,
+                            )),
+                      ),
                     ),
-                  ),
-                  suffixIcon: const Icon(
-                    Icons.emoji_emotions,
-                    color: Colors.grey,
-                    size: 28,
-                  ),
-                  contentPadding: const EdgeInsets.only(top: 5, left: 55),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(25.0),
-                  ),
-                  hintText: 'Type a message',
-                  hintStyle:
-                      const TextStyle(fontSize: 16, color: Colors.black45)),
-              textCapitalization: TextCapitalization.sentences,
-              controller: messageController,
-              onFieldSubmitted: (value) {
-                mC.sendMessage(messageController.text, imageFileList, context);
-                fetchApiData();
-              },
+                    suffixIcon: const Icon(
+                      Icons.emoji_emotions,
+                      color: Colors.grey,
+                      size: 28,
+                    ),
+                    contentPadding: const EdgeInsets.only(top: 5, left: 55),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    hintText: 'Type a message',
+                    hintStyle:
+                        const TextStyle(fontSize: 16, color: Colors.black45)),
+                textCapitalization: TextCapitalization.sentences,
+                controller: messageController,
+                onFieldSubmitted: (value) {
+                  setState(() {
+                    mC.sendMessage(
+                        messageController.text, imageFileList, context);
+                    fetchApiData();
+                    messageController.text = "";
+                  });
+                },
+              ),
             ),
           ),
         ),

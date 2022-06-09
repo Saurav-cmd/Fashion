@@ -32,7 +32,7 @@ class _SchemeListState extends State<SchemeList> {
         });
       }
     } on SocketException catch (_) {
-      AlertBox().noWifiConnection(context);
+      AlertBox().noWifiConnection(6, "", "", context);
       print("Not Connected");
     }
   }

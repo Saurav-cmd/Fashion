@@ -7,7 +7,6 @@ import 'package:fashion_paints/screens/statement/statement_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DealerHomePage extends StatefulWidget {
@@ -240,9 +239,14 @@ class _DealerHomePageState extends State<DealerHomePage> {
                       child: Card(
                         elevation: 0,
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: size.width * 0.012,
-                              vertical: size.height * 0),
+                          padding: size.width <= 411.42857142857144 &&
+                                  size.height <= 683.4285714285714
+                              ? EdgeInsets.symmetric(
+                                  horizontal: size.width * 0.038,
+                                  vertical: size.height * 0)
+                              : EdgeInsets.symmetric(
+                                  horizontal: size.width * 0.012,
+                                  vertical: size.height * 0),
                           child: Column(
                             children: [
                               SizedBox(

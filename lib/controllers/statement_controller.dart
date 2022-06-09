@@ -11,7 +11,7 @@ class StatementController extends GetxController {
       String? dealerId, String? token, BuildContext context) async {
     try {
       isLoading(true);
-      data = await Services.getStatementList(dealerId, token, context);
+      data = await Services.getStatementList(context);
       return data;
     } finally {
       isLoading(false);

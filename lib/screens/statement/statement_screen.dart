@@ -53,7 +53,7 @@ class _StatementPdfState extends State<StatementPdf> {
         });
       }
     } on SocketException catch (_) {
-      AlertBox().noWifiConnection(context);
+      AlertBox().noWifiConnection(5, "", "", context);
     }
   }
 
@@ -66,28 +66,73 @@ class _StatementPdfState extends State<StatementPdf> {
 
   @override
   Widget build(BuildContext context) {
-    print("This is dealerId $dealerId");
-    print("This is token id $token");
+    final size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: ChooseColor(0).bodyBackgroundColor,
-      appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: ChooseColor(0).appBarColor1, // For iOS (dark icons)
-            statusBarIconBrightness: Brightness.light),
-        elevation: 0,
-        title: Text("Statement Pdf"),
-        backgroundColor: ChooseColor(0).appBarColor1,
-      ),
-      body: const PDF().fromUrl(
-        sC.data!.ledgerFile!,
-        placeholder: (double progress) => Center(child: Text('$progress %')),
-        errorWidget: (dynamic error) => Center(
-            child: Text(
-          "File Not Found!",
-          style: TextStyle(
-              color: ChooseColor(0).appBarColor1, fontWeight: FontWeight.w400),
-        )),
-      ),
-    );
+        backgroundColor: ChooseColor(0).bodyBackgroundColor,
+        appBar: AppBar(
+          systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor:
+                  ChooseColor(0).appBarColor1, // For iOS (dark icons)
+              statusBarIconBrightness: Brightness.light),
+          elevation: 0,
+          title: Text("Statement Pdf"),
+          backgroundColor: ChooseColor(0).appBarColor1,
+        ),
+        body: Obx(() {
+          if (sC.isLoading.value) {
+            return Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: size.height * 0.3,
+                      left: size.width * 0.1,
+                      right: size.width * 0.1),
+                  child: Card(
+                      child: Center(
+                          child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: size.height * 0.008 + size.width * 0.008,
+                            top: size.height * 0.008 + size.width * 0.008,
+                            bottom: size.height * 0.008 + size.width * 0.008),
+                        child: CircularProgressIndicator(
+                          color: ChooseColor(0).appBarColor1,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: size.width * 0.030,
+                        ),
+                        child: SizedBox(
+                            width: size.width * 0.5,
+                            child: const Text(
+                              "Fetching statement please wait.....",
+                              overflow: TextOverflow.clip,
+                            )),
+                      ),
+                      SizedBox(
+                        height: size.height * 0.1,
+                      )
+                    ],
+                  ))),
+                ),
+              ],
+            );
+          } else
+            return const PDF().fromUrl(
+              sC.data!.ledgerFile!,
+              placeholder: (double progress) =>
+                  Center(child: Text('$progress %')),
+              errorWidget: (dynamic error) => Center(
+                  child: Text(
+                "File Not Found!",
+                style: TextStyle(
+                    color: ChooseColor(0).appBarColor1,
+                    fontWeight: FontWeight.w400),
+              )),
+            );
+        }));
   }
 }

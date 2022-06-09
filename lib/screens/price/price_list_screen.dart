@@ -31,7 +31,7 @@ class _PriceListState extends State<PriceList> {
         });
       }
     } on SocketException catch (_) {
-      AlertBox().noWifiConnection(context);
+      AlertBox().noWifiConnection(7, "", "", context);
       print("Not Connected");
     }
   }

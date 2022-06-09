@@ -228,7 +228,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       }
                                     }
                                   } on SocketException catch (_) {
-                                    AlertBox().noWifiConnection(context);
+                                    AlertBox()
+                                        .noWifiConnection(1, "", "", context);
                                     print('not connected');
                                   }
                                 },

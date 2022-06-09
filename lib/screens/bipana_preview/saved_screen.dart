@@ -206,7 +206,11 @@ class _BipanPreviewSavedScreenState extends State<BipanPreviewSavedScreen> {
                                 }
                               }
                             } on SocketException catch (_) {
-                              AlertBox().noWifiConnection(context);
+                              AlertBox().noWifiConnection(
+                                  10,
+                                  emailController.text,
+                                  phoneController.text,
+                                  context);
                             }
                           },
                           style: ElevatedButton.styleFrom(

@@ -79,10 +79,18 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
   List<String?> baseName = [];
   List<ShadeColorDatabase> colorValue = [];
   getBaseName() async {
+    double? baseId;
+    print("This is fandeck id $fanDeckId");
+    print("This is passedColorName ${passedColorName!.split("(").first}");
     List<CosmeticInt> cosmeticIntEmu = await DatabaseHelper.instance
         .queryCosmeticInt(
             passedProductName, fanDeckId, passedColorName!.split("(").first);
-    double? baseId = cosmeticIntEmu[0].base;
+    if (cosmeticIntEmu.isNotEmpty) {
+      baseId = cosmeticIntEmu[0].base;
+      print("This is base $baseId");
+    } else {
+      print("base id is null");
+    }
     final baseColorData = await DatabaseHelper.instance.getColorBaseData();
     for (int j = 0; j < baseColorData.length; j++) {
       if (baseId == baseColorData[j].bId) {
@@ -469,9 +477,9 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
           await DatabaseHelper.instance.queryColorantsColor(cylinder[i]);
       if (colorantsData.isNotEmpty) {
         for (var e in colorantsData) {
-          if (e.rValue != null &&
-              e.gValue != null &&
-              e.bValue != null &&
+          if ((e.rValue != null || e.rValue.toString().isNotEmpty) &&
+              (e.gValue != null || e.gValue.toString().isNotEmpty) &&
+              (e.bValue != null || e.bValue.toString().isNotEmpty) &&
               e.unitPrice != null) {
             setState(() {
               rValue.add(e.rValue!.toInt());
@@ -498,10 +506,12 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
     List<ShadeColorDatabase> shadeColorDataList = await DatabaseHelper.instance
         .queryShadeColor(passedColorName!.split("(").first);
     // setState(() {
-    singleRValue = shadeColorDataList[0].rValue!.toInt();
-    singleGValue = shadeColorDataList[0].gValue!.toInt();
-    singleBValue = shadeColorDataList[0].bValue!.toInt();
-    // });
+    if (shadeColorDataList.isNotEmpty) {
+      singleRValue = shadeColorDataList[0].rValue!.toInt();
+      singleGValue = shadeColorDataList[0].gValue!.toInt();
+      singleBValue = shadeColorDataList[0].bValue!.toInt();
+      // });
+    }
   }
 
   String selectedContainer = "";
@@ -514,6 +524,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    print("This is passed product Name $passedProductName");
     return Scaffold(
       backgroundColor: ChooseColor(0).bodyBackgroundColor,
       appBar: AppBar(
@@ -795,7 +806,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                 if (passedProductName == "smartdist" ||
                     passedProductName == "styledist")
                   Text(
-                    '$baseName  $passedCanSize Kg',
+                    '$baseName  ${passedCanSize == 0.0 ? passedCanSize : selectedCanSize} Kg',
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: size.height * 0.012 + size.width * 0.012,
@@ -859,8 +870,12 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                                                           : calculatedCylinderVolume[
                                                               i],
                                       width: 70,
-                                      color: Color.fromRGBO(
-                                          rValue[i], gValue[i], bValue[i], 3),
+                                      color: rValue.toString().isNotEmpty &&
+                                              gValue.toString().isNotEmpty &&
+                                              bValue.toString().isNotEmpty
+                                          ? Color.fromRGBO(rValue[i], gValue[i],
+                                              bValue[i], 3)
+                                          : Color.fromRGBO(0, 0, 0, 0),
                                     ),
                                   ),
                                 ],

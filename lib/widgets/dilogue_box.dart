@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:connectivity/connectivity.dart';
@@ -7,11 +9,19 @@ import 'package:fashion_paints/database/all_data_database.dart';
 import 'package:fashion_paints/models/database_models/saved_customer_detail_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../controllers/bipana_preview_controller_1.dart';
+import '../controllers/get_cart_data_controller.dart';
 import '../controllers/notice_controller.dart';
+import '../controllers/painter_controller.dart';
+import '../controllers/price_list_controller.dart';
+import '../controllers/statement_controller.dart';
+import '../controllers/user_notification_controller.dart';
 import '../main.dart';
 import '../models/database_models/saved_customer_detail_color.dart';
 
@@ -158,7 +168,55 @@ class AlertBox {
             ));
   }
 
-  noWifiConnection(BuildContext context) async {
+  noWifiConnection(int? num, String? bipanaPreviewSavedEmail,
+      String? bipanaPreviewSavedPhone, BuildContext context) async {
+    final GetCartController gCD = Get.put(GetCartController());
+    StatementController sC = Get.put(StatementController());
+    PriceListController pLC = Get.put(PriceListController());
+    UserNotificationController uNC = Get.put(UserNotificationController());
+    PainterController pC = Get.put(PainterController());
+    BipanPreviewController1 bPC = Get.put(BipanPreviewController1());
+
+    bool servicestatus = false;
+    bool haspermission = false;
+    late LocationPermission permission;
+    late Position position;
+    late StreamSubscription<Position> positionStream;
+
+    double? lat;
+    double? long;
+    String? token;
+    int? userId;
+    String? dealerId;
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString("userData");
+    if (userData != null) {
+      token = jsonDecode(userData)['token'];
+      userId = jsonDecode(userData)['user_id'];
+      dealerId = jsonDecode(userData)['dealer_id'];
+    } else {
+      return null;
+    }
+
+    position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    long = position.longitude;
+    lat = position.latitude;
+
+    LocationSettings locationSettings = const LocationSettings(
+      accuracy: LocationAccuracy.high,
+      distanceFilter: 500,
+    );
+
+    positionStream =
+        Geolocator.getPositionStream(locationSettings: locationSettings)
+            .listen((Position position) {
+      long = position.longitude;
+      lat = position.latitude;
+    });
+
     await showDialog(
       context: context,
       barrierDismissible: true,
@@ -230,7 +288,77 @@ class AlertBox {
                                     await InternetAddress.lookup("example.com");
                                 if (result.isNotEmpty &&
                                     result[0].rawAddress.isNotEmpty) {
-                                  Navigator.pop(context);
+                                  if (num == 1) {
+                                    Navigator.pop(context);
+                                  } else if (num == 2) {
+                                    Navigator.pop(context);
+                                  } else if (num == 3) {
+                                    Navigator.pop(context);
+                                  } else if (num == 4) {
+                                    await gCD
+                                        .getAllCartData(context)!
+                                        .whenComplete(() {
+                                      gCD.cartList;
+                                      Navigator.pop(context);
+                                    });
+                                  } else if (num == 5) {
+                                    await sC
+                                        .getStatementData(
+                                            dealerId, token, context)
+                                        .whenComplete(() {
+                                      sC.data;
+                                      Navigator.pop(context);
+                                    });
+                                  } else if (num == 6) {
+                                    await pLC
+                                        .getSchemeListData(context)
+                                        .whenComplete(() {
+                                      pLC.priceData;
+                                      Navigator.pop(context);
+                                    });
+                                  } else if (num == 7) {
+                                    await pLC
+                                        .getSchemeListData(context)
+                                        .whenComplete(() {
+                                      pLC.priceData;
+                                      Navigator.pop(context);
+                                    });
+                                  } else if (num == 8) {
+                                    await uNC
+                                        .getUserNotificationData()
+                                        .whenComplete(() {
+                                      uNC.notificationData;
+                                      Navigator.pop(context);
+                                    });
+                                  } else if (num == 9) {
+                                    await pC
+                                        .findNearbyPainter(lat, long, context)
+                                        .whenComplete(() {
+                                      pC.painterData;
+                                      Navigator.pop(context);
+                                    });
+                                  } else if (num == 10) {
+                                    await bPC
+                                        .bipanaPreviewGetSavedData(
+                                            bipanaPreviewSavedEmail,
+                                            bipanaPreviewSavedPhone,
+                                            context)
+                                        .whenComplete(() {
+                                      bPC.savedDataList;
+                                      Navigator.pop(context);
+                                    });
+                                  } else if (num == 11) {
+                                    Navigator.pop(context);
+                                  } else if (num == 12) {
+                                    Navigator.pop(context);
+                                  } else if (num == 13) {
+                                    await uNC
+                                        .getUserNotificationData()
+                                        .whenComplete(() {
+                                      Navigator.pop(context);
+                                      uNC.notificationData;
+                                    });
+                                  }
                                 }
                               } on SocketException catch (_) {
                                 final SnackBar snackBar = SnackBar(
@@ -295,6 +423,13 @@ class AlertBox {
       BuildContext context) {
     final size = MediaQuery.of(context).size;
     var f = NumberFormat("###.0#", "en_US");
+    var sum;
+    var totalSum = 0.0;
+
+    for (int i = 0; i < cylinderVolume.length; i++) {
+      sum = price[i] * cylinderVolume[i]!.truncateToDouble();
+      totalSum = sum + totalSum;
+    }
 
     return SizedBox(
       height: 150.0, // Change as per your requirement
@@ -371,7 +506,7 @@ class AlertBox {
                   thickness: size.width * 0.005,
                 ),
                 Text(
-                  "50 Rs",
+                  "$totalSum Rs",
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color: Colors.black,

@@ -338,7 +338,7 @@ class _CameraScreenState extends State<CameraScreen> {
                               }
                             }
                           } on SocketException catch (_) {
-                            AlertBox().noWifiConnection(context);
+                            AlertBox().noWifiConnection(12, "", "", context);
                             print('not connected');
                           }
                         },

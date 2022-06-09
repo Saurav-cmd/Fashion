@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:fashion_paints/models/database_models/style_dist_model.dart';
 import 'package:fashion_paints/models/database_models/weather_proof_extemulsion_model.dart';
@@ -6,10 +8,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../database/all_data_database.dart';
 import '../../models/database_models/shade_color_database_model.dart';
 import '../../models/database_models/smart_dist_model.dart';
+import '../generate/generate_color_page.dart';
 
 class ColorScreen extends StatefulWidget {
   const ColorScreen({Key? key}) : super(key: key);
@@ -21,7 +25,7 @@ class ColorScreen extends StatefulWidget {
 class _ColorScreenState extends State<ColorScreen> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   TextEditingController searchController = TextEditingController();
-
+  String? token;
   List<ShadeColorDatabase> databaseDataList = [];
   List<String?> allColorCodeList = [];
 
@@ -113,10 +117,21 @@ class _ColorScreenState extends State<ColorScreen> {
     }
   }
 
+  getSharedPreferenceData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString("userData");
+    if (userData != null) {
+      setState(() {
+        token = jsonDecode(userData)['token'];
+      });
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getSharedPreferenceData();
     filterDatabaseData();
   }
 
@@ -221,78 +236,117 @@ class _ColorScreenState extends State<ColorScreen> {
                       shrinkWrap: true,
                       itemCount: searchedDataList.length,
                       itemBuilder: (ctx, i) {
-                        return Container(
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              bottom:
-                                  BorderSide(width: 1.0, color: Colors.black),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${searchedDataList[i].colorCode}(${searchedDataList[i].colorName})",
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  if (searchedDataList[i].fandeck == "1.0")
-                                    const Text(
-                                      "Fashion Paints Ambiance Plus CS",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  if (searchedDataList[i].fandeck == "2.0")
-                                    const Text(
-                                      "Spirit 1050 Fandeck",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  if (searchedDataList[i].fandeck == "3.0")
-                                    const Text(
-                                      "Color Symphony Fandeck",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  if (searchedDataList[i].fandeck == "4.0")
-                                    const Text(
-                                      "Color Cosmos Fandeck",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  if (searchedDataList[i].fandeck == "5.0")
-                                    const Text(
-                                      "BP-2300",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  if (searchedDataList[i].fandeck == "6.0")
-                                    const Text(
-                                      "AP-CP",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                ],
+                        return GestureDetector(
+                          onTap: () {
+                            if (token != null) {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (ctx) => GenerateColorScreen(
+                                        canSize: 1,
+                                        fanDeckName: searchedDataList[i]
+                                                    .fandeck ==
+                                                "1.0"
+                                            ? "Fashion Paints Ambiance Plus CS"
+                                            : searchedDataList[i].fandeck ==
+                                                    "2.0"
+                                                ? "Spirit 1050 Fandeck"
+                                                : searchedDataList[i].fandeck ==
+                                                        "3.0"
+                                                    ? "Color Symphony Fandeck"
+                                                    : searchedDataList[i]
+                                                                .fandeck ==
+                                                            "4.0"
+                                                        ? "Color Cosmos Fandeck"
+                                                        : searchedDataList[i]
+                                                                    .fandeck ==
+                                                                "5.0"
+                                                            ? "BP-2300"
+                                                            : searchedDataList[
+                                                                            i]
+                                                                        .fandeck ==
+                                                                    "6.0"
+                                                                ? "AP-CP"
+                                                                : "",
+                                        colorName:
+                                            databaseDataList[i].colorName! +
+                                                "(" +
+                                                databaseDataList[i].colorCode! +
+                                                ")",
+                                      )));
+                            }
+                          },
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                bottom:
+                                    BorderSide(width: 1.0, color: Colors.black),
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(bottom: 10, top: 10),
-                                child: Container(
-                                  height: 50,
-                                  width: 50,
-                                  decoration: BoxDecoration(
-                                    color: Color.fromRGBO(
-                                        databaseDataList[i].rValue!.toInt(),
-                                        databaseDataList[i].gValue!.toInt(),
-                                        databaseDataList[i].bValue!.toInt(),
-                                        1),
-                                  ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${databaseDataList[i].colorCode}(${databaseDataList[i].colorName})",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    if (searchedDataList[i].fandeck == "1.0")
+                                      const Text(
+                                        "Fashion Paints Ambiance Plus CS",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    if (searchedDataList[i].fandeck == "2.0")
+                                      const Text(
+                                        "Spirit 1050 Fandeck",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    if (searchedDataList[i].fandeck == "3.0")
+                                      const Text(
+                                        "Color Symphony Fandeck",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    if (searchedDataList[i].fandeck == "4.0")
+                                      const Text(
+                                        "Color Cosmos Fandeck",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    if (searchedDataList[i].fandeck == "5.0")
+                                      const Text(
+                                        "BP-2300",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    if (searchedDataList[i].fandeck == "6.0")
+                                      const Text(
+                                        "AP-CP",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                  ],
                                 ),
-                              )
-                            ],
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      bottom: 10, top: 10),
+                                  child: Container(
+                                    height: 50,
+                                    width: 50,
+                                    decoration: BoxDecoration(
+                                      color: Color.fromRGBO(
+                                          databaseDataList[i].rValue!.toInt(),
+                                          databaseDataList[i].gValue!.toInt(),
+                                          databaseDataList[i].bValue!.toInt(),
+                                          1),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         );
                       })

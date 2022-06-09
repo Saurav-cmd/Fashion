@@ -105,7 +105,7 @@ class _PainterStatusState extends State<PainterStatus> {
         });
       }
     } on SocketException catch (_) {
-      AlertBox().noWifiConnection(context);
+      AlertBox().noWifiConnection(9, "", "", context);
       print('not connected');
     }
 

@@ -34,7 +34,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         });
       }
     } on SocketException catch (_) {
-      AlertBox().noWifiConnection(context);
+      AlertBox().noWifiConnection(8, "", "", context);
     }
   }
 

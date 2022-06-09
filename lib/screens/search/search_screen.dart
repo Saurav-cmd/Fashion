@@ -130,9 +130,14 @@ class _SearchScreenState extends State<SearchScreen> {
                     child: Card(
                       elevation: 0,
                       child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: size.width * 0.015,
-                            vertical: size.height * 0.015),
+                        padding: size.width <= 411.42857142857144 &&
+                                size.height <= 683.4285714285714
+                            ? EdgeInsets.symmetric(
+                                horizontal: size.width * 0.050,
+                                vertical: size.height * 0.019)
+                            : EdgeInsets.symmetric(
+                                horizontal: size.width * 0.015,
+                                vertical: size.height * 0.015),
                         child: Column(
                           children: [
                             SizedBox(

@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:connectivity/connectivity.dart';
+import 'package:fashion_paints/widgets/dilogue_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,12 +35,20 @@ class _CartItemState extends State<CartItem> {
       Get.put(ConfirmOrderController());
 
   fetchApiData() async {
-    await gCD.getAllCartData(context)!.whenComplete(() {
-      setState(() {
-        gCD.cartList;
-        total();
-      });
-    });
+    try {
+      final result = await InternetAddress.lookup("example.com");
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print("There is internet connection");
+        await gCD.getAllCartData(context)!.whenComplete(() {
+          setState(() {
+            gCD.cartList;
+            total();
+          });
+        });
+      }
+    } on SocketException catch (_) {
+      AlertBox().noWifiConnection(4, "", "", context);
+    }
   }
 
   //yo total vhana ko first ma page ma aaune bitikai ko total calculate garxa

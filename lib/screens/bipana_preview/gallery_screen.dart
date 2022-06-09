@@ -357,7 +357,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                               }
                             }
                           } on SocketException catch (_) {
-                            AlertBox().noWifiConnection(context);
+                            AlertBox().noWifiConnection(11, "", "", context);
                             print('not connected');
                           }
                         },

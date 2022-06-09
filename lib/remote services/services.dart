@@ -812,8 +812,19 @@ class Services {
     }
   }
 
-  static Future<StatementList?> getStatementList(
-      String? dealerId, String? token, BuildContext context) async {
+  static Future<StatementList?> getStatementList(BuildContext context) async {
+    String? token;
+    String? dealerId;
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString("userData");
+    if (userData != null) {
+      token = jsonDecode(userData)['token'];
+      dealerId = jsonDecode(userData)['dealer_id'];
+    } else {
+      return null;
+    }
+
     try {
       final apiData = ApiRoute().statementList(dealerId);
       final response = await http.get(Uri.parse(apiData!), headers: {

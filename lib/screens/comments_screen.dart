@@ -159,6 +159,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                     ),
                                     SizedBox(height: size.height * 0.005),
                                     TextFormField(
+                                      readOnly: true,
                                       decoration: InputDecoration(
                                         border: const OutlineInputBorder(
                                           borderSide: BorderSide.none,
@@ -200,6 +201,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                     ),
                                     SizedBox(height: size.height * 0.005),
                                     TextFormField(
+                                      readOnly: true,
                                       decoration: InputDecoration(
                                         border: const OutlineInputBorder(
                                           borderSide: BorderSide.none,
@@ -241,6 +243,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                     ),
                                     SizedBox(height: size.height * 0.005),
                                     TextFormField(
+                                      readOnly: true,
                                       decoration: InputDecoration(
                                         border: const OutlineInputBorder(
                                           borderSide: BorderSide.none,
@@ -424,8 +427,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                               }
                                             }
                                           } on SocketException catch (_) {
-                                            AlertBox()
-                                                .noWifiConnection(context);
+                                            AlertBox().noWifiConnection(
+                                                2, "", "", context);
                                           }
                                         },
                                         style: ElevatedButton.styleFrom(
@@ -495,7 +498,9 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                           return null;
                                         }
                                       },
-                                      controller: nameController,
+                                      controller: nameController
+                                        ..text = fullName.toString(),
+                                      readOnly: true,
                                     ),
                                     SizedBox(height: size.height * 0.020),
                                     Text(
@@ -580,7 +585,9 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                             return null;
                                           }
                                         },
-                                        controller: phoneController,
+                                        controller: phoneController
+                                          ..text = phone.toString(),
+                                        readOnly: true,
                                         inputFormatters: [
                                           LengthLimitingTextInputFormatter(10),
                                         ]),
@@ -750,8 +757,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                               }
                                             }
                                           } on SocketException catch (_) {
-                                            AlertBox()
-                                                .noWifiConnection(context);
+                                            AlertBox().noWifiConnection(
+                                                3, "", "", context);
                                             print('not connected');
                                           }
                                         },
