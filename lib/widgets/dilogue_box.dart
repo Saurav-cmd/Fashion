@@ -295,49 +295,50 @@ class AlertBox {
                                   } else if (num == 3) {
                                     Navigator.pop(context);
                                   } else if (num == 4) {
+                                    Navigator.pop(context);
                                     await gCD
                                         .getAllCartData(context)!
                                         .whenComplete(() {
                                       gCD.cartList;
-                                      Navigator.pop(context);
                                     });
                                   } else if (num == 5) {
+                                    Navigator.pop(context);
                                     await sC
                                         .getStatementData(
                                             dealerId, token, context)
                                         .whenComplete(() {
                                       sC.data;
-                                      Navigator.pop(context);
                                     });
                                   } else if (num == 6) {
+                                    Navigator.pop(context);
                                     await pLC
                                         .getSchemeListData(context)
                                         .whenComplete(() {
                                       pLC.priceData;
-                                      Navigator.pop(context);
                                     });
                                   } else if (num == 7) {
+                                    Navigator.pop(context);
                                     await pLC
                                         .getSchemeListData(context)
                                         .whenComplete(() {
                                       pLC.priceData;
-                                      Navigator.pop(context);
                                     });
                                   } else if (num == 8) {
+                                    Navigator.pop(context);
                                     await uNC
                                         .getUserNotificationData()
                                         .whenComplete(() {
                                       uNC.notificationData;
-                                      Navigator.pop(context);
                                     });
                                   } else if (num == 9) {
+                                    Navigator.pop(context);
                                     await pC
                                         .findNearbyPainter(lat, long, context)
                                         .whenComplete(() {
                                       pC.painterData;
-                                      Navigator.pop(context);
                                     });
                                   } else if (num == 10) {
+                                    Navigator.pop(context);
                                     await bPC
                                         .bipanaPreviewGetSavedData(
                                             bipanaPreviewSavedEmail,
@@ -345,17 +346,16 @@ class AlertBox {
                                             context)
                                         .whenComplete(() {
                                       bPC.savedDataList;
-                                      Navigator.pop(context);
                                     });
                                   } else if (num == 11) {
                                     Navigator.pop(context);
                                   } else if (num == 12) {
                                     Navigator.pop(context);
                                   } else if (num == 13) {
+                                    Navigator.pop(context);
                                     await uNC
                                         .getUserNotificationData()
                                         .whenComplete(() {
-                                      Navigator.pop(context);
                                       uNC.notificationData;
                                     });
                                   }

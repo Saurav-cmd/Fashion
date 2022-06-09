@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:fashion_paints/Utils/contants.dart';
 import 'package:fashion_paints/models/apis_model/login_model.dart';
 import 'package:fashion_paints/remote%20services/services.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -39,6 +40,7 @@ class AuthController extends GetxController {
   Future<String?> getFirebaseToken() async =>
       FirebaseMessaging.instance.getToken().then((value) {
         String? token = value;
+        print("This is token $token");
         return token;
       });
 
@@ -49,7 +51,12 @@ class AuthController extends GetxController {
 
   Future<void> logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.clear();
+    final userData = prefs.getString("userData");
+    final userData1 = prefs.getBool(Constants.DATA_DOWNLOAD);
+    await prefs.remove("userData");
+
+    print("This is userData $userData");
+    print("This is userData1 of splash screen value $userData1");
     Navigator.of(context).pushReplacementNamed("Button_Navigation_Bar");
   }
 }

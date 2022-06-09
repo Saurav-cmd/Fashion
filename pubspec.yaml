@@ -40,7 +40,6 @@ dependencies:
   http: ^0.13.4
   get: ^4.6.1
   device_info_plus: ^3.2.3
-  firebase_messaging: ^11.2.14
   firebase_core: ^1.15.0
   sqflite: ^2.0.2+1
   shared_preferences: ^2.0.13
@@ -62,6 +61,8 @@ dependencies:
   color_converter: ^0.2.1
   flutter_pdfview: ^1.2.2
   flutter_cached_pdfview: ^0.4.1
+  firebase_messaging: ^11.4.1
+  flutter_local_notifications: ^9.5.3+1
 
 
 

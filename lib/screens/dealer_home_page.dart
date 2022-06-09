@@ -243,7 +243,7 @@ class _DealerHomePageState extends State<DealerHomePage> {
                                   size.height <= 683.4285714285714
                               ? EdgeInsets.symmetric(
                                   horizontal: size.width * 0.038,
-                                  vertical: size.height * 0)
+                                  vertical: size.height * 0.0095)
                               : EdgeInsets.symmetric(
                                   horizontal: size.width * 0.012,
                                   vertical: size.height * 0),
