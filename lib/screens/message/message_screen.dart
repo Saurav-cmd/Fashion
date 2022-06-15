@@ -100,8 +100,10 @@ class _FashionChatState extends State<FashionChat> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getUserId();
-    fetchApiData();
+    setState(() {
+      fetchApiData();
+      getUserId();
+    });
   }
 
   @override
@@ -120,6 +122,13 @@ class _FashionChatState extends State<FashionChat> {
         title: const Text(
           'Fashion Colour Studio',
           style: TextStyle(color: Colors.white),
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context)
+                .pushReplacementNamed("Dealer_button_Navigation_Bar");
+          },
         ),
         actions: [
           Padding(

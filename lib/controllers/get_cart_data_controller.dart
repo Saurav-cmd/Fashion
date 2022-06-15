@@ -7,7 +7,7 @@ import '../models/apis_model/get_cart_data_model.dart';
 class GetCartController extends GetxController {
   var isLoading = false.obs;
   List<GetCartData>? cartList = [];
-
+  var counter = 0.obs;
   Future<List<GetCartData>?>? getAllCartData(BuildContext context) async {
     try {
       isLoading(true);

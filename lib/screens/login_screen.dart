@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:fashion_paints/controllers/auth_controller.dart';
-import 'package:fashion_paints/widgets/dilogue_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -45,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: ChooseColor(0).appBarColor2,
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pushNamed("Button_Navigation_Bar");
+            Navigator.of(context).pushReplacementNamed("Button_Navigation_Bar");
           },
           icon: const Icon(
             Icons.arrow_back_ios,
@@ -228,8 +227,25 @@ class _LoginScreenState extends State<LoginScreen> {
                                       }
                                     }
                                   } on SocketException catch (_) {
-                                    AlertBox()
-                                        .noWifiConnection(1, "", "", context);
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text(
+                                        'Please check your internet connection!',
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                            fontSize: size.height * 0.011 +
+                                                size.width * 0.011),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      duration: const Duration(seconds: 2),
+                                      backgroundColor: Colors.grey.shade700,
+                                      behavior: SnackBarBehavior.floating,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                    ));
+                                    /* AlertBox()
+                                        .noWifiConnection(1, "", "", context);*/
                                     print('not connected');
                                   }
                                 },

@@ -47,6 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     value = sharedPreferences.getBool(Constants.DATA_DOWNLOAD);
     if (value == null || value != true) {
+      DatabaseHelper.instance.cleanDatabase();
       final url = Constants.baseUrl + "getdata";
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
@@ -91,6 +92,7 @@ class _SplashScreenState extends State<SplashScreen> {
         }
 
         for (int i = 0; i < wPE.weatherproofextemulsion!.length; i++) {
+          print("third ma yo vhitra aayo");
           DatabaseHelper.instance.addWeatherExtData(WeatherProofExtemusion(
             weatherId: wPE.weatherproofextemulsion![i].id,
             colorName: wPE.weatherproofextemulsion![i].colorName,
@@ -120,6 +122,7 @@ class _SplashScreenState extends State<SplashScreen> {
         }
 
         for (int i = 0; i < sD.styledist!.length; i++) {
+          print("fourth ma yo vhitra aayo");
           DatabaseHelper.instance.addStyleDist(StyleDist(
             styleId: sD.styledist![i].id,
             colorName: sD.styledist![i].colorName,
@@ -148,6 +151,7 @@ class _SplashScreenState extends State<SplashScreen> {
         }
 
         for (int i = 0; i < smartD.smartdist!.length; i++) {
+          print("fifth ma yo vhitra aayo");
           DatabaseHelper.instance.addSmartDist(SmartDist(
             smartId: smartD.smartdist![i].id,
             colorName: smartD.smartdist![i].colorName,
@@ -176,6 +180,7 @@ class _SplashScreenState extends State<SplashScreen> {
         }
 
         for (int i = 0; i < mE.magnetextemulsion!.length; i++) {
+          print("sixth ma yo vhitra aayo");
           DatabaseHelper.instance.addMagnetExt(MageneticExtEmulsion(
             magneticId: mE.magnetextemulsion![i].id,
             colorName: mE.magnetextemulsion![i].colorName,
@@ -203,6 +208,7 @@ class _SplashScreenState extends State<SplashScreen> {
           ));
         }
         for (int i = 0; i < cB.colorBase!.length; i++) {
+          print("seventh ma yo vhitra aayo");
           DatabaseHelper.instance.addColorBaseData(DatabaseColorBase(
             bId: cB.colorBase![i].id,
             base: cB.colorBase![i].base,
@@ -214,8 +220,8 @@ class _SplashScreenState extends State<SplashScreen> {
           ));
         }
         for (int i = 0; i < cC.colorColorant!.length; i++) {
-          DatabaseHelper.instance
-              .addColorColorantData(Colorants(
+          print("eight ma yo vhitra aayo");
+          DatabaseHelper.instance.addColorColorantData(Colorants(
             id: cC.colorColorant![i].id,
             colorantName: cC.colorColorant![i].colorantName,
             colorantCode: cC.colorColorant![i].colorantCode,
@@ -224,38 +230,33 @@ class _SplashScreenState extends State<SplashScreen> {
             rValue: double.parse(cC.colorColorant![i].rValue.toString()),
             gValue: double.parse(cC.colorColorant![i].gValue.toString()),
             bValue: double.parse(cC.colorColorant![i].bValue.toString()),
+          ));
+        }
+        for (int i = 0; i < sCE.shadeColor!.length; i++) {
+          print("ninth ma yo vhitra aayo");
+          DatabaseHelper.instance
+              .addShadeColorData(ShadeColorDatabase(
+            id: sCE.shadeColor![i].id,
+            sId: sCE.shadeColor![i].s_id,
+            colorCode: sCE.shadeColor![i].colorCode,
+            colorName: sCE.shadeColor![i].colorName,
+            styledist: double.parse(sCE.shadeColor![i].styledist.toString()),
+            weatherproofextemulsion: double.parse(
+                sCE.shadeColor![i].weatherproofextemulsion.toString()),
+            smartdist: double.parse(sCE.shadeColor![i].smartdist.toString()),
+            cosmeticintemulsion:
+                double.parse(sCE.shadeColor![i].cosmeticintemulsion.toString()),
+            magnetextemulsion:
+                double.parse(sCE.shadeColor![i].magnetextemulsion.toString()),
+            rValue: double.parse(sCE.shadeColor![i].rValue.toString()),
+            gValue: double.parse(sCE.shadeColor![i].gValue.toString()),
+            bValue: double.parse(sCE.shadeColor![i].bValue.toString()),
           ))
               .whenComplete(() async {
             SharedPreferences prefs = await SharedPreferences.getInstance();
             value = true;
             prefs.setBool(Constants.DATA_DOWNLOAD, value!);
             doLogin();
-            /*setState(() {
-                     doLogin();
-                    });*/
-            for (int i = 0; i < sCE.shadeColor!.length; i++) {
-              DatabaseHelper.instance
-                  .addShadeColorData(ShadeColorDatabase(
-                    id: sCE.shadeColor![i].id,
-                    sId: sCE.shadeColor![i].s_id,
-                    colorCode: sCE.shadeColor![i].colorCode,
-                    colorName: sCE.shadeColor![i].colorName,
-                    styledist:
-                        double.parse(sCE.shadeColor![i].styledist.toString()),
-                    weatherproofextemulsion: double.parse(
-                        sCE.shadeColor![i].weatherproofextemulsion.toString()),
-                    smartdist:
-                        double.parse(sCE.shadeColor![i].smartdist.toString()),
-                    cosmeticintemulsion: double.parse(
-                        sCE.shadeColor![i].cosmeticintemulsion.toString()),
-                    magnetextemulsion: double.parse(
-                        sCE.shadeColor![i].magnetextemulsion.toString()),
-                    rValue: double.parse(sCE.shadeColor![i].rValue.toString()),
-                    gValue: double.parse(sCE.shadeColor![i].gValue.toString()),
-                    bValue: double.parse(sCE.shadeColor![i].bValue.toString()),
-                  ))
-                  .whenComplete(() async {});
-            }
           });
         }
       }
@@ -284,11 +285,20 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
+  getValue() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getBool(Constants.DATA_DOWNLOAD);
+    setState(() {
+      value = userData;
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     addApiDataToDatabase();
+    getValue();
   }
 
   @override
@@ -302,6 +312,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("this is value $value");
     return Container(
         color: Colors.white,
         child: value == null || value == false

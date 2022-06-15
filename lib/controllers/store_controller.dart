@@ -9,12 +9,13 @@ class StoreController extends GetxController {
   var isLoading = false.obs;
   List<Items> productItem = [];
   var acrylicWall = <Items>[];
-//ACRYLIC WALL PUTTY
+
   void increment(int price) {
     storeNumber++;
     price = price.obs.bitLength * storeNumber.bitLength;
     update();
   }
+
   void decrement() {
     if (storeNumber > 1) {
       storeNumber--;

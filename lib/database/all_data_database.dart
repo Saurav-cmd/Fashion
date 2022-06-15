@@ -795,9 +795,15 @@ class DatabaseHelper {
   }
 
   Future<List<ShadeColorDatabase>?> queryShade(rValue, gValue, bValue) async {
+    print("This is rvalue of query $rValue");
+    print("This is gvalue of query $gValue");
+    print("This is bvalue of query $bValue");
     Database? db = await instance.database;
-    var data = await db?.rawQuery(
-        "SELECT * FROM $table4 WHERE $sRValue LIKE '%$rValue%' AND $sGValue LIKE '%$gValue%' AND $sBValue LIKE '%$bValue%'");
+    var data = await db?.query("$table4",
+        where: "$sRValue LIKE ? OR $sGValue LIKE ?",
+        whereArgs: ['%$rValue%', '%$gValue%']);
+    /*var data = await db?.rawQuery(
+        "SELECT * FROM ShadeColor WHERE $sRValue='%$rValue%' AND $sGValue='%$gValue%' AND $sBValue='%$bValue%'");*/
     return data!.isNotEmpty
         ? data.map((e) => ShadeColorDatabase.fromMap(e)).toList()
         : [];
@@ -817,6 +823,6 @@ class DatabaseHelper {
         ? data.map((e) => CosmeticInt.fromMap(e)).toList()
         : [];
   }*/
-  //all product query end here...........................................................................................................
+//all product query end here...........................................................................................................
 
 }

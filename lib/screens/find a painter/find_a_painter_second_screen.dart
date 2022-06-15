@@ -137,7 +137,8 @@ class _PainterStatusState extends State<PainterStatus> {
                 color: Colors.white,
               ),
               onPressed: () {
-                Navigator.of(context).pushNamed("Button_Navigation_Bar");
+                Navigator.of(context)
+                    .pushReplacementNamed("Button_Navigation_Bar");
               },
             );
           },

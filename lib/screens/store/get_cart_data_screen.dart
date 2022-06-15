@@ -89,7 +89,8 @@ class _CartItemState extends State<CartItem> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.of(context).pop();
+            // Navigator.of(context).pushReplacementNamed("store_screen");
           },
           icon: const Icon(Icons.arrow_back_ios),
           color: Colors.white,

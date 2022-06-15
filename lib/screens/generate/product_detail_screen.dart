@@ -467,28 +467,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     )
                   ],
                 ),
-
-              /* SizedBox(
-                  height:100,
-                  width: double.infinity,
-                  child: GridView.builder(
-                      itemCount: 4,
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 1,
-                        crossAxisSpacing: 10,
-                      ), itemBuilder: (ctx,i){
-                    return GestureDetector(
-                      onTap:() => setState(() => clickedItemPosition = i),
-                      child: Card(
-                        color:clickedItemPosition==i?ChooseColor(0).appBarColor1:Colors.transparent,
-                        child:const Center(child: Text("1 Litre",style: TextStyle(color: Colors.white),)),
-                      ),
-                    );
-                  }
-                  ),
-                ),*/
               SizedBox(height: size.height * 0.020),
               ConstrainedBox(
                 constraints: BoxConstraints.tightFor(
@@ -522,10 +500,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       } else {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (ctx) => GenerateColorScreen(
-                                fanDeckName: passedFanDeckName,
-                                productName: passedProductName,
-                                colorName: colorController.text,
-                                canSize: selectedCanSize)));
+                                  fanDeckName: passedFanDeckName,
+                                  productName: passedProductName,
+                                  colorName: colorController.text,
+                                  canSize: selectedCanSize,
+                                  navId: 1,
+                                )));
                       }
                     }
                   },

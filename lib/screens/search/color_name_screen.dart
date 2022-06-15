@@ -11,6 +11,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../database/all_data_database.dart';
+import '../../models/database_models/magnetic_ext_emulsion_model.dart';
 import '../../models/database_models/shade_color_database_model.dart';
 import '../../models/database_models/smart_dist_model.dart';
 import '../generate/generate_color_page.dart';
@@ -29,13 +30,18 @@ class _ColorScreenState extends State<ColorScreen> {
   List<ShadeColorDatabase> databaseDataList = [];
   List<String?> allColorCodeList = [];
 
+  var databaseData;
   filterDatabaseData() async {
-    print("ya vhitra aayo");
-    final databaseData = await DatabaseHelper.instance.getShadeColorData();
-    for (int i = 0; i < databaseData.length; i++) {
-      print("${databaseData[i].colorName}");
+    databaseData = await DatabaseHelper.instance.getShadeColorData();
+    setState(() {
+      addDataToList();
+    });
+  }
+
+  addDataToList() async {
+    for (int i = 0; i < databaseData!.length; i++) {
       setState(() {
-        allColorCodeList.add(databaseData[i].colorName);
+        allColorCodeList.add(databaseData![i].colorName);
       });
     }
   }
@@ -43,15 +49,17 @@ class _ColorScreenState extends State<ColorScreen> {
   List<WeatherProofExtemusion?> weatherDataList = [];
   List<StyleDist> styleList = [];
   List<SmartDist> smartList = [];
+  List<MageneticExtEmulsion> magneticEmuList = [];
   List<SearchedDataHolder> searchedDataList = [];
   getData() async {
-    final databaseData = await DatabaseHelper.instance.getShadeColorData();
     final weatherProofData =
         await DatabaseHelper.instance.queryWeatherProof(searchController.text);
     final styleDistemperData = await DatabaseHelper.instance
         .queryStyleDistemper(searchController.text);
     final smartDistemperData = await DatabaseHelper.instance
         .querySmartDistemper(searchController.text);
+    final magneticEmulsionData = await DatabaseHelper.instance
+        .queryMagneticEmulsion(searchController.text);
     /* final cosmeticInteriorData = await DatabaseHelper.instance
         .queryCosmeticInterior(searchController.text);*/
     for (int i = 0; i < databaseData.length; i++) {
@@ -68,13 +76,14 @@ class _ColorScreenState extends State<ColorScreen> {
         weatherDataList.add(weatherProofData[i]);
         for (int i = 0; i < weatherDataList.length; i++) {
           SearchedDataHolder sH = SearchedDataHolder(
-              weatherDataList[i]!.colorName,
-              weatherDataList[i]!.colorCode,
-              weatherDataList[i]!.fandeck.toString(),
-              "",
-              null,
-              null,
-              null);
+            weatherDataList[i]!.colorName,
+            weatherDataList[i]!.colorCode,
+            weatherDataList[i]!.fandeck.toString(),
+            "weatherproofextemulsion",
+            databaseDataList[i].rValue,
+            databaseDataList[i].gValue,
+            databaseDataList[i].bValue,
+          );
           searchedDataList.add(sH);
         }
       });
@@ -86,13 +95,14 @@ class _ColorScreenState extends State<ColorScreen> {
         styleList.add(styleDistemperData[i]);
         for (int i = 0; i < styleList.length; i++) {
           SearchedDataHolder sH = SearchedDataHolder(
-              styleList[i].colorName,
-              styleList[i].colorCode,
-              styleList[i].fandeck.toString(),
-              "",
-              null,
-              null,
-              null);
+            styleList[i].colorName,
+            styleList[i].colorCode,
+            styleList[i].fandeck.toString(),
+            "styledist",
+            databaseDataList[i].rValue,
+            databaseDataList[i].gValue,
+            databaseDataList[i].bValue,
+          );
           searchedDataList.add(sH);
         }
       });
@@ -104,13 +114,33 @@ class _ColorScreenState extends State<ColorScreen> {
         smartList.add(smartDistemperData[i]);
         for (int i = 0; i < smartList.length; i++) {
           SearchedDataHolder sH = SearchedDataHolder(
-              smartList[i].colorName,
-              smartList[i].colorCode,
-              smartList[i].fandeck.toString(),
-              "",
-              null,
-              null,
-              null);
+            smartList[i].colorName,
+            smartList[i].colorCode,
+            smartList[i].fandeck.toString(),
+            "smartdist",
+            databaseDataList[i].rValue,
+            databaseDataList[i].gValue,
+            databaseDataList[i].bValue,
+          );
+          searchedDataList.add(sH);
+        }
+      });
+    }
+
+    for (int i = 0; i < magneticEmulsionData!.length; i++) {
+      setState(() {
+        magneticEmuList.clear();
+        magneticEmuList.add(magneticEmulsionData[i]);
+        for (int i = 0; i < smartList.length; i++) {
+          SearchedDataHolder sH = SearchedDataHolder(
+            magneticEmulsionData[i].colorName,
+            magneticEmulsionData[i].colorCode,
+            magneticEmulsionData[i].fandeck.toString(),
+            "magnetextemulsion",
+            databaseDataList[i].rValue,
+            databaseDataList[i].gValue,
+            databaseDataList[i].bValue,
+          );
           searchedDataList.add(sH);
         }
       });
@@ -130,9 +160,9 @@ class _ColorScreenState extends State<ColorScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
-    getSharedPreferenceData();
     filterDatabaseData();
+    getSharedPreferenceData();
+    super.initState();
   }
 
   @override
@@ -143,7 +173,8 @@ class _ColorScreenState extends State<ColorScreen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pushReplacementNamed("Search_Screen");
+            Navigator.of(context).pop();
+            // Navigator.of(context).pushReplacementNamed("Search_Screen");
           },
           icon: const Icon(Icons.arrow_back_ios),
           color: Colors.white60,
@@ -267,10 +298,13 @@ class _ColorScreenState extends State<ColorScreen> {
                                                                 ? "AP-CP"
                                                                 : "",
                                         colorName:
-                                            databaseDataList[i].colorName! +
+                                            searchedDataList[i].colorName +
                                                 "(" +
-                                                databaseDataList[i].colorCode! +
+                                                searchedDataList[i].colorCode +
                                                 ")",
+                                        productName:
+                                            searchedDataList[i].productName,
+                                        navId: 2,
                                       )));
                             }
                           },
@@ -288,7 +322,7 @@ class _ColorScreenState extends State<ColorScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "${databaseDataList[i].colorCode}(${databaseDataList[i].colorName})",
+                                      "${searchedDataList[i].colorCode}(${searchedDataList[i].colorName})",
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -328,6 +362,11 @@ class _ColorScreenState extends State<ColorScreen> {
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold),
                                       ),
+                                    Text(
+                                      "${searchedDataList[i].productName}",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   ],
                                 ),
                                 Padding(
@@ -338,9 +377,9 @@ class _ColorScreenState extends State<ColorScreen> {
                                     width: 50,
                                     decoration: BoxDecoration(
                                       color: Color.fromRGBO(
-                                          databaseDataList[i].rValue!.toInt(),
-                                          databaseDataList[i].gValue!.toInt(),
-                                          databaseDataList[i].bValue!.toInt(),
+                                          searchedDataList[i].rValue.toInt(),
+                                          searchedDataList[i].gValue.toInt(),
+                                          searchedDataList[i].bValue.toInt(),
                                           1),
                                     ),
                                   ),

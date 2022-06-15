@@ -18,6 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../controllers/bipana_preview_controller_1.dart';
 import '../controllers/get_cart_data_controller.dart';
 import '../controllers/notice_controller.dart';
+import '../controllers/order_history_controller.dart';
 import '../controllers/painter_controller.dart';
 import '../controllers/price_list_controller.dart';
 import '../controllers/statement_controller.dart';
@@ -176,6 +177,7 @@ class AlertBox {
     UserNotificationController uNC = Get.put(UserNotificationController());
     PainterController pC = Get.put(PainterController());
     BipanPreviewController1 bPC = Get.put(BipanPreviewController1());
+    OrderHistoryController oHC = Get.put(OrderHistoryController());
 
     bool servicestatus = false;
     bool haspermission = false;
@@ -199,7 +201,7 @@ class AlertBox {
       return null;
     }
 
-    position = await Geolocator.getCurrentPosition(
+/*    position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
 
     long = position.longitude;
@@ -215,7 +217,7 @@ class AlertBox {
             .listen((Position position) {
       long = position.longitude;
       lat = position.latitude;
-    });
+    });*/
 
     await showDialog(
       context: context,
@@ -357,6 +359,13 @@ class AlertBox {
                                         .getUserNotificationData()
                                         .whenComplete(() {
                                       uNC.notificationData;
+                                    });
+                                  } else if (num == 14) {
+                                    Navigator.pop(context);
+                                    await oHC
+                                        .getOrderHistory(context)
+                                        .whenComplete(() {
+                                      oHC.orderHistory;
                                     });
                                   }
                                 }
@@ -531,6 +540,15 @@ class AlertBox {
       List<double?> cylinderVolume,
       List<double> price,
       BuildContext context) async {
+    print("base Name $baseName");
+    print("can Size $canSize");
+    print("r value $rValue");
+    print("gValue Name $gValue");
+    print("bValue Name $bValue");
+    print("cylinder Name $cylinder");
+    print("cylinder volume $cylinderVolume");
+    print("price $price");
+
     final size = MediaQuery.of(context).size;
     await showDialog(
       context: context,
@@ -1060,5 +1078,28 @@ class AlertBox {
         return alert;
       },
     );
+  }
+
+  Future<bool> onWillPop(BuildContext context) async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: new Text('Are you sure?'),
+            content: new Text('Do you want to exit an App'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () =>
+                    Navigator.of(context).pop(false), //<-- SEE HERE
+                child: new Text('No'),
+              ),
+              TextButton(
+                onPressed: () =>
+                    Navigator.of(context).pop(true), // <-- SEE HERE
+                child: new Text('Yes'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
   }
 }

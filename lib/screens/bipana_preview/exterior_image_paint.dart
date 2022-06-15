@@ -24,11 +24,16 @@ class ExteriorImagePaint extends StatefulWidget {
 
 class _ExteriorImagePaintState extends State<ExteriorImagePaint> {
   List<ShadeColorDatabase> searchColor = [];
-
+  var shadeData;
   getAllShadeColor() async {
-    final shadeData = await DatabaseHelper.instance.getShadeColorData();
+    shadeData = await DatabaseHelper.instance.getShadeColorData();
+    setState(() {
+      allData();
+    });
+  }
+
+  allData() async {
     for (int i = 0; i < shadeData.length; i++) {
-      print("Vhitra aayo");
       allColorsData.add(shadeData[i]);
     }
   }

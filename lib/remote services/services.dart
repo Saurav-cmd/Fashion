@@ -21,12 +21,14 @@ import '../models/apis_model/confirm_order_model.dart';
 import '../models/apis_model/find_painter_model.dart';
 import '../models/apis_model/get_cart_data_model.dart';
 import '../models/apis_model/message_model.dart';
+import '../models/apis_model/notice_log.dart';
 import '../models/apis_model/notice_model.dart';
 import '../models/apis_model/order_history_model.dart';
 import '../models/apis_model/price_list_model.dart';
 import '../models/apis_model/product_model.dart';
 import '../models/apis_model/stetement_model.dart';
 import '../models/apis_model/user_notification_model.dart';
+import '../screens/button_navigation_bars/dealer_home_screen_button_navigation_bar.dart';
 
 class Services {
   static Future<LoginModel?> loginData(String userCode, String password,
@@ -68,8 +70,12 @@ class Services {
             print("User Already logged in");
             AlertBox().userAlreadyLoggedIn(context);
           } else if (message == "Welcome" && status == "success") {
-            Navigator.of(context)
-                .pushReplacementNamed("Dealer_button_Navigation_Bar");
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => DealerBottomNavigation()),
+              ModalRoute.withName('/'),
+            );
           }
         }
       } else if (response.statusCode == 403) {
@@ -91,7 +97,7 @@ class Services {
     return null;
   }
 
-  static Future<List<GetCartData>?>? getCartData(BuildContext context) async {
+  static Future<List<GetCartData>?> getCartData(BuildContext context) async {
     String? token;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final userData = prefs.getString("userData");
@@ -121,7 +127,7 @@ class Services {
         AlertBox().universalAlertBox(context);
       }
     } catch (e) {
-      print('error');
+      throw (e);
     }
   }
 
@@ -1112,6 +1118,42 @@ class Services {
       if (response.statusCode == 200) {
         print("This is response ${response.body}");
         return messageFromJson(response.body);
+      } else if (response.statusCode == 403) {
+        AlertBox().AlertBox403(context);
+      } else if (response.statusCode == 400) {
+        AlertBox().AlertBox400(context);
+      } else if (response.statusCode == 401) {
+        AlertBox().AlertBox401(context);
+      } else if (response.statusCode == 500) {
+        AlertBox().servererror(context);
+      } else if (response.statusCode == 503) {
+        AlertBox().servererror(context);
+      } else {
+        AlertBox().universalAlertBox(context);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<NoticeLog?> NoticeLogData(BuildContext context) async {
+    String? token;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString("userData");
+    if (userData != null) {
+      token = jsonDecode(userData)['token'];
+    }
+
+    try {
+      final apiUrl = ApiRoute().noticeLog();
+      final response = await http.get(Uri.parse(apiUrl!), headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token"
+      });
+
+      if (response.statusCode == 200) {
+        print("sucess");
+        return noticeLogFromJson(response.body);
       } else if (response.statusCode == 403) {
         AlertBox().AlertBox403(context);
       } else if (response.statusCode == 400) {

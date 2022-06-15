@@ -1,8 +1,9 @@
 import 'package:color_converter/color_converter.dart';
 import 'package:fashion_paints/colors/colors_file.dart';
-import 'package:fashion_paints/database/all_data_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../../database/all_data_database.dart';
 
 var data;
 
@@ -17,9 +18,9 @@ class _MatchedColorScreenState extends State<MatchedColorScreen> {
   Color? passedSelectedColor;
   String? removeFirst;
   var data;
-  String? rValue;
-  String? gValue;
-  String? bValue;
+  double? rValue;
+  double? gValue;
+  double? bValue;
   List rgbaList = [];
   List rgbList = [];
   @override
@@ -29,16 +30,17 @@ class _MatchedColorScreenState extends State<MatchedColorScreen> {
     passedSelectedColor = widget.selectedColor;
     String? formatColor =
         passedSelectedColor.toString().split("(")[1].split(")")[0];
-    String? removeFirst = formatColor.replaceFirst("0x", "#");
+    String? removeFirst = formatColor.replaceFirst("0xf", "#");
     print("This is removeFirst $removeFirst");
     hexToRGB(removeFirst);
   }
 
   hexToRGB(String? color) {
     data = RGB.fromHex(color!);
-    rValue = data.toString().split(",")[0].toString();
-    gValue = data.toString().split(",")[1].toString();
-    bValue = data.toString().split(",")[2].toString();
+    print("This is data $data");
+    rValue = double.parse(data.toString().split(",")[0]);
+    gValue = double.parse(data.toString().split(",")[1]);
+    bValue = double.parse(data.toString().split(",")[2]);
     grabMatchingColor(rValue, gValue, bValue);
   }
 
@@ -46,9 +48,11 @@ class _MatchedColorScreenState extends State<MatchedColorScreen> {
   List<double?> gValueData = [];
   List<double?> bValueData = [];
 
-  grabMatchingColor(String? rValue, String? gValue, String? bValue) async {
-    final data = await DatabaseHelper.instance.queryShade(
-        rValue! + "." + "0", gValue! + "." + "0", bValue! + "." + "0");
+  grabMatchingColor(double? rValue, double? gValue, double? bValue) async {
+    final data =
+        await DatabaseHelper.instance.queryShade(rValue!, gValue!, bValue!);
+
+    // final data = await DatabaseHelper.instance.queryShade(230.0, 226.0, 223.0);
     if (data != null) {
       for (int i = 0; i < data.length; i++) {
         setState(() {
@@ -77,7 +81,7 @@ class _MatchedColorScreenState extends State<MatchedColorScreen> {
             vertical: size.height * 0.020, horizontal: size.width * 0.050),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               "Selected Color",
@@ -108,18 +112,18 @@ class _MatchedColorScreenState extends State<MatchedColorScreen> {
                     )
                   ],
                 ),
-                Expanded(
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: size.width * 0.15),
-                    child: SizedBox(
-                      height: 120,
-                      width: 120,
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: rValueData.length,
-                          itemBuilder: (ctx, i) {
-                            return Container(
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.15),
+                  child: SizedBox(
+                    height: 120,
+                    width: 120,
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: rValueData.length,
+                        itemBuilder: (ctx, i) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
                               height: 50,
                               width: 50,
                               decoration: BoxDecoration(
@@ -128,9 +132,9 @@ class _MatchedColorScreenState extends State<MatchedColorScreen> {
                                       gValueData[i]!.toInt(),
                                       bValueData[i]!.toInt(),
                                       1)),
-                            );
-                          }),
-                    ),
+                            ),
+                          );
+                        }),
                   ),
                 ),
               ],

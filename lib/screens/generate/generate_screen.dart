@@ -28,7 +28,8 @@ class _GenerateFirstScreenState extends State<GenerateFirstScreen> {
                 color: Colors.white,
               ),
               onPressed: () {
-                Navigator.of(context).pushNamed("Dealer_button_Navigation_Bar");
+                Navigator.of(context)
+                    .pushReplacementNamed("Dealer_button_Navigation_Bar");
               },
             );
           },

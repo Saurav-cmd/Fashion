@@ -78,7 +78,7 @@ class _NoticeHomeScreenState extends State<NoticeHomeScreen> {
                 ),
                 onPressed: () {
                   Navigator.of(context)
-                      .pushNamed("Dealer_button_Navigation_Bar");
+                      .pushReplacementNamed("Dealer_button_Navigation_Bar");
                 },
               );
             },

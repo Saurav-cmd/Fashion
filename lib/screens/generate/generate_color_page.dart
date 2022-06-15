@@ -13,11 +13,13 @@ import '../../colors/colors_file.dart';
 import '../../models/database_models/cosmetic_int_emulsion_database_model.dart';
 import '../book_marked/book_marked_screen.dart';
 import '../saved/saved_screen.dart';
+import '../search/color_name_screen.dart';
 
 // ignore: must_be_immutable
 class GenerateColorScreen extends StatefulWidget {
   GenerateColorScreen(
       {Key,
+      this.navId,
       this.columnId,
       this.colorName,
       this.productName,
@@ -27,6 +29,7 @@ class GenerateColorScreen extends StatefulWidget {
       this.fanDeckName,
       key})
       : super(key: key);
+  int? navId;
   int? columnId;
   String? colorName;
   String? productName;
@@ -39,6 +42,7 @@ class GenerateColorScreen extends StatefulWidget {
 }
 
 class _GenerateColorScreenState extends State<GenerateColorScreen> {
+  int? passedNavId;
   int? passedColumnId;
   String? passedColorName;
   String? passedProductName;
@@ -59,6 +63,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
     passedBase = widget.base;
     passedColorants = widget.colorants;
     passedFanDeckName = widget.fanDeckName;
+    passedNavId = widget.navId;
     grabFanDeckId();
     DatabaseHelper;
   }
@@ -535,12 +540,15 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
         elevation: 0,
         leading: IconButton(
           onPressed: () {
-            if (passedColumnId == null) {
+            if (passedColumnId == null && passedNavId == 1) {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (ctx) => ProductDetailScreen(
                         fanDeckName: passedFanDeckName,
                         productName: passedProductName,
                       )));
+            } else if (passedNavId == 2) {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (ctx) => ColorScreen()));
             } else {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (ctx) => const BookMarkedScreen()));
@@ -806,7 +814,7 @@ class _GenerateColorScreenState extends State<GenerateColorScreen> {
                 if (passedProductName == "smartdist" ||
                     passedProductName == "styledist")
                   Text(
-                    '$baseName  ${passedCanSize == 0.0 ? passedCanSize : selectedCanSize} Kg',
+                    '$baseName  ${selectedCanSize == 0.0 ? passedCanSize : selectedCanSize} Kg',
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: size.height * 0.012 + size.width * 0.012,

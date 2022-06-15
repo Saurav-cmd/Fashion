@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:fashion_paints/controllers/order_history_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:nepali_date_picker/nepali_date_picker.dart';
+
+import '../../widgets/dilogue_box.dart';
 
 class OrderHistory extends StatefulWidget {
   const OrderHistory({Key? key}) : super(key: key);
@@ -16,11 +20,20 @@ class _OrderHistoryState extends State<OrderHistory> {
   OrderHistoryController oHC = Get.put(OrderHistoryController());
 
   fetchApiData() async {
-    oHC.getOrderHistory(context).whenComplete(() {
-      setState(() {
-        oHC.orderHistory;
-      });
-    });
+    try {
+      final internet = await InternetAddress.lookup("example.com");
+      if (internet.isNotEmpty && internet[0].rawAddress.isNotEmpty) {
+        print("There is internet connection");
+        oHC.getOrderHistory(context).whenComplete(() {
+          setState(() {
+            oHC.orderHistory;
+          });
+        });
+      }
+    } on SocketException catch (_) {
+      AlertBox().noWifiConnection(14, "", "", context);
+      print("Not Connected");
+    }
   }
 
   @override

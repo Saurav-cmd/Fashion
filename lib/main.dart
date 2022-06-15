@@ -11,15 +11,19 @@ import 'package:fashion_paints/screens/comments_screen.dart';
 import 'package:fashion_paints/screens/find%20a%20painter/find_a_painter_second_screen.dart';
 import 'package:fashion_paints/screens/generate/generate_screen.dart';
 import 'package:fashion_paints/screens/home_screen.dart';
+import 'package:fashion_paints/screens/message/message_screen.dart';
+import 'package:fashion_paints/screens/notice/notice_screen.dart';
 import 'package:fashion_paints/screens/notification/dealer_notification_screen.dart';
 import 'package:fashion_paints/screens/notification/notification_screen.dart';
 import 'package:fashion_paints/screens/order_history/order_history_screen.dart';
 import 'package:fashion_paints/screens/price/price_list_screen.dart';
+import 'package:fashion_paints/screens/profile_screen/profile_screen.dart';
 import 'package:fashion_paints/screens/saved/saved_screen.dart';
 import 'package:fashion_paints/screens/scheme/scheme_list_screen.dart';
 import 'package:fashion_paints/screens/search/color_name_screen.dart';
 import 'package:fashion_paints/screens/search/search_screen.dart';
 import 'package:fashion_paints/screens/splash_screen.dart';
+import 'package:fashion_paints/screens/statement/statement_screen.dart';
 import 'package:fashion_paints/screens/store/get_cart_data_screen.dart';
 import 'package:fashion_paints/screens/store/store_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -30,6 +34,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 
+import 'Utils/local_notification.dart';
 import 'screens/button_navigation_bars/dealer_home_screen_button_navigation_bar.dart';
 
 final GlobalKey<ScaffoldMessengerState> snackBarKey =
@@ -62,6 +67,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    LocalNotificationService.initialize(context);
     loadFcm();
     listenFcm();
     requestPermission();
@@ -96,12 +102,25 @@ class _MyAppState extends State<MyApp> {
     FirebaseMessaging.instance.getInitialMessage().then((message) async {
       if (message != null) {
         final routeFromMessage = message.data["routeKey"];
-        /*    final title = message.notification?.title;
-        final body = message.notification?.body;
-        final notificationImage = message.notification?.android?.imageUrl;*/
-        // Navigator.of(context).pushNamed(routeFromMessage);
-
-        Get.toNamed(routeFromMessage);
+        print("This is notification message initital $routeFromMessage");
+        print("This is notification message initital $message");
+        if (routeFromMessage == "pricelist") {
+          Get.toNamed("Price_List_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "scheme") {
+          Get.toNamed("Scheme_List_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "ledger") {
+          Get.toNamed("Statement_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "notice") {
+          Get.toNamed("Notices_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "chat") {
+          Get.toNamed("Message_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "chequeAndDue") {
+          Get.toNamed("Profile_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "order") {
+          Get.toNamed("Order_history_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "product") {
+          Get.toNamed("store_screen", preventDuplicates: true);
+        }
       }
       if (message == null) {
         print("No Notification to show");
@@ -130,8 +149,8 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
         );
-        // Navigator.of(context).pushNamed(routeFromMessage);
       }
+      LocalNotificationService.display(message);
     });
   }
 
@@ -170,8 +189,26 @@ class _MyAppState extends State<MyApp> {
     FirebaseMessaging.onMessageOpenedApp.listen((message) async {
       final routeFromMessage = message.data["routeKey"];
       // RemoteNotification? notification = message.notification;
+      print("This is routeFromMessage background $message");
+      print("This is routeFromMessage background $routeFromMessage");
       if (message.notification != null) {
-        Get.toNamed(routeFromMessage);
+        if (routeFromMessage == "pricelist") {
+          Get.toNamed("Price_List_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "scheme") {
+          Get.toNamed("Scheme_List_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "ledger") {
+          Get.toNamed("Statement_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "notice") {
+          Get.toNamed("Notices_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "chat") {
+          Get.toNamed("Message_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "chequeAndDue") {
+          Get.toNamed("Profile_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "order") {
+          Get.toNamed("Order_history_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "product") {
+          Get.toNamed("store_screen", preventDuplicates: true);
+        }
       }
     });
   }
@@ -214,6 +251,10 @@ class _MyAppState extends State<MyApp> {
         "Exterior_screen": (ctx) => const ExteriorImages(),
         "Exterior_image_paint": (ctx) => ExteriorImagePaint(),
         "Bipana_Preview_Saved_Screen": (ctx) => const BipanPreviewSavedScreen(),
+        "Statement_screen": (ctx) => StatementPdf(),
+        "Notices_screen": (ctx) => NoticeHomeScreen(),
+        "Message_screen": (ctx) => FashionChat(),
+        "Profile_screen": (ctx) => ProfileScreen(),
       },
     );
   }

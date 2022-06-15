@@ -63,8 +63,9 @@ class _SchemeListState extends State<SchemeList> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  Navigator.of(context)
-                      .pushNamed("Dealer_button_Navigation_Bar");
+                  Navigator.of(context).pop();
+                  // Navigator.of(context)
+                  //     .pushReplacementNamed("Dealer_button_Navigation_Bar");
                 },
               );
             },

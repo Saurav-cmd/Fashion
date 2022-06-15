@@ -95,4 +95,8 @@ class ApiRoute {
   String? getChat() {
     return Constants.baseUrl + "message";
   }
+
+  String? noticeLog() {
+    return Constants.baseUrl + "lognotice";
+  }
 }
