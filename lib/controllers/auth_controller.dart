@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends GetxController {
-  var isLoading = false.obs;
+  var isLoading = true.obs;
 
   Future<LoginModel?> loginApiData(String userCode, String password,
       String deviceId, String fcmId, BuildContext context) async {

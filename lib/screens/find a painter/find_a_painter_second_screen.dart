@@ -209,111 +209,126 @@ class _PainterStatusState extends State<PainterStatus> {
                     ],
                   ))),
                 );
+              } else if (pC.painterData!.isEmpty) {
+                return Expanded(
+                  child: Center(
+                      child: Text(
+                    "There are no painters nearby",
+                    style: TextStyle(
+                        color: ChooseColor(0).appBarColor1,
+                        fontSize: size.height * 0.014 + size.width * 0.014),
+                  )),
+                );
               }
-              return ListView.builder(
-                  itemCount: pC.painterData!.length,
-                  shrinkWrap: true,
-                  itemBuilder: (ctx, i) {
-                    return Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 14.0, bottom: 14, left: 12),
-                            child: Container(
-                              height: 80,
-                              width: 80,
-                              decoration: const BoxDecoration(
-                                  image: DecorationImage(
-                                      fit: BoxFit.contain,
-                                      image: AssetImage('images/painter.png'))),
+              return RefreshIndicator(
+                onRefresh: () async => fetchPainterData(lat, long),
+                child: ListView.builder(
+                    itemCount: pC.painterData!.length,
+                    shrinkWrap: true,
+                    itemBuilder: (ctx, i) {
+                      return Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 14.0, bottom: 14, left: 12),
+                              child: Container(
+                                height: 80,
+                                width: 80,
+                                decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                        fit: BoxFit.contain,
+                                        image:
+                                            AssetImage('images/painter.png'))),
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Expanded(
-                              child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 10, bottom: 25),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(right: 10, top: 5),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      SizedBox(
-                                        width: 140,
-                                        child: Text(
-                                          '${pC.painterData![i].firstName} ${pC.painterData![i].lastName}',
-                                          style: TextStyle(
-                                              fontSize: size.height * 0.012 +
-                                                  size.width * 0.012,
-                                              color: Colors.black87,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'Status',
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Expanded(
+                                child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10, bottom: 25),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 10, top: 5),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        SizedBox(
+                                          width: 140,
+                                          child: Text(
+                                            '${pC.painterData![i].firstName} ${pC.painterData![i].lastName}',
                                             style: TextStyle(
                                                 fontSize: size.height * 0.012 +
                                                     size.width * 0.012,
                                                 color: Colors.black87,
                                                 fontWeight: FontWeight.w500),
                                           ),
-                                          SizedBox(
-                                            width: size.width * 0.010,
-                                          ),
-                                          if (pC.painterData![i].status == 1)
-                                            const Icon(
-                                              Icons.radio_button_checked,
-                                              color: Colors.green,
-                                              size: 15,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'Status',
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      size.height * 0.012 +
+                                                          size.width * 0.012,
+                                                  color: Colors.black87,
+                                                  fontWeight: FontWeight.w500),
                                             ),
-                                          if (pC.painterData![i].status == 0)
-                                            const Icon(
-                                              Icons.radio_button_checked,
-                                              color: Colors.red,
-                                              size: 15,
+                                            SizedBox(
+                                              width: size.width * 0.010,
                                             ),
-                                        ],
-                                      ),
-                                    ],
+                                            if (pC.painterData![i].status == 1)
+                                              const Icon(
+                                                Icons.radio_button_checked,
+                                                color: Colors.green,
+                                                size: 15,
+                                              ),
+                                            if (pC.painterData![i].status == 0)
+                                              const Icon(
+                                                Icons.radio_button_checked,
+                                                color: Colors.red,
+                                                size: 15,
+                                              ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  '${pC.painterData![i].phone}',
-                                  style: TextStyle(
-                                      fontSize: size.height * 0.010 +
-                                          size.width * 0.010,
-                                      color: Colors.black87),
-                                ),
-                                Text(
-                                  '${pC.painterData![i].address}',
-                                  style: TextStyle(
-                                      fontSize: size.height * 0.011 +
-                                          size.width * 0.011,
-                                      color: Colors.black87),
-                                ),
-                              ],
-                            ),
-                          )),
-                        ],
-                      ),
-                    );
-                  });
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    '${pC.painterData![i].phone}',
+                                    style: TextStyle(
+                                        fontSize: size.height * 0.010 +
+                                            size.width * 0.010,
+                                        color: Colors.black87),
+                                  ),
+                                  Text(
+                                    '${pC.painterData![i].address}',
+                                    style: TextStyle(
+                                        fontSize: size.height * 0.011 +
+                                            size.width * 0.011,
+                                        color: Colors.black87),
+                                  ),
+                                ],
+                              ),
+                            )),
+                          ],
+                        ),
+                      );
+                    }),
+              );
             })
           ],
         ),

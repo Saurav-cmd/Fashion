@@ -28,17 +28,32 @@ import '../models/apis_model/price_list_model.dart';
 import '../models/apis_model/product_model.dart';
 import '../models/apis_model/stetement_model.dart';
 import '../models/apis_model/user_notification_model.dart';
-import '../screens/button_navigation_bars/dealer_home_screen_button_navigation_bar.dart';
 
 class Services {
   static Future<LoginModel?> loginData(String userCode, String password,
       String deviceId, String fcmId, BuildContext context) async {
     try {
+      EasyLoading.instance.indicatorType = EasyLoadingIndicatorType.ring;
+      EasyLoading.instance.loadingStyle = EasyLoadingStyle.light;
+      EasyLoading.instance.backgroundColor = Colors.black45;
+      EasyLoading.instance.maskType = EasyLoadingMaskType.black;
+      EasyLoading.instance.maskColor = Colors.blue.withOpacity(0.5);
+      EasyLoading.show(status: "Logging In....");
       String? apiRoute =
           ApiRoute().getLoginUrl(userCode, password, deviceId, fcmId);
       final response = await http.post(Uri.parse(apiRoute!));
       final responseData = jsonDecode(response.body);
-      if (response.statusCode == 200) {
+      print("This is response data $responseData");
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final statusData = jsonEncode({"status": responseData['status']});
+      prefs.setString("statusKey", statusData);
+      final userKey = prefs.getString("statusKey");
+      String? statusDataKey = jsonDecode(userKey!)['status'];
+      if (statusDataKey == "error") {
+        EasyLoading.dismiss();
+        AlertBox().userAlreadyLoggedIn(context);
+      } else if (statusDataKey == "success" && response.statusCode == 200) {
+        print("yo vhitra aayo");
         SharedPreferences prefs = await SharedPreferences.getInstance();
         final userData = jsonEncode({
           'message': responseData['message'],
@@ -57,27 +72,9 @@ class Services {
           "dealer_id": responseData['Dealer_user']['dealer_id'],
         });
         prefs.setString('userData', userData);
-
-        SharedPreferences prefs1 = await SharedPreferences.getInstance();
-        final userData1 = prefs1.getString("userData");
-        String? message;
-        String? status;
-        if (userData1 != null) {
-          message = jsonDecode(userData1)['message'];
-          status = jsonDecode(userData1)['status'];
-          if (message == "User already logged in on another device" &&
-              status == "error") {
-            print("User Already logged in");
-            AlertBox().userAlreadyLoggedIn(context);
-          } else if (message == "Welcome" && status == "success") {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => DealerBottomNavigation()),
-              ModalRoute.withName('/'),
-            );
-          }
-        }
+        EasyLoading.dismiss();
+        Navigator.of(context)
+            .pushReplacementNamed("Dealer_button_Navigation_Bar");
       } else if (response.statusCode == 403) {
         AlertBox().loginAlertBox1(context);
       } else if (response.statusCode == 400) {
