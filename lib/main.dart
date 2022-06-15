@@ -67,7 +67,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    LocalNotificationService.initialize(context);
     loadFcm();
     listenFcm();
     requestPermission();
@@ -99,6 +98,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void initialMessage() async {
+    LocalNotificationService.initialize(context);
     FirebaseMessaging.instance.getInitialMessage().then((message) async {
       if (message != null) {
         final routeFromMessage = message.data["routeKey"];

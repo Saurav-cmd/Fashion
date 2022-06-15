@@ -16,10 +16,10 @@ class LocalNotificationService {
         onSelectNotification: (String? routeKey) async {
       //yo onselectnotification le chai app chalda faree popup notification aauxa ne tesma route dine kam garinxa aaba
       if (routeKey != null) {
-        print("ya aayo");
         if (routeKey == "pricelist") {
           Get.toNamed("Price_List_screen", preventDuplicates: true);
         } else if (routeKey == "scheme") {
+          print("ya aayo scheme vhitra");
           Get.toNamed("Scheme_List_screen", preventDuplicates: true);
         } else if (routeKey == "ledger") {
           Get.toNamed("Statement_screen", preventDuplicates: true);
