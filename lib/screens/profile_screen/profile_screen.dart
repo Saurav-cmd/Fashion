@@ -204,7 +204,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 height: 20,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
                       onPressed: () {
@@ -228,7 +228,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                       )),
-                  TextButton(
+                  /*TextButton(
                       onPressed: () {},
                       child: Container(
                         decoration: BoxDecoration(
@@ -246,7 +246,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                         ),
-                      ))
+                      ))*/
                 ],
               ),
               const SizedBox(

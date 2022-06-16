@@ -311,7 +311,7 @@ class _DealerHomePageState extends State<DealerHomePage> {
                       child: GestureDetector(
                         onTap: () {
                           Navigator.of(context)
-                              .pushReplacementNamed("Bipana_Preview_screen");
+                              .pushNamed("Bipana_Preview_screen");
                         },
                         child: Card(
                           elevation: 0,
@@ -341,8 +341,7 @@ class _DealerHomePageState extends State<DealerHomePage> {
                     SizedBox(
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.of(context)
-                              .pushReplacementNamed("Search_Screen");
+                          Navigator.of(context).pushNamed("Search_Screen");
                         },
                         child: Card(
                           elevation: 0,
@@ -377,8 +376,7 @@ class _DealerHomePageState extends State<DealerHomePage> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context)
-                            .pushReplacementNamed("Generate_screen");
+                        Navigator.of(context).pushNamed("Generate_screen");
                       },
                       child: SizedBox(
                         child: Card(
@@ -407,8 +405,7 @@ class _DealerHomePageState extends State<DealerHomePage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context)
-                            .pushReplacementNamed("Saved_screen");
+                        Navigator.of(context).pushNamed("Saved_screen");
                       },
                       child: SizedBox(
                         child: Card(
@@ -437,8 +434,7 @@ class _DealerHomePageState extends State<DealerHomePage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context)
-                            .pushReplacementNamed("Book_Marked_screen");
+                        Navigator.of(context).pushNamed("Book_Marked_screen");
                       },
                       child: SizedBox(
                         child: Card(
@@ -503,8 +499,7 @@ class _DealerHomePageState extends State<DealerHomePage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context)
-                            .pushReplacementNamed("Scheme_List_screen");
+                        Navigator.of(context).pushNamed("Scheme_List_screen");
                       },
                       child: SizedBox(
                         child: Card(
@@ -533,8 +528,7 @@ class _DealerHomePageState extends State<DealerHomePage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context)
-                            .pushReplacementNamed("Comments_screen");
+                        Navigator.of(context).pushNamed("Comments_screen");
                       },
                       child: SizedBox(
                         child: Card(

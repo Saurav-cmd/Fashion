@@ -81,7 +81,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
 
     final size = MediaQuery.of(context).size;
     return WillPopScope(
-      onWillPop: () async => fBCC.isLoading.value ? false : true,
+      onWillPop: () async => fBCC.isLoading.value == true ? false : true,
       child: Scaffold(
         appBar: AppBar(
           systemOverlayStyle: SystemUiOverlayStyle(
