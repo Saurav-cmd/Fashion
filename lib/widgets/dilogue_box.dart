@@ -367,6 +367,9 @@ class AlertBox {
                                         .whenComplete(() {
                                       oHC.orderHistory;
                                     });
+                                  } else if (num == 15) {
+                                    DatabaseHelper.instance.cleanDatabase();
+                                    SystemNavigator.pop();
                                   }
                                 }
                               } on SocketException catch (_) {

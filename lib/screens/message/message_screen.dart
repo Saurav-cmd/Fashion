@@ -46,12 +46,37 @@ class _FashionChatState extends State<FashionChat> {
     }
   }
 
+  showSnackBar() async {
+    final size = MediaQuery.of(context).size;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(
+        'No Internet connection',
+        maxLines: 2,
+        style: TextStyle(fontSize: size.height * 0.011 + size.width * 0.011),
+        textAlign: TextAlign.center,
+      ),
+      duration: const Duration(seconds: 2),
+      backgroundColor: Colors.grey.shade700,
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+    ));
+  }
+
   fetchApiData() async {
-    await mC.getMessageData(context).whenComplete(() {
-      setState(() {
-        mC.messageData!.message;
-      });
-    });
+    try {
+      final result = await InternetAddress.lookup("example.com");
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print("connected");
+        await mC.getMessageData(context).whenComplete(() {
+          setState(() {
+            mC.messageData!.message;
+          });
+        });
+      }
+    } on SocketException catch (_) {
+      print("Not connected");
+      showSnackBar();
+    }
   }
 
   void openBottomSheet(BuildContext ctx) {
@@ -321,13 +346,20 @@ class _FashionChatState extends State<FashionChat> {
                         const TextStyle(fontSize: 16, color: Colors.black45)),
                 textCapitalization: TextCapitalization.sentences,
                 controller: messageController,
-                onFieldSubmitted: (value) {
-                  setState(() {
-                    mC.sendMessage(
-                        messageController.text, imageFileList, context);
-                    fetchApiData();
-                    messageController.text = "";
-                  });
+                onFieldSubmitted: (value) async {
+                  try {
+                    final result = await InternetAddress.lookup("example.com");
+                    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+                      setState(() {
+                        mC.sendMessage(
+                            messageController.text, imageFileList, context);
+                        fetchApiData();
+                        messageController.text = "";
+                      });
+                    }
+                  } on SocketException catch (_) {
+                    showSnackBar();
+                  }
                 },
               ),
             ),
