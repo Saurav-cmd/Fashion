@@ -4,10 +4,15 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:fashion_paints/controllers/statement_controller.dart';
 import 'package:fashion_paints/screens/statement/statement_screen.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../Utils/local_notification.dart';
 
 class DealerHomePage extends StatefulWidget {
   const DealerHomePage({Key? key}) : super(key: key);
@@ -20,6 +25,20 @@ class _DealerHomePageState extends State<DealerHomePage> {
   StatementController sC = Get.put(StatementController());
   int? dueAmount;
   int? chequeInHand;
+  late AndroidNotificationChannel channel;
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadFcm();
+    listenFcm();
+    requestPermission();
+    initialMessage();
+    onAppBackground();
+    getSharedPreferenceData();
+  }
 
   final List<String> imageList = [
     'https://static9.depositphotos.com/1167801/1083/i/600/depositphotos_10837356-stock-photo-paint-dripping.jpg',
@@ -37,11 +56,144 @@ class _DealerHomePageState extends State<DealerHomePage> {
     }
   }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getSharedPreferenceData();
+  void requestPermission() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
+      print('User granted provisional permission');
+    } else {
+      print('User declined or has not accepted permission');
+    }
+  }
+
+  void initialMessage() async {
+    LocalNotificationService.initialize(context);
+    FirebaseMessaging.instance.getInitialMessage().then((message) async {
+      if (message != null) {
+        print("this is message $message");
+        final routeFromMessage = message.data["flag"];
+        print("This is notification message initial $routeFromMessage");
+        print("This is notification message initial $message");
+        if (routeFromMessage == "pricelist") {
+          Get.toNamed("Price_List_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "scheme") {
+          Get.toNamed("Scheme_List_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "ledger") {
+          Get.toNamed("Statement_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "notice") {
+          Get.toNamed("Notices_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "chat") {
+          Get.toNamed("Message_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "chequeAndDue") {
+          Get.toNamed("Profile_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "order") {
+          Get.toNamed("Order_history_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "product") {
+          Get.toNamed("store_screen", preventDuplicates: true);
+        }
+      }
+      if (message == null) {
+        print("No Notification to show");
+      }
+    });
+  }
+
+  void listenFcm() async {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null && !kIsWeb) {
+        flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              enableVibration: true,
+              enableLights: true,
+              // TODO add a proper drawable resource to android, for now using
+              //      one that already exists in example app.
+              icon: 'launch_background',
+            ),
+          ),
+        );
+      }
+      LocalNotificationService.display(message);
+    });
+  }
+
+  void loadFcm() async {
+    if (!kIsWeb) {
+      channel = const AndroidNotificationChannel(
+        'high_importance_channel', // id
+        'High Importance Notifications', // title
+        importance: Importance.high,
+      );
+
+      flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+      /// Create an Android Notification Channel.
+      ///
+      /// We use this channel in the `AndroidManifest.xml` file to override the
+      /// default FCM channel to enable heads up notifications.
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(channel);
+
+      /// Update the iOS foreground notification presentation options to allow
+      /// heads up notifications.
+      await FirebaseMessaging.instance
+          .setForegroundNotificationPresentationOptions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    }
+  }
+
+  void onAppBackground() async {
+    //this will comes in play when app is in background running and user taps on that notification and user is redirected to particular route
+    FirebaseMessaging.onMessageOpenedApp.listen((message) async {
+      final routeFromMessage = message.data["flag"];
+      // RemoteNotification? notification = message.notification;
+      print("This is routeFromMessage background $message");
+      print("This is routeFromMessage background $routeFromMessage");
+      if (message.notification != null) {
+        if (routeFromMessage == "pricelist") {
+          Get.toNamed("Price_List_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "scheme") {
+          Get.toNamed("Scheme_List_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "ledger") {
+          Get.toNamed("Statement_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "notice") {
+          Get.toNamed("Notices_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "chat") {
+          Get.toNamed("Message_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "chequeAndDue") {
+          Get.toNamed("Profile_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "order") {
+          Get.toNamed("Order_history_screen", preventDuplicates: true);
+        } else if (routeFromMessage == "product") {
+          Get.toNamed("store_screen", preventDuplicates: true);
+        }
+      }
+    });
   }
 
   void showSnackBar() {

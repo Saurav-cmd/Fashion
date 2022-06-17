@@ -52,8 +52,8 @@ class LocalNotificationService {
       final title = message.notification?.title;
       final body = message.notification?.body;
       await _notificationsPlugin.show(id, title, body, notificationDetails,
-          payload: message.data["routeKey"]);
-      print("This is notification message payload ${message.data["routeKey"]}");
+          payload: message.data["flag"]);
+      print("This is notification message payload ${message.data["flag"]}");
       // final dataAdded = DatabaseHelper.instance.addNotification(NotificationModel(
       //     title: title,msg: body
       // )

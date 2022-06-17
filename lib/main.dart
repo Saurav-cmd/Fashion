@@ -101,7 +101,7 @@ class _MyAppState extends State<MyApp> {
     LocalNotificationService.initialize(context);
     FirebaseMessaging.instance.getInitialMessage().then((message) async {
       if (message != null) {
-        final routeFromMessage = message.data["routeKey"];
+        final routeFromMessage = message.data["flag "];
         print("This is notification message initital $routeFromMessage");
         print("This is notification message initital $message");
         if (routeFromMessage == "pricelist") {
@@ -187,7 +187,7 @@ class _MyAppState extends State<MyApp> {
   void onAppBackground() async {
     //this will comes in play when app is in background running and user taps on that notification and user is redirected to particular route
     FirebaseMessaging.onMessageOpenedApp.listen((message) async {
-      final routeFromMessage = message.data["routeKey"];
+      final routeFromMessage = message.data["flag "];
       // RemoteNotification? notification = message.notification;
       print("This is routeFromMessage background $message");
       print("This is routeFromMessage background $routeFromMessage");

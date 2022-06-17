@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "208396241038",
-    "project_id": "fashion-48b9a",
-    "storage_bucket": "fashion-48b9a.appspot.com"
+    "project_number": "585569552278",
+    "project_id": "fashion-color-studio-413f2",
+    "storage_bucket": "fashion-color-studio-413f2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:208396241038:android:8990605e9710da0f5da1df",
+        "mobilesdk_app_id": "1:585569552278:android:a1a98bb918e1961cb3bfb7",
         "android_client_info": {
           "package_name": "com.example.fashion_paints"
         }
       },
       "oauth_client": [
         {
-          "client_id": "208396241038-n75csq7btnk5ugudknrn2pu4broiu97r.apps.googleusercontent.com",
+          "client_id": "585569552278-hvhissu62llk70cnja45q7ufn3o9olm6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA9qms7dthGhHRdAmoQm2dlXuIMyjSc6O8"
+          "current_key": "AIzaSyCXtPzApsVgjVmf5oGPzLaLxj9aJ7c4cCM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "208396241038-n75csq7btnk5ugudknrn2pu4broiu97r.apps.googleusercontent.com",
+              "client_id": "585569552278-hvhissu62llk70cnja45q7ufn3o9olm6.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
