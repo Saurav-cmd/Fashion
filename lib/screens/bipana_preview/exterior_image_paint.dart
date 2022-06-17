@@ -119,6 +119,7 @@ class ShowShadeColors extends StatefulWidget {
 
 class _ShowShadeColorsState extends State<ShowShadeColors> {
   Widget setupShadeColorContainer(BuildContext context) {
+    colorValue = Colors.transparent;
     return SizedBox(
       height: 300.0, // Change as per your requirement
       width: 300.0, // Change as per your requirement
@@ -130,24 +131,24 @@ class _ShowShadeColorsState extends State<ShowShadeColors> {
           itemBuilder: (ctx, i) {
             return GestureDetector(
               onTap: () {
-                setState(() {
-                  rPassedChooseColor = allColorsData[i].rValue;
-                  gPassedChooseColor = allColorsData[i].gValue;
-                  bPassedChooseColor = allColorsData[i].bValue;
-                  recentColorList.add(colorValue);
-                  colorValue = Color.fromRGBO(
-                      rPassedChooseColor!.toInt(),
-                      gPassedChooseColor!.toInt(),
-                      bPassedChooseColor!.toInt(),
-                      1);
-                  Navigator.pop(context, [
-                    rPassedChooseColor,
-                    gPassedChooseColor,
-                    bPassedChooseColor,
-                    colorValue,
-                    recentColorList
-                  ]);
-                });
+                // setState(() {
+                rPassedChooseColor = allColorsData[i].rValue;
+                gPassedChooseColor = allColorsData[i].gValue;
+                bPassedChooseColor = allColorsData[i].bValue;
+                recentColorList.add(colorValue);
+                colorValue = Color.fromRGBO(
+                    rPassedChooseColor!.toInt(),
+                    gPassedChooseColor!.toInt(),
+                    bPassedChooseColor!.toInt(),
+                    1);
+                Navigator.pop(context, [
+                  rPassedChooseColor,
+                  gPassedChooseColor,
+                  bPassedChooseColor,
+                  colorValue,
+                  recentColorList
+                ]);
+                // });
               },
               child: Stack(
                 children: [
@@ -320,8 +321,8 @@ class Shape {
 
   /// transforms a [_path] into [_transformedPath] using given [matrix]
   void transform(Matrix4 matrix) =>
-      _transformedPath = _path.transform(matrix.storage);
-  Path _path;
+      _transformedPath = _path!.transform(matrix.storage);
+  Path? _path;
   Path? _transformedPath;
   String? label;
   final Color? defaultColor;

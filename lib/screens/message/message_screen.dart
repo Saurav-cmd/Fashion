@@ -1,15 +1,19 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:fashion_paints/Apis/api_Routes.dart';
 import 'package:fashion_paints/controllers/message_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../colors/colors_file.dart';
+import '../../models/apis_model/message_model.dart';
 
 class FashionChat extends StatefulWidget {
   const FashionChat({Key? key}) : super(key: key);
@@ -62,21 +66,21 @@ class _FashionChatState extends State<FashionChat> {
     ));
   }
 
-  fetchApiData() async {
-    try {
-      final result = await InternetAddress.lookup("example.com");
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        print("connected");
-        await mC.getMessageData(context).whenComplete(() {
-          setState(() {
-            mC.messageData!.message;
-          });
-        });
+  Stream<Message?> getMessages() async* {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString("userData");
+    String? token = jsonDecode(userData!)['token'];
+    yield* Stream.periodic(Duration(milliseconds: 500), (_) async {
+      final apiUrl = ApiRoute().getChat();
+      final response = await http.get(Uri.parse(apiUrl!), headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token"
+      });
+      if (response.statusCode == 200) {
+        print("THis is response : ${response.body}");
+        return messageFromJson(response.body);
       }
-    } on SocketException catch (_) {
-      print("Not connected");
-      showSnackBar();
-    }
+    }).asyncMap((event) async => await event);
   }
 
   void openBottomSheet(BuildContext ctx) {
@@ -126,7 +130,10 @@ class _FashionChatState extends State<FashionChat> {
     // TODO: implement initState
     super.initState();
     setState(() {
-      fetchApiData();
+      // _timerForInter = Timer.periodic(Duration(seconds: 2), (result) {
+      // fetchApiData();
+      getMessages();
+      // });
       getUserId();
     });
   }
@@ -175,134 +182,87 @@ class _FashionChatState extends State<FashionChat> {
         ],
       ),
       body: Column(children: [
-        Obx(() {
-          if (mC.isLoading.value) {
-            return Expanded(child: LinearProgressIndicator());
-          } else {
-            return Expanded(
-              child: SingleChildScrollView(
-                reverse: true,
-                child: ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: mC.messageData!.message!.length,
-                    itemBuilder: (ctx, i) {
-                      return Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 15.0, left: 15),
-                            child: Row(
-                              children: [
-                                mC.messageData!.message![i].admin != null
-                                    ? Container(
-                                        height: 45,
-                                        width: 45,
-                                        decoration: const BoxDecoration(
-                                          image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: AssetImage(
-                                              'icons/chatImage.png',
-                                            ),
-                                          ),
-                                          shape: BoxShape.rectangle,
-                                        ),
-                                      )
-                                    : Container(),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                if (mC.messageData!.message![i].to == 0)
-                                  mC.messageData!.message![i].admin != null
-                                      ? Container(
-                                          alignment: Alignment.topLeft,
-                                          child: Container(
+        Expanded(
+          child: StreamBuilder<Message?>(
+              stream: getMessages(),
+              builder: (context, snapshot) {
+                return snapshot.hasData
+                    ? SingleChildScrollView(
+                        reverse: true,
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: snapshot.data!.message!.length,
+                            itemBuilder: (ctx, i) {
+                              return snapshot.data!.message![i].isRead == 0
+                                  ? Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: size.height * 0.020,
+                                          horizontal: size.width * 0.015),
+                                      child: Row(
+                                        children: [
+                                          Container(
                                             constraints: BoxConstraints(
-                                                maxWidth: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.60),
+                                                maxWidth: size.width * 0.80),
                                             decoration: BoxDecoration(
-                                                color: Colors.grey.shade400,
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(5))),
+                                                color: Colors.grey.shade300),
                                             child: Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: 8.0,
-                                                  left: 8,
-                                                  right: 8,
-                                                  bottom: 5),
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: size.height * 0.015,
+                                                  horizontal:
+                                                      size.width * 0.015),
                                               child: Text(
-                                                '${mC.messageData!.message![i].admin}',
+                                                "${snapshot.data!.message![i].message}",
                                                 style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 18),
+                                                    fontSize:
+                                                        size.height * 0.014 +
+                                                            size.width * 0.014,
+                                                    fontWeight:
+                                                        FontWeight.w600),
                                               ),
                                             ),
                                           ),
+                                        ],
+                                      ),
+                                    )
+                                  : snapshot.data!.message![i].from == userId
+                                      ? Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: size.height * 0.020,
+                                              horizontal: size.width * 0.015),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                    color: ChooseColor(0)
+                                                        .appBarColor1),
+                                                child: Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical:
+                                                          size.height * 0.015,
+                                                      horizontal:
+                                                          size.width * 0.015),
+                                                  child: Text(
+                                                    "${snapshot.data!.message![i].message}",
+                                                    style: TextStyle(
+                                                        fontSize: size.height *
+                                                                0.014 +
+                                                            size.width * 0.014,
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         )
-                                      : Text(""),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          if (mC.messageData!.message![i].from == userId)
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              alignment: Alignment.topRight,
-                              child: Container(
-                                constraints: BoxConstraints(
-                                    maxWidth:
-                                        MediaQuery.of(context).size.width *
-                                            0.60),
-
-                                //width: 240,
-                                padding: const EdgeInsets.all(10),
-                                margin: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                ),
-                                decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5)),
-                                  color: Color(0xff0694C0),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      '${mC.messageData!.message![i].message}',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 18),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(
-                                      "${mC.messageData!.message![i].createdAt.toString().split(" ")[0]} "),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: size.width * 0.015),
-                                    child: Text(
-                                        " - ${mC.messageData!.message![i].createdAt.toString().split(" ")[1].split(".")[0]}"),
-                                  )
-                                ],
-                              ))
-                        ],
-                      );
-                    }),
-              ),
-            );
-          }
-        }),
+                                      : Container();
+                            }),
+                      )
+                    : LinearProgressIndicator();
+              }),
+        ),
         BottomAppBar(
           child: Padding(
             padding: const EdgeInsets.only(right: 10.0, left: 5),
@@ -353,7 +313,7 @@ class _FashionChatState extends State<FashionChat> {
                       setState(() {
                         mC.sendMessage(
                             messageController.text, imageFileList, context);
-                        fetchApiData();
+                        getMessages();
                         messageController.text = "";
                       });
                     }
