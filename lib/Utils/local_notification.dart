@@ -54,10 +54,6 @@ class LocalNotificationService {
       await _notificationsPlugin.show(id, title, body, notificationDetails,
           payload: message.data["flag"]);
       print("This is notification message payload ${message.data["flag"]}");
-      // final dataAdded = DatabaseHelper.instance.addNotification(NotificationModel(
-      //     title: title,msg: body
-      // )
-      // );
     } on Exception catch (e) {
       print(e);
       throw e;

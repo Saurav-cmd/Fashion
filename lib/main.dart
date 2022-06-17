@@ -99,11 +99,13 @@ class _MyAppState extends State<MyApp> {
 
   void initialMessage() async {
     LocalNotificationService.initialize(context);
+    //this FirebaseMessaging.instance.getInitialMessage() comes on work when ever to show notification and when user taps it opens the app from terminated state
+    //simply saying app terminated state ma vhako bela notification send + app lai open garne kam garxa
     FirebaseMessaging.instance.getInitialMessage().then((message) async {
+      print("This is title initialize ${message?.notification?.title}");
+      print("This is body  initialize ${message?.notification?.body}");
       if (message != null) {
         final routeFromMessage = message.data["flag "];
-        print("This is notification message initital $routeFromMessage");
-        print("This is notification message initital $message");
         if (routeFromMessage == "pricelist") {
           Get.toNamed("Price_List_screen", preventDuplicates: true);
         } else if (routeFromMessage == "scheme") {
@@ -129,7 +131,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   void listenFcm() async {
+    //this onMessage will only get called when app is in foreground meaning running but not in background
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print("This is title onMessage ${message.notification?.title}");
+      print("This is body  onMessage ${message.notification?.body}");
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
       if (notification != null && android != null && !kIsWeb) {
@@ -188,9 +193,8 @@ class _MyAppState extends State<MyApp> {
     //this will comes in play when app is in background running and user taps on that notification and user is redirected to particular route
     FirebaseMessaging.onMessageOpenedApp.listen((message) async {
       final routeFromMessage = message.data["flag "];
-      // RemoteNotification? notification = message.notification;
-      print("This is routeFromMessage background $message");
-      print("This is routeFromMessage background $routeFromMessage");
+      print("This is title onMessageOpenedApp ${message.notification?.title}");
+      print("This is body  onMessageOpenedApp ${message.notification?.body}");
       if (message.notification != null) {
         if (routeFromMessage == "pricelist") {
           Get.toNamed("Price_List_screen", preventDuplicates: true);

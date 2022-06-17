@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../Utils/local_notification.dart';
 
@@ -47,11 +46,11 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    loadFcm();
+    /*loadFcm();
     listenFcm();
     requestPermission();
     initialMessage();
-    onAppBackground();
+    onAppBackground();*/
   }
 
   void requestPermission() async {

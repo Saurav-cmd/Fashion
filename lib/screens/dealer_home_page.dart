@@ -32,11 +32,11 @@ class _DealerHomePageState extends State<DealerHomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    loadFcm();
+    /*  loadFcm();
     listenFcm();
     requestPermission();
     initialMessage();
-    onAppBackground();
+    onAppBackground();*/
     getSharedPreferenceData();
   }
 
@@ -112,7 +112,9 @@ class _DealerHomePageState extends State<DealerHomePage> {
   }
 
   void listenFcm() async {
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    FirebaseMessaging.onMessage.listen((message) {
+      print("This is title ${message.notification?.title}");
+      print("This is body ${message.notification?.body}");
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
       if (notification != null && android != null && !kIsWeb) {

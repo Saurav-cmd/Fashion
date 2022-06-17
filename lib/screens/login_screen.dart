@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:fashion_paints/colors/colors_file.dart';
 import 'package:fashion_paints/controllers/auth_controller.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -19,9 +21,44 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   AuthController aC = Get.put(AuthController());
   String deviceId = AuthController().getId().toString();
-  String fcmId = AuthController().getFirebaseToken().toString();
+  // String fcmId = AuthController().getFirebaseToken().toString();
   TextEditingController dealerCodeController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  String? fcmToken;
+  var iosInfo;
+  var androidDeviceInfo;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    FirebaseMessaging.instance.getToken().then((value) {
+      fcmToken = value;
+      print("This is token $fcmToken");
+      return fcmToken;
+    });
+
+    getId();
+  }
+
+  Future<String?> getId() async {
+    var deviceInfo = DeviceInfoPlugin();
+    if (Platform.isIOS) {
+      // import 'dart:io'
+      var iosDeviceInfo = await deviceInfo.iosInfo;
+      setState(() {
+        iosInfo = iosDeviceInfo.identifierForVendor;
+      });
+      return iosInfo; // unique ID on iOS
+    } else {
+      var androidInfo = await deviceInfo.androidInfo;
+      setState(() {
+        androidDeviceInfo = androidInfo.androidId;
+      });
+      print("This is devide info ${androidDeviceInfo}");
+      return androidDeviceInfo; // unique ID on Android
+    }
+  }
 
   @override
   void dispose() {
@@ -224,8 +261,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                           aC.loginApiData(
                                               dealerCodeController.text,
                                               passwordController.text,
-                                              deviceId,
-                                              fcmId,
+                                              androidDeviceInfo,
+                                              fcmToken!,
                                               context);
                                           FocusManager.instance.primaryFocus
                                               ?.unfocus();

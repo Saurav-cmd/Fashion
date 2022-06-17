@@ -4,7 +4,6 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:fashion_paints/Utils/contants.dart';
 import 'package:fashion_paints/models/apis_model/login_model.dart';
 import 'package:fashion_paints/remote%20services/services.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,12 +36,12 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<String?> getFirebaseToken() async =>
+/*  Future<String?> getFirebaseToken() async =>
       FirebaseMessaging.instance.getToken().then((value) {
         String? token = value;
         print("This is token $token");
         return token;
-      });
+      });*/
 
   Future<String?> autoLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
