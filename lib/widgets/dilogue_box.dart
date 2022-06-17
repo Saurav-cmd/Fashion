@@ -159,7 +159,6 @@ class AlertBox {
                           primary: ChooseColor(0).appBarColor1),
                       onPressed: () {
                         Navigator.of(context).pop(true);
-                        Navigator.of(context).pop(true);
                       },
                       child: const Text("OK"),
                     ),

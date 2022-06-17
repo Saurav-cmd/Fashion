@@ -216,8 +216,10 @@ class _CameraScreenState extends State<CameraScreen> {
                           return "Number can't be greater than 10 digits";
                         } else if (value.length < 10) {
                           return "Please enter a valid phone number";
+                        } else if (!value.startsWith("9")) {
+                          return "Please enter a valid phone number";
                         } else {
-                          return null;
+                          null;
                         }
                       },
                       controller: phoneController,

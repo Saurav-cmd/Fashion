@@ -225,7 +225,10 @@ class _GalleryScreenState extends State<GalleryScreen> {
                           return "Number can't be greater than 10 digits";
                         } else if (value.length < 10) {
                           return "Please enter a valid phone number";
-                        } else {
+                        } else if (!value.startsWith("9")) {
+                          return "Please enter a valid phone number";
+                        }
+                        {
                           return null;
                         }
                       },
@@ -307,13 +310,16 @@ class _GalleryScreenState extends State<GalleryScreen> {
                                     const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 4, crossAxisSpacing: 8),
                                 itemBuilder: (ctx, i) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(left: 5),
-                                    child: Image.file(
-                                      imageFileList[i],
-                                      fit: BoxFit.fill,
-                                    ),
-                                  );
+                                  return imageFileList.isNotEmpty
+                                      ? Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 5),
+                                          child: Image.file(
+                                            imageFileList[i],
+                                            fit: BoxFit.fill,
+                                          ),
+                                        )
+                                      : Container();
                                 }),
                           ),
                         )
@@ -349,11 +355,13 @@ class _GalleryScreenState extends State<GalleryScreen> {
                                     imageFileList,
                                     context);
                                 FocusManager.instance.primaryFocus?.unfocus();
-
                                 nameController.text = "";
                                 emailController.text = "";
                                 phoneController.text = "";
                                 addressController.text = "";
+                                setState(() {
+                                  imageFileList = [];
+                                });
                               }
                             }
                           } on SocketException catch (_) {

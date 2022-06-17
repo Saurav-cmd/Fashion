@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../colors/colors_file.dart';
 import '../../models/apis_model/message_model.dart';
+import '../../widgets/dilogue_box.dart';
 
 class FashionChat extends StatefulWidget {
   const FashionChat({Key? key}) : super(key: key);
@@ -67,20 +68,46 @@ class _FashionChatState extends State<FashionChat> {
   }
 
   Stream<Message?> getMessages() async* {
+    final size = MediaQuery.of(context).size;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final userData = prefs.getString("userData");
     String? token = jsonDecode(userData!)['token'];
-    yield* Stream.periodic(Duration(milliseconds: 500), (_) async {
-      final apiUrl = ApiRoute().getChat();
-      final response = await http.get(Uri.parse(apiUrl!), headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer $token"
-      });
-      if (response.statusCode == 200) {
-        print("THis is response : ${response.body}");
-        return messageFromJson(response.body);
-      }
-    }).asyncMap((event) async => await event);
+    try {
+      yield* Stream.periodic(Duration(milliseconds: 100), (_) async {
+        final apiUrl = ApiRoute().getChat();
+        final response = await http.get(Uri.parse(apiUrl!), headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token"
+        });
+        if (response.statusCode == 200) {
+          print("THis is response : ${response.body}");
+          return messageFromJson(response.body);
+        } else if (response.statusCode == 403) {
+          AlertBox().AlertBox403(context);
+        } else if (response.statusCode == 400) {
+          AlertBox().AlertBox400(context);
+        } else if (response.statusCode == 401) {
+          AlertBox().AlertBox401(context);
+        } else if (response.statusCode == 500) {
+          AlertBox().servererror(context);
+        } else if (response.statusCode == 503) {
+          AlertBox().servererror(context);
+        }
+      }).asyncMap((event) async => await event);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          'Please check your internet connection!',
+          maxLines: 2,
+          style: TextStyle(fontSize: size.height * 0.011 + size.width * 0.011),
+          textAlign: TextAlign.center,
+        ),
+        duration: const Duration(seconds: 2),
+        backgroundColor: Colors.grey.shade700,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      ));
+    }
   }
 
   void openBottomSheet(BuildContext ctx) {
@@ -201,6 +228,7 @@ class _FashionChatState extends State<FashionChat> {
                                           horizontal: size.width * 0.015),
                                       child: Row(
                                         children: [
+                                          Image.asset("icons/chatImage.png"),
                                           Container(
                                             constraints: BoxConstraints(
                                                 maxWidth: size.width * 0.80),
