@@ -17,6 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/bipana_preview_controller_1.dart';
 import '../controllers/get_cart_data_controller.dart';
+import '../controllers/message_controller.dart';
 import '../controllers/notice_controller.dart';
 import '../controllers/order_history_controller.dart';
 import '../controllers/painter_controller.dart';
@@ -991,6 +992,104 @@ class AlertBox {
             ));
   }
 
+  chatServererror(
+      String? Message, List<File> galleryImage, BuildContext context) {
+    MessageController mC = Get.put(MessageController());
+
+    Widget AbortButton = TextButton(
+        onPressed: () async {
+          SystemNavigator.pop();
+        },
+        child: Container(
+          height: 40,
+          width: MediaQuery.of(context).size.width * 0.31,
+          color: ChooseColor(0).appBarColor1,
+          child: Center(
+            child: Text(
+              'Abort'.toUpperCase(),
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ));
+
+    Widget RetryButton = TextButton(
+        onPressed: () {
+          Navigator.pop(context);
+          Navigator.pop(context);
+          mC.sendMessage(Message, galleryImage, context);
+        },
+        child: Container(
+          height: 40,
+          width: MediaQuery.of(context).size.width * 0.31,
+          color: ChooseColor(0).appBarColor1,
+          child: Center(
+            child: Text(
+              'Retry'.toUpperCase(),
+              style: const TextStyle(
+                  color: Colors.white, fontWeight: FontWeight.w500),
+            ),
+          ),
+        ));
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      contentPadding: EdgeInsets.zero,
+      title: WillPopScope(
+        onWillPop: () async => false,
+        child: Column(
+          children: const [
+            Text(
+              'Unexpected error on Server',
+              style: TextStyle(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Image(
+              image: AssetImage(
+                'icons/cloud_error_3.png',
+              ),
+              height: 60,
+              width: 60,
+            ),
+          ],
+        ),
+      ),
+      content: const Padding(
+        padding: EdgeInsets.only(left: 40.0, right: 30, top: 10),
+        child: Text(
+          "Please contact your service provider",
+          style: TextStyle(color: Colors.black54, fontSize: 16),
+        ),
+      ),
+      //Text("Are you sure to Place your Order ?"),
+      actions: [
+        AbortButton,
+        RetryButton,
+      ],
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   servererror(BuildContext context) {
     Widget AbortButton = TextButton(
         onPressed: () async {
@@ -1045,7 +1144,7 @@ class AlertBox {
             ),
             Image(
               image: AssetImage(
-                'assets/images/server.png',
+                'icons/cloud_error_3.png',
               ),
               height: 60,
               width: 60,

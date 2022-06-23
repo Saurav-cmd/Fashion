@@ -20,7 +20,6 @@ import '../models/apis_model/bipana_preview_saved_model.dart';
 import '../models/apis_model/confirm_order_model.dart';
 import '../models/apis_model/find_painter_model.dart';
 import '../models/apis_model/get_cart_data_model.dart';
-import '../models/apis_model/message_model.dart';
 import '../models/apis_model/notice_log.dart';
 import '../models/apis_model/notice_model.dart';
 import '../models/apis_model/order_history_model.dart';
@@ -1072,7 +1071,18 @@ class Services {
             'files[]', galleryImages[i].path,
             contentType: MediaType("image", "jpeg")));
       }
+
+      /*   if (cameraImage == null) {
+        return "";
+      } else {
+        FileImage(File(cameraImage.path.toString())).file.readAsBytesSync();
+        request.files.add(await http.MultipartFile.fromPath(
+            'files[]', cameraImage.path,
+            contentType: MediaType("image", "jpeg")));
+      }*/
+
       request.headers.addAll(jsonData);
+      request.fields['type'] = "group";
       request.fields['message'] = message!;
       request.fields['user_id'] = userId.toString();
 
@@ -1088,9 +1098,9 @@ class Services {
       } else if (response.statusCode == 401) {
         AlertBox().AlertBox401(context);
       } else if (response.statusCode == 500) {
-        AlertBox().servererror(context);
+        AlertBox().chatServererror(message, galleryImages, context);
       } else if (response.statusCode == 503) {
-        AlertBox().servererror(context);
+        AlertBox().chatServererror(message, galleryImages, context);
       } else {
         AlertBox().universalAlertBox(context);
       }
@@ -1099,7 +1109,7 @@ class Services {
     }
   }
 
-  static Future<Message?> getMessage(BuildContext context) async {
+  /*static Future<Message?> getMessage(BuildContext context) async {
     String? token;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final userData = prefs.getString("userData");
@@ -1131,7 +1141,7 @@ class Services {
     } catch (e) {
       rethrow;
     }
-  }
+  }*/
 
   static Future<NoticeLog?> NoticeLogData(BuildContext context) async {
     String? token;

@@ -92,8 +92,8 @@ class ApiRoute {
     return Constants.baseUrl + "send?user_id=$userId&message=$message";
   }
 
-  String? getChat() {
-    return Constants.baseUrl + "message";
+  String? getChat(int? id) {
+    return Constants.baseUrl + "v2/message?type=individual&id=";
   }
 
   String? noticeLog() {

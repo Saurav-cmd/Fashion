@@ -20,7 +20,6 @@ bool _isObscure = true;
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   AuthController aC = Get.put(AuthController());
-  String deviceId = AuthController().getId().toString();
   // String fcmId = AuthController().getFirebaseToken().toString();
   TextEditingController dealerCodeController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -55,7 +54,6 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         androidDeviceInfo = androidInfo.androidId;
       });
-      print("This is devide info ${androidDeviceInfo}");
       return androidDeviceInfo; // unique ID on Android
     }
   }
@@ -176,6 +174,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                         validator: (value) {
                                           if (value!.isEmpty) {
                                             return "Dealer code is empty";
+                                          } else {
+                                            return null;
                                           }
                                         },
                                         controller: dealerCodeController,

@@ -19,7 +19,7 @@ class MessageController extends GetxController {
     }
   }
 
-  Future<Message?> getMessageData(BuildContext context) async {
+  /*Future<Message?> getMessageData(BuildContext context) async {
     try {
       isLoading(true);
       messageData = await Services.getMessage(context);
@@ -27,5 +27,5 @@ class MessageController extends GetxController {
     } finally {
       isLoading(false);
     }
-  }
+  }*/
 }
