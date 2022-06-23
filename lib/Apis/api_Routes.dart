@@ -88,11 +88,11 @@ class ApiRoute {
     return Constants.baseUrl + "order";
   }
 
-  String? chat(int? userId, String? message) {
-    return Constants.baseUrl + "send?user_id=$userId&message=$message";
+  String? chat() {
+    return Constants.baseUrl + "v2/message";
   }
 
-  String? getChat(int? id) {
+  String? getChat() {
     return Constants.baseUrl + "v2/message?type=individual&id=";
   }
 

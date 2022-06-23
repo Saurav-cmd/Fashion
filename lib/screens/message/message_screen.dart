@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../colors/colors_file.dart';
 import '../../models/apis_model/message_model.dart';
 import '../../widgets/dilogue_box.dart';
+import 'gallery_camera_modal_bottom_sheet_chat.dart';
 
 class FashionChat extends StatefulWidget {
   const FashionChat({Key? key}) : super(key: key);
@@ -37,10 +38,11 @@ class _FashionChatState extends State<FashionChat> {
     //yo server ma pathauna ko lagi gallery bata pick garaya ra imageFileList ma halaya ko ho................
     if (selectedImages != null) {
       for (int i = 0; i < selectedImages.length; i++) {
-        imageFileList.add(File(selectedImages[i].path));
+        setState(() {
+          imageFileList.add(File(selectedImages[i].path));
+        });
       }
     }
-    setState(() {});
   }
 
   getUserId() async {
@@ -76,7 +78,7 @@ class _FashionChatState extends State<FashionChat> {
     String? token = jsonDecode(userData!)['token'];
     try {
       yield* Stream.periodic(Duration(milliseconds: 500), (_) async {
-        final apiUrl = ApiRoute().getChat(1);
+        final apiUrl = ApiRoute().getChat();
         final response = await http.get(Uri.parse(apiUrl!), headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer $token"
@@ -112,83 +114,8 @@ class _FashionChatState extends State<FashionChat> {
   }
 
   void openBottomSheet(BuildContext ctx) {
-    showModalBottomSheet(
-        context: ctx,
-        builder: (_) {
-          return GestureDetector(
-            onTap: () {},
-            child: Container(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {},
-                      child: SizedBox(
-                          height: 50,
-                          width: 50,
-                          child: Card(
-                              child: Image.asset("icons/photo-camera.png"))),
-                    ),
-                    SizedBox(width: 20),
-                    GestureDetector(
-                      onTap: () {
-                        selectImagesFromGallery();
-                      },
-                      child: SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: Card(
-                            child: Image.asset(
-                          "icons/gallery1.png",
-                          fit: BoxFit.fill,
-                        )),
-                      ),
-                    ),
-                    SizedBox(width: 25),
-                    imageFileList.isNotEmpty
-                        ? ElevatedButton(
-                            onPressed: () {
-                              mC.sendMessage(messageController.text,
-                                  imageFileList, context);
-                            },
-                            child: Text("Send"),
-                            style: ElevatedButton.styleFrom(
-                                primary: ChooseColor(0).appBarColor1),
-                          )
-                        : Container(),
-                    SizedBox(width: 25),
-                    imageFileList.isNotEmpty
-                        ? SizedBox(
-                            height: 70,
-                            width: 100,
-                            child: GridView.builder(
-                                itemCount: imageFileList.length,
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        crossAxisSpacing: 5,
-                                        mainAxisSpacing: 5),
-                                itemBuilder: (ctx, i) {
-                                  return Container(
-                                    height: 50,
-                                    width: 70,
-                                    child: Image.file(
-                                      File(imageFileList[i].path),
-                                      fit: BoxFit.fill,
-                                    ),
-                                  );
-                                }),
-                          )
-                        : Container(),
-                    SizedBox(height: 100)
-                  ],
-                ),
-              ),
-            ),
-            behavior: HitTestBehavior.opaque,
-          );
-        });
+    print("This is imageFile list ${imageFileList.length}");
+    showModalBottomSheet(context: ctx, builder: (_) => ChatModalBottomSheet());
   }
 
   @override
@@ -255,70 +182,88 @@ class _FashionChatState extends State<FashionChat> {
                             physics: NeverScrollableScrollPhysics(),
                             itemCount: snapshot.data!.messages!.length,
                             itemBuilder: (ctx, i) {
-                              return
-                                  /* snapshot.data!.messages![i].isRead == 0
-                                  ? */
-                                  snapshot.data!.messages![i].isRead == 0
+                              return snapshot.data!.messages![i].isRead == 0
+                                  ? Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: size.height * 0.020,
+                                          horizontal: size.width * 0.015),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Image.asset(
+                                                  "icons/chatImage.png"),
+                                              Container(
+                                                constraints: BoxConstraints(
+                                                    maxWidth:
+                                                        size.width * 0.80),
+                                                decoration: BoxDecoration(
+                                                    color:
+                                                        Colors.grey.shade300),
+                                                child: Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical:
+                                                          size.height * 0.015,
+                                                      horizontal:
+                                                          size.width * 0.015),
+                                                  child: Text(
+                                                    "${snapshot.data!.messages![i].message}",
+                                                    style: TextStyle(
+                                                        fontSize: size.height *
+                                                                0.014 +
+                                                            size.width * 0.014,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          snapshot
+                                                      .data!
+                                                      .messages![i]
+                                                      .messageImage!
+                                                      .isNotEmpty &&
+                                                  snapshot.data!.messages![i]
+                                                          .isRead ==
+                                                      0
+                                              ? SizedBox(
+                                                  height: 100,
+                                                  width: 100,
+                                                  child: ListView.builder(
+                                                      shrinkWrap: true,
+                                                      itemCount: snapshot
+                                                          .data!
+                                                          .messages![i]
+                                                          .messageImage!
+                                                          .length,
+                                                      itemBuilder: (ctx, i) {
+                                                        return Container(
+                                                          height: 100,
+                                                          width: 100,
+                                                          child: Image.network(
+                                                            "${snapshot.data!.messages![i].messageImage![i].image}",
+                                                            fit: BoxFit.fill,
+                                                          ),
+                                                        );
+                                                      }),
+                                                )
+                                              : Container()
+                                        ],
+                                      ),
+                                    )
+                                  : snapshot.data!.messages![i].isRead == 1
                                       ? Padding(
                                           padding: EdgeInsets.symmetric(
                                               vertical: size.height * 0.020,
                                               horizontal: size.width * 0.015),
                                           child: Column(
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                                CrossAxisAlignment.end,
                                             children: [
                                               Row(
-                                                children: [
-                                                  Image.asset(
-                                                      "icons/chatImage.png"),
-                                                  Container(
-                                                    constraints: BoxConstraints(
-                                                        maxWidth:
-                                                            size.width * 0.80),
-                                                    decoration: BoxDecoration(
-                                                        color: Colors
-                                                            .grey.shade300),
-                                                    child: Padding(
-                                                      padding: EdgeInsets
-                                                          .symmetric(
-                                                              vertical:
-                                                                  size.height *
-                                                                      0.015,
-                                                              horizontal:
-                                                                  size.width *
-                                                                      0.015),
-                                                      child: Text(
-                                                        "${snapshot.data!.messages![i].message}",
-                                                        style: TextStyle(
-                                                            fontSize:
-                                                                size.height *
-                                                                        0.014 +
-                                                                    size.width *
-                                                                        0.014,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w600),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              /* Container(
-                                                height: 100,
-                                                width: 100,
-                                                child: Image.network(
-                                                    "${snapshot.data!.messages![i].messageImage![0].image}"),
-                                              )*/
-                                            ],
-                                          ),
-                                        )
-                                      : snapshot.data!.messages![i].isRead==1
-                                          ? Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: size.height * 0.020,
-                                                  horizontal:
-                                                      size.width * 0.015),
-                                              child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.end,
                                                 children: [
@@ -350,11 +295,41 @@ class _FashionChatState extends State<FashionChat> {
                                                   ),
                                                 ],
                                               ),
-                                            )
-                                          : Container();
-                              /*   : snapshot.data!.messages![i].from == userId
-                                      ?
-                                      :*/
+                                              snapshot
+                                                          .data!
+                                                          .messages![i]
+                                                          .messageImage!
+                                                          .isNotEmpty &&
+                                                      snapshot
+                                                              .data!
+                                                              .messages![i]
+                                                              .isRead ==
+                                                          1
+                                                  ? SizedBox(
+                                                      height: 100,
+                                                      width: 100,
+                                                      child: ListView.builder(
+                                                          shrinkWrap: true,
+                                                          itemCount: snapshot
+                                                              .data!
+                                                              .messages![i]
+                                                              .messageImage!
+                                                              .length,
+                                                          itemBuilder:
+                                                              (ctx, i) {
+                                                            return Container(
+                                                              height: 100,
+                                                              width: 100,
+                                                              child: Text(
+                                                                  "${snapshot.data!.messages![i].messageImage}"),
+                                                            );
+                                                          }),
+                                                    )
+                                                  : Container()
+                                            ],
+                                          ),
+                                        )
+                                      : Container();
                             }),
                       )
                     : LinearProgressIndicator();

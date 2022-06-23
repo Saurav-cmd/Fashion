@@ -1055,7 +1055,7 @@ class Services {
       token = jsonDecode(userData)['token'];
     }
     try {
-      final apiUrl = ApiRoute().chat(userId, message);
+      final apiUrl = ApiRoute().chat();
       http.MultipartRequest request =
           http.MultipartRequest("POST", Uri.parse(apiUrl!));
       Map<String, String> jsonData = {
@@ -1082,9 +1082,9 @@ class Services {
       }*/
 
       request.headers.addAll(jsonData);
-      request.fields['type'] = "group";
+      // request.fields['type'] = "group";
       request.fields['message'] = message!;
-      request.fields['user_id'] = userId.toString();
+      request.fields['user_id'] = 0.toString();
 
       http.StreamedResponse response = await request.send();
       response.stream.transform(utf8.decoder).listen((event) {});
@@ -1108,40 +1108,6 @@ class Services {
       rethrow;
     }
   }
-
-  /*static Future<Message?> getMessage(BuildContext context) async {
-    String? token;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userData = prefs.getString("userData");
-    if (userData != null) {
-      token = jsonDecode(userData)['token'];
-    }
-    try {
-      final apiUrl = ApiRoute().getChat();
-      final response = await http.get(Uri.parse(apiUrl!), headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer $token"
-      });
-      if (response.statusCode == 200) {
-        print("This is response ${response.body}");
-        return messageFromJson(response.body);
-      } else if (response.statusCode == 403) {
-        AlertBox().AlertBox403(context);
-      } else if (response.statusCode == 400) {
-        AlertBox().AlertBox400(context);
-      } else if (response.statusCode == 401) {
-        AlertBox().AlertBox401(context);
-      } else if (response.statusCode == 500) {
-        AlertBox().servererror(context);
-      } else if (response.statusCode == 503) {
-        AlertBox().servererror(context);
-      } else {
-        AlertBox().universalAlertBox(context);
-      }
-    } catch (e) {
-      rethrow;
-    }
-  }*/
 
   static Future<NoticeLog?> NoticeLogData(BuildContext context) async {
     String? token;
