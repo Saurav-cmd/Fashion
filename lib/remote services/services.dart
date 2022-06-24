@@ -52,7 +52,7 @@ class Services {
         EasyLoading.dismiss();
         AlertBox().userAlreadyLoggedIn(context);
       } else if (statusDataKey == "success" && response.statusCode == 200) {
-        print("yo vhitra aayo");
+        print("This is response ${responseData}");
         SharedPreferences prefs = await SharedPreferences.getInstance();
         final userData = jsonEncode({
           'message': responseData['message'],

@@ -71,7 +71,7 @@ class _ChatModalBottomSheetState extends State<ChatModalBottomSheet> {
               //     ?
               ElevatedButton(
                 onPressed: () {
-                  mC.sendMessage("hello", imageFileList, context);
+                  mC.sendMessage("", imageFileList, context);
                 },
                 child: Text("Send"),
                 style: ElevatedButton.styleFrom(

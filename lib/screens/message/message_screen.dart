@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:fashion_paints/Apis/api_Routes.dart';
 import 'package:fashion_paints/controllers/message_controller.dart';
+import 'package:fashion_paints/screens/message/chat_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -71,6 +72,8 @@ class _FashionChatState extends State<FashionChat> {
     ));
   }
 
+  late Message message;
+  Message? messageData;
   Stream<Message?> getMessages() async* {
     final size = MediaQuery.of(context).size;
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -83,8 +86,10 @@ class _FashionChatState extends State<FashionChat> {
           "Content-Type": "application/json",
           "Authorization": "Bearer $token"
         });
+        final responseData = json.decode(response.body);
         if (response.statusCode == 200) {
-          return messageFromJson(response.body);
+          print("This is response ${responseData}");
+          return messageFromJson(jsonEncode(responseData));
         } else if (response.statusCode == 403) {
           AlertBox().AlertBox403(context);
         } else if (response.statusCode == 400) {
@@ -114,7 +119,6 @@ class _FashionChatState extends State<FashionChat> {
   }
 
   void openBottomSheet(BuildContext ctx) {
-    print("This is imageFile list ${imageFileList.length}");
     showModalBottomSheet(context: ctx, builder: (_) => ChatModalBottomSheet());
   }
 
@@ -126,9 +130,24 @@ class _FashionChatState extends State<FashionChat> {
     getUserId();
   }
 
+/*  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    getMessages();
+  }*/
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    getMessages();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final MediaQueryData mediaQueryData = MediaQuery.of(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: ChooseColor(0).bodyBackgroundColor,
@@ -169,235 +188,286 @@ class _FashionChatState extends State<FashionChat> {
           ),
         ],
       ),
-      body: Column(children: [
-        Expanded(
-          child: StreamBuilder<Message?>(
-              stream: getMessages(),
-              builder: (context, snapshot) {
-                return snapshot.hasData
-                    ? SingleChildScrollView(
-                        reverse: true,
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: snapshot.data!.messages!.length,
-                            itemBuilder: (ctx, i) {
-                              return snapshot.data!.messages![i].isRead == 0
-                                  ? Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: size.height * 0.020,
-                                          horizontal: size.width * 0.015),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Image.asset(
-                                                  "icons/chatImage.png"),
-                                              Container(
-                                                constraints: BoxConstraints(
-                                                    maxWidth:
-                                                        size.width * 0.80),
-                                                decoration: BoxDecoration(
-                                                    color:
-                                                        Colors.grey.shade300),
-                                                child: Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      vertical:
-                                                          size.height * 0.015,
-                                                      horizontal:
-                                                          size.width * 0.015),
-                                                  child: Text(
-                                                    "${snapshot.data!.messages![i].message}",
-                                                    style: TextStyle(
-                                                        fontSize: size.height *
-                                                                0.014 +
-                                                            size.width * 0.014,
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          snapshot
-                                                      .data!
-                                                      .messages![i]
-                                                      .messageImage!
-                                                      .isNotEmpty &&
-                                                  snapshot.data!.messages![i]
-                                                          .isRead ==
-                                                      0
-                                              ? SizedBox(
-                                                  height: 100,
-                                                  width: 100,
-                                                  child: ListView.builder(
-                                                      shrinkWrap: true,
-                                                      itemCount: snapshot
-                                                          .data!
-                                                          .messages![i]
-                                                          .messageImage!
-                                                          .length,
-                                                      itemBuilder: (ctx, i) {
-                                                        return Container(
-                                                          height: 100,
-                                                          width: 100,
-                                                          child: Image.network(
-                                                            "${snapshot.data!.messages![i].messageImage![i].image}",
-                                                            fit: BoxFit.fill,
-                                                          ),
-                                                        );
-                                                      }),
-                                                )
-                                              : Container()
-                                        ],
-                                      ),
-                                    )
-                                  : snapshot.data!.messages![i].isRead == 1
-                                      ? Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: size.height * 0.020,
-                                              horizontal: size.width * 0.015),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  Container(
-                                                    decoration: BoxDecoration(
-                                                        color: ChooseColor(0)
-                                                            .appBarColor1),
-                                                    child: Padding(
-                                                      padding: EdgeInsets
-                                                          .symmetric(
-                                                              vertical:
-                                                                  size.height *
-                                                                      0.015,
-                                                              horizontal:
-                                                                  size.width *
-                                                                      0.015),
-                                                      child: Text(
-                                                        "${snapshot.data!.messages![i].message}",
-                                                        style: TextStyle(
-                                                            fontSize:
+      body: Padding(
+        padding: mediaQueryData.viewInsets,
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Expanded(
+            child: StreamBuilder<Message?>(
+                stream: getMessages(),
+                builder: (context, snapshot) {
+                  return snapshot.hasData
+                      ? SingleChildScrollView(
+                          reverse: true,
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: snapshot.data!.messages!.length,
+                              itemBuilder: (ctx, i) {
+                                return snapshot.data!.messages![i].isRead == 0
+                                    ? Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: size.height * 0.020,
+                                            horizontal: size.width * 0.015),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Image.asset(
+                                                    "icons/chatImage.png"),
+                                                Container(
+                                                  constraints: BoxConstraints(
+                                                      maxWidth:
+                                                          size.width * 0.80),
+                                                  decoration: BoxDecoration(
+                                                      color:
+                                                          Colors.grey.shade300),
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical:
                                                                 size.height *
-                                                                        0.014 +
-                                                                    size.width *
-                                                                        0.014,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
+                                                                    0.015,
+                                                            horizontal:
+                                                                size.width *
+                                                                    0.015),
+                                                    child: Text(
+                                                      "${snapshot.data!.messages![i].message}",
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                              size.height *
+                                                                      0.014 +
+                                                                  size.width *
+                                                                      0.014,
+                                                          fontWeight:
+                                                              FontWeight.w600),
                                                     ),
                                                   ),
-                                                ],
-                                              ),
-                                              snapshot
-                                                          .data!
-                                                          .messages![i]
-                                                          .messageImage!
-                                                          .isNotEmpty &&
-                                                      snapshot
-                                                              .data!
-                                                              .messages![i]
-                                                              .isRead ==
-                                                          1
-                                                  ? SizedBox(
-                                                      height: 100,
-                                                      width: 100,
-                                                      child: ListView.builder(
-                                                          shrinkWrap: true,
-                                                          itemCount: snapshot
-                                                              .data!
-                                                              .messages![i]
-                                                              .messageImage!
-                                                              .length,
-                                                          itemBuilder:
-                                                              (ctx, i) {
-                                                            return Container(
+                                                ),
+                                              ],
+                                            ),
+                                            snapshot
+                                                        .data!
+                                                        .messages![i]
+                                                        .messageImage!
+                                                        .isNotEmpty &&
+                                                    snapshot.data!.messages![i]
+                                                            .isRead ==
+                                                        0
+                                                ? SizedBox(
+                                                    height: 100,
+                                                    width: 100,
+                                                    child: ListView.builder(
+                                                        shrinkWrap: true,
+                                                        itemCount: snapshot
+                                                            .data!
+                                                            .messages![i]
+                                                            .messageImage!
+                                                            .length,
+                                                        itemBuilder: (ctx, j) {
+                                                          return GestureDetector(
+                                                            onTap: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pushReplacement(
+                                                                      MaterialPageRoute(
+                                                                          builder: (ctx) =>
+                                                                              ChatImageViewer(
+                                                                                chatImage: snapshot.data!.messages![i].messageImage![j].image,
+                                                                              )));
+                                                            },
+                                                            child: Container(
                                                               height: 100,
                                                               width: 100,
-                                                              child: Text(
-                                                                  "${snapshot.data!.messages![i].messageImage}"),
-                                                            );
-                                                          }),
-                                                    )
-                                                  : Container()
-                                            ],
-                                          ),
-                                        )
-                                      : Container();
-                            }),
-                      )
-                    : LinearProgressIndicator();
-              }),
-        ),
-        BottomAppBar(
-          child: Padding(
-            padding: const EdgeInsets.only(right: 10.0, left: 5),
-            child: Container(
-              alignment: Alignment.bottomCenter,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-              ),
-              height: 45,
-              child: TextFormField(
-                decoration: InputDecoration(
-                    prefixIcon: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: GestureDetector(
-                        onTap: () {
-                          openBottomSheet(context);
-                        },
-                        child: Container(
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color(0xff8F3F97),
-                            ),
-                            child: const Icon(
-                              Icons.add,
-                              color: Colors.white,
-                            )),
+                                                              child:
+                                                                  Image.network(
+                                                                "${snapshot.data!.messages![i].messageImage![j].image}",
+                                                                fit:
+                                                                    BoxFit.fill,
+                                                              ),
+                                                            ),
+                                                          );
+                                                        }),
+                                                  )
+                                                : Container()
+                                          ],
+                                        ),
+                                      )
+                                    : snapshot.data!.messages![i].isRead == 1
+                                        ? Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: size.height * 0.020,
+                                                horizontal: size.width * 0.015),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Container(
+                                                        decoration: BoxDecoration(
+                                                            color: ChooseColor(
+                                                                    0)
+                                                                .appBarColor1),
+                                                        child: Padding(
+                                                            padding: EdgeInsets.symmetric(
+                                                                vertical:
+                                                                    size.height *
+                                                                        0.015,
+                                                                horizontal:
+                                                                    size.width *
+                                                                        0.015),
+                                                            child: snapshot
+                                                                    .data!
+                                                                    .messages![
+                                                                        i]
+                                                                    .message!
+                                                                    .isNotEmpty
+                                                                ? Text(
+                                                                    "${snapshot.data!.messages![i].message}",
+                                                                    style: TextStyle(
+                                                                        fontSize: size.height *
+                                                                                0.014 +
+                                                                            size.width *
+                                                                                0.014,
+                                                                        color: Colors
+                                                                            .white),
+                                                                  )
+                                                                : Container(
+                                                                    height: 0,
+                                                                    width: 0,
+                                                                  ))),
+                                                  ],
+                                                ),
+                                                snapshot
+                                                            .data!
+                                                            .messages![i]
+                                                            .messageImage!
+                                                            .isNotEmpty &&
+                                                        snapshot
+                                                                .data!
+                                                                .messages![i]
+                                                                .isRead ==
+                                                            1
+                                                    ? SizedBox(
+                                                        height: 100,
+                                                        width: 100,
+                                                        child: ListView.builder(
+                                                            shrinkWrap: true,
+                                                            itemCount: snapshot
+                                                                .data!
+                                                                .messages![i]
+                                                                .messageImage!
+                                                                .length,
+                                                            itemBuilder:
+                                                                (ctx, j) {
+                                                              return Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        top:
+                                                                            10),
+                                                                child:
+                                                                    GestureDetector(
+                                                                  onTap: () {
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pushReplacement(MaterialPageRoute(
+                                                                            builder: (ctx) => ChatImageViewer(
+                                                                                  chatImage: snapshot.data!.messages![i].messageImage![j].image,
+                                                                                )));
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                    height: 100,
+                                                                    width: 100,
+                                                                    child: Image
+                                                                        .network(
+                                                                            "${snapshot.data!.messages![i].messageImage![j].image}"),
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            }),
+                                                      )
+                                                    : Container()
+                                              ],
+                                            ),
+                                          )
+                                        : Container();
+                              }),
+                        )
+                      : LinearProgressIndicator();
+                }),
+          ),
+          BottomAppBar(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 10.0, left: 5),
+              child: Container(
+                alignment: Alignment.bottomCenter,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                ),
+                height: 45,
+                child: TextFormField(
+                  decoration: InputDecoration(
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: GestureDetector(
+                          onTap: () {
+                            openBottomSheet(context);
+                          },
+                          child: Container(
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(0xff8F3F97),
+                              ),
+                              child: const Icon(
+                                Icons.add,
+                                color: Colors.white,
+                              )),
+                        ),
                       ),
-                    ),
-                    suffixIcon: const Icon(
-                      Icons.emoji_emotions,
-                      color: Colors.grey,
-                      size: 28,
-                    ),
-                    contentPadding: const EdgeInsets.only(top: 5, left: 55),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(25.0),
-                    ),
-                    hintText: 'Type a message',
-                    hintStyle:
-                        const TextStyle(fontSize: 16, color: Colors.black45)),
-                textCapitalization: TextCapitalization.sentences,
-                controller: messageController,
-                onFieldSubmitted: (value) async {
-                  try {
-                    final result = await InternetAddress.lookup("example.com");
-                    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-                      setState(() {
-                        mC.sendMessage(
-                            messageController.text, imageFileList, context);
-                        getMessages();
-                        messageController.text = "";
-                      });
+                      suffixIcon: const Icon(
+                        Icons.emoji_emotions,
+                        color: Colors.grey,
+                        size: 28,
+                      ),
+                      contentPadding: const EdgeInsets.only(top: 5, left: 55),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
+                      hintText: 'Type a message',
+                      hintStyle:
+                          const TextStyle(fontSize: 16, color: Colors.black45)),
+                  textCapitalization: TextCapitalization.sentences,
+                  controller: messageController,
+                  onFieldSubmitted: (value) async {
+                    try {
+                      final result =
+                          await InternetAddress.lookup("example.com");
+                      if (result.isNotEmpty &&
+                          result[0].rawAddress.isNotEmpty) {
+                        setState(() {
+                          mC.sendMessage(
+                              messageController.text, imageFileList, context);
+                          getMessages();
+                          messageController.text = "";
+                        });
+                      }
+                    } on SocketException catch (_) {
+                      showSnackBar();
                     }
-                  } on SocketException catch (_) {
-                    showSnackBar();
-                  }
-                },
+                  },
+                ),
               ),
             ),
           ),
-        ),
-      ]),
+        ]),
+      ),
     );
   }
 }

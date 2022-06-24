@@ -9,116 +9,181 @@ Message messageFromJson(String str) => Message.fromJson(json.decode(str));
 String messageToJson(Message data) => json.encode(data.toJson());
 
 class Message {
-  Message({
-    this.messages,
-  });
+  List<Messages>? messages;
 
-  List<MessageElement>? messages;
+  Message({this.messages});
 
-  factory Message.fromJson(Map<String, dynamic> json) => Message(
-        messages: List<MessageElement>.from(
-            json["messages"].map((x) => MessageElement.fromJson(x))),
-      );
+  Message.fromJson(Map<String, dynamic> json) {
+    if (json['messages'] != null) {
+      messages = <Messages>[];
+      json['messages'].forEach((v) {
+        messages!.add(Messages.fromJson(v));
+      });
+    }
+  }
 
-  Map<String, dynamic> toJson() => {
-        "messages": List<dynamic>.from(messages!.map((x) => x.toJson())),
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.messages != null) {
+      data['messages'] = this.messages!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
 }
 
-class MessageElement {
-  MessageElement({
-    this.id,
-    this.from,
-    this.to,
-    this.groupid,
-    this.message,
-    this.type,
-    this.admin,
-    this.isRead,
-    this.createdAt,
-    this.updatedAt,
-    this.messageImage,
-    this.user,
-    this.mobileuser,
-  });
-
+class Messages {
   int? id;
   int? from;
-  dynamic to;
-  int? groupid;
+  int? to;
+  Null groupid;
   String? message;
   String? type;
-  dynamic admin;
+  int? admin;
   int? isRead;
-  DateTime? createdAt;
-  DateTime? updatedAt;
+  String? createdAt;
+  String? updatedAt;
   List<MessageImage>? messageImage;
-  dynamic user;
-  dynamic mobileuser;
+  User? user;
+  Null mobileuser;
 
-  factory MessageElement.fromJson(Map<String, dynamic> json) => MessageElement(
-        id: json["id"],
-        from: json["from"],
-        to: json["to"],
-        groupid: json["groupid"],
-        message: json["message"],
-        type: json["type"],
-        admin: json["admin"],
-        isRead: json["is_read"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        messageImage: List<MessageImage>.from(
-            json["message_image"].map((x) => MessageImage.fromJson(x))),
-        user: json["user"],
-        mobileuser: json["mobileuser"],
-      );
+  Messages(
+      {this.id,
+      this.from,
+      this.to,
+      this.groupid,
+      this.message,
+      this.type,
+      this.admin,
+      this.isRead,
+      this.createdAt,
+      this.updatedAt,
+      this.messageImage,
+      this.user,
+      this.mobileuser});
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "from": from,
-        "to": to,
-        "groupid": groupid,
-        "message": message,
-        "type": type,
-        "admin": admin,
-        "is_read": isRead,
-        "created_at": createdAt!.toIso8601String(),
-        "updated_at": updatedAt!.toIso8601String(),
-        "message_image":
-            List<dynamic>.from(messageImage!.map((x) => x.toJson())),
-        "user": user,
-        "mobileuser": mobileuser,
-      };
+  Messages.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    from = json['from'];
+    to = json['to'];
+    groupid = json['groupid'];
+    message = json['message'];
+    type = json['type'];
+    admin = json['admin'];
+    isRead = json['is_read'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    if (json['message_image'] != null) {
+      messageImage = <MessageImage>[];
+      json['message_image'].forEach((v) {
+        messageImage!.add(new MessageImage.fromJson(v));
+      });
+    }
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    mobileuser = json['mobileuser'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['from'] = this.from;
+    data['to'] = this.to;
+    data['groupid'] = this.groupid;
+    data['message'] = this.message;
+    data['type'] = this.type;
+    data['admin'] = this.admin;
+    data['is_read'] = this.isRead;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    if (this.messageImage != null) {
+      data['message_image'] =
+          this.messageImage!.map((v) => v.toJson()).toList();
+    }
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
+    }
+    data['mobileuser'] = this.mobileuser;
+    return data;
+  }
 }
 
 class MessageImage {
-  MessageImage({
-    this.id,
-    this.chatId,
-    this.image,
-    this.createdAt,
-    this.updatedAt,
-  });
-
   int? id;
   int? chatId;
   String? image;
-  DateTime? createdAt;
-  DateTime? updatedAt;
+  String? createdAt;
+  String? updatedAt;
 
-  factory MessageImage.fromJson(Map<String, dynamic> json) => MessageImage(
-        id: json["id"],
-        chatId: json["chat_id"],
-        image: json["image"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-      );
+  MessageImage(
+      {this.id, this.chatId, this.image, this.createdAt, this.updatedAt});
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "chat_id": chatId,
-        "image": image,
-        "created_at": createdAt!.toIso8601String(),
-        "updated_at": updatedAt!.toIso8601String(),
-      };
+  MessageImage.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    chatId = json['chat_id'];
+    image = json['image'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['chat_id'] = this.chatId;
+    data['image'] = this.image;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    return data;
+  }
+}
+
+class User {
+  int? id;
+  String? name;
+  String? email;
+  String? phone;
+  String? address;
+  String? userType;
+  String? app;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+
+  User(
+      {this.id,
+      this.name,
+      this.email,
+      this.phone,
+      this.address,
+      this.userType,
+      this.app,
+      this.status,
+      this.createdAt,
+      this.updatedAt});
+
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    email = json['email'];
+    phone = json['phone'];
+    address = json['address'];
+    userType = json['user_type'];
+    app = json['app'];
+    status = json['status'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['email'] = this.email;
+    data['phone'] = this.phone;
+    data['address'] = this.address;
+    data['user_type'] = this.userType;
+    data['app'] = this.app;
+    data['status'] = this.status;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    return data;
+  }
 }
