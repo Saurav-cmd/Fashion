@@ -99,4 +99,8 @@ class ApiRoute {
   String? noticeLog() {
     return Constants.baseUrl + "lognotice";
   }
+
+  String? fetchApiData() {
+    return Constants.baseUrl + "api url will be here";
+  }
 }

@@ -1144,4 +1144,13 @@ class Services {
       rethrow;
     }
   }
+
+  static Future<void> fetchApiData() async {
+    final apiUrl = ApiRoute().fetchApiData();
+    final response = await http.get(Uri.parse(apiUrl!), headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer"
+    });
+    if (response.statusCode == 200) {}
+  }
 }

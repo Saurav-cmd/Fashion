@@ -66,7 +66,7 @@ class _ChatImageViewerState extends State<ChatImageViewer> {
                     content: const Padding(
                       padding: EdgeInsets.only(right: 10),
                       child: Text(
-                        'Item Successfully added to Cart',
+                        'Image downloaded to gallery',
                         textAlign: TextAlign.center,
                         maxLines: 2,
                         style: TextStyle(fontSize: 14),
