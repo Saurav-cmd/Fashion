@@ -176,6 +176,60 @@ class _BipanaPreviewScreenState extends State<BipanaPreviewScreen> {
               ),
               SizedBox(height: size.height * 0.020),
               Text(
+                "Bipana Preview",
+                style: TextStyle(
+                    fontSize: size.height * 0.011 + size.width * 0.011),
+              ),
+              SizedBox(height: size.height * 0.020),
+              Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: const Color(0xff031545),
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      // Navigator.of(context).pushNamed("Exterior_screen");
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: size.width * 0.030),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "My House",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: size.height * 0.014 +
+                                        size.width * 0.014),
+                              ),
+                              SizedBox(height: size.height * 0.020),
+                              Text(
+                                "Images",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: size.height * 0.012 +
+                                        size.width * 0.012),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                            width: size.width * 0.6,
+                            height: size.height * 0.17,
+                            child: Image.asset(
+                              "images/my house.jfif",
+                              fit: BoxFit.fill,
+                            )),
+                      ],
+                    ),
+                  )),
+              SizedBox(height: size.height * 0.020),
+              Text(
                 "Send us your house photos for Bipana preview",
                 style: TextStyle(
                     fontSize: size.height * 0.011 + size.width * 0.011),

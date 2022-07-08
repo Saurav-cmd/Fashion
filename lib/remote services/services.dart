@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:fashion_paints/Apis/api_Routes.dart';
 import 'package:fashion_paints/models/apis_model/login_model.dart';
+import 'package:fashion_paints/models/apis_model/shape_model.dart';
 import 'package:fashion_paints/widgets/dilogue_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -1145,12 +1146,14 @@ class Services {
     }
   }
 
-  static Future<void> fetchApiData() async {
+  static Future<Shape?> fetchApiData() async {
     final apiUrl = ApiRoute().fetchApiData();
     final response = await http.get(Uri.parse(apiUrl!), headers: {
       "Content-Type": "application/json",
       "Authorization": "Bearer"
     });
-    if (response.statusCode == 200) {}
+    if (response.statusCode == 200) {
+      return shapeFromJson(response.body);
+    }
   }
 }
